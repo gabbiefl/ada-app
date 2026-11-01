@@ -97,4 +97,47 @@ void main() {
     expect(find.text('0/5'), findsOneWidget);
     expect(controller.contacts, isEmpty);
   });
+
+  testWidgets('Rede cheia: some o "Adicionar contato" e aparece o aviso', (
+    tester,
+  ) async {
+    for (var i = 1; i <= 5; i++) {
+      controller.add(name: 'Contato $i', phone: '5199999000$i');
+    }
+    await pumpPage(tester);
+    // A lista é longa: rola até o aviso, no fim da tela.
+    await tester.scrollUntilVisible(
+      find.textContaining('Sua rede está completa'),
+      200,
+    );
+
+    expect(find.text('5/5'), findsOneWidget);
+    expect(find.text('Adicionar contato'), findsNothing);
+    expect(find.textContaining('Sua rede está completa (5/5)'), findsOneWidget);
+  });
+
+  testWidgets('Com espaço livre, o aviso de rede cheia não aparece', (
+    tester,
+  ) async {
+    controller.add(name: 'Maria Silva', phone: '51999990001');
+    await pumpPage(tester);
+
+    expect(find.textContaining('Sua rede está completa'), findsNothing);
+  });
+
+  testWidgets('Remover um contato da rede cheia reabre um espaço', (
+    tester,
+  ) async {
+    for (var i = 1; i <= 5; i++) {
+      controller.add(name: 'Contato $i', phone: '5199999000$i');
+    }
+    await pumpPage(tester);
+
+    controller.remove(controller.contacts.first.id);
+    await tester.pump();
+
+    expect(find.text('4/5'), findsOneWidget);
+    expect(find.text('Adicionar contato'), findsOneWidget);
+    expect(find.textContaining('Sua rede está completa'), findsNothing);
+  });
 }

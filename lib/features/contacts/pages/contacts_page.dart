@@ -13,6 +13,7 @@ import 'package:ada_app/features/contacts/models/contact.dart';
 import 'package:ada_app/features/contacts/state/contacts_controller.dart';
 import 'package:ada_app/features/contacts/widgets/add_contact_card.dart';
 import 'package:ada_app/features/contacts/widgets/contact_card.dart';
+import 'package:ada_app/features/contacts/widgets/network_full_notice.dart';
 
 class ContactsPage extends StatelessWidget {
   const ContactsPage({super.key});
@@ -110,6 +111,11 @@ class ContactsPage extends StatelessWidget {
               for (var i = 0; i < network.freeSlots; i++) ...[
                 AddContactCard(onTap: () => context.push(AppRoutes.newContact)),
                 const SizedBox(height: 9),
+              ],
+              // Rede cheia: não sobra nenhum espaço, então avisamos o motivo.
+              if (network.isFull) ...[
+                const SizedBox(height: 7),
+                const NetworkFullNotice(limit: ContactsController.maxContacts),
               ],
             ],
           ),
