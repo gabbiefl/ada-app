@@ -7,6 +7,8 @@
 // cópia com o campo trocado (copyWith). Isso evita alterações escondidas e faz
 // o ChangeNotifier perceber a mudança, porque o objeto na lista é outro.
 
+import 'package:ada_app/features/contacts/formatters/phone_input_formatter.dart';
+
 class Contact {
   // `const` no construtor: permite criar contatos constantes nos testes.
   const Contact({required this.id, required this.name, required this.phone});
@@ -23,13 +25,9 @@ class Contact {
 
   // Telefone para exibir: '51999990001' vira '(51) 99999-0001'.
   // Guardamos só dígitos e formatamos apenas na hora de mostrar.
-  String get formattedPhone {
-    final isMobile = phone.length == 11;
-    final split = isMobile ? 7 : 6; // onde fica o hífen
-    if (phone.length != 10 && !isMobile) return phone;
-    return '(${phone.substring(0, 2)}) '
-        '${phone.substring(2, split)}-${phone.substring(split)}';
-  }
+  // A máscara é a mesma do campo de digitação (formatPhone).
+  String get formattedPhone =>
+      phone.length == 10 || phone.length == 11 ? formatPhone(phone) : phone;
 
   // Vira um Map para ser gravado como JSON (usado na persistência, passo 8).
   Map<String, dynamic> toJson() => {'id': id, 'name': name, 'phone': phone};

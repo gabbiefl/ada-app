@@ -83,12 +83,14 @@ void main() {
     expect(controller.count, 1);
   });
 
-  testWidgets('O campo de telefone ignora letras', (tester) async {
+  testWidgets('O campo de telefone ignora letras e aplica a máscara', (
+    tester,
+  ) async {
     await pumpForm(tester);
 
     await tester.enterText(field('(51) 99999-0000'), '51abc99');
 
-    expect(find.text('5199'), findsOneWidget);
+    expect(find.text('(51) 99'), findsOneWidget);
   });
 
   testWidgets('Salvar cadastra o contato e volta para a Rede', (tester) async {

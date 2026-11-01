@@ -7,12 +7,12 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:provider/provider.dart';
 
 import 'package:ada_app/core/theme/app_colors.dart';
+import 'package:ada_app/features/contacts/formatters/phone_input_formatter.dart';
 import 'package:ada_app/features/contacts/models/contact.dart';
 import 'package:ada_app/features/contacts/state/contacts_controller.dart';
 import 'package:ada_app/features/contacts/validators/contact_validators.dart';
@@ -197,13 +197,9 @@ class _ContactFormPageState extends State<ContactFormPage> {
                         textInputAction: TextInputAction.done,
                         onFieldSubmitted: (_) => _save(),
                         validator: _validatePhone,
-                        // Só aceita dígitos e os símbolos de uma máscara.
-                        inputFormatters: [
-                          FilteringTextInputFormatter.allow(
-                            RegExp(r'[0-9()\- ]'),
-                          ),
-                          LengthLimitingTextInputFormatter(15),
-                        ],
+                        // Ignora letras, limita a 11 dígitos e aplica a máscara
+                        // (51) 99999-9999 enquanto a usuária digita.
+                        inputFormatters: [PhoneInputFormatter()],
                         decoration: const InputDecoration(
                           hintText: '(51) 99999-0000',
                           prefixIcon: Icon(LucideIcons.phone, size: 18),
