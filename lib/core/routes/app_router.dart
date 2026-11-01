@@ -23,6 +23,8 @@ class AppRoutes {
   static const home = '/home';
   static const contacts = '/contacts';
   static const newContact = '/contacts/new';
+  // Função (e não constante): o endereço leva o id do contato, ex.: /contacts/edit/123.
+  static String editContact(String id) => '/contacts/edit/$id';
   static const map = '/map';
   static const settings = '/settings';
   static const messages = '/settings/messages';
@@ -72,6 +74,14 @@ final appRouter = GoRouter(
                   path: 'new',
                   parentNavigatorKey: _rootKey,
                   builder: (context, state) => const ContactFormPage(),
+                ),
+                // ':id' é um parâmetro do caminho: o go_router o entrega em
+                // state.pathParameters['id'].
+                GoRoute(
+                  path: 'edit/:id',
+                  parentNavigatorKey: _rootKey,
+                  builder: (context, state) =>
+                      ContactFormPage(contactId: state.pathParameters['id']),
                 ),
               ],
             ),

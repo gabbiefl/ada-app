@@ -61,4 +61,40 @@ void main() {
     expect(find.text('1/5'), findsOneWidget);
     expect(find.text('Adicionar contato'), findsNWidgets(4));
   });
+
+  testWidgets('Remover: pede confirmação e Cancelar mantém o contato', (
+    tester,
+  ) async {
+    controller.add(name: 'Maria Silva', phone: '51999990001');
+    await pumpPage(tester);
+
+    await tester.tap(find.bySemanticsLabel('Remover Maria Silva'));
+    await tester.pumpAndSettle();
+    expect(find.text('Remover contato?'), findsOneWidget);
+    expect(
+      find.textContaining('Remover Maria Silva da sua rede'),
+      findsOneWidget,
+    );
+
+    await tester.tap(find.text('Cancelar'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Remover contato?'), findsNothing);
+    expect(find.text('Maria Silva'), findsOneWidget);
+    expect(controller.count, 1);
+  });
+
+  testWidgets('Remover: confirmar tira o contato da rede', (tester) async {
+    controller.add(name: 'Maria Silva', phone: '51999990001');
+    await pumpPage(tester);
+
+    await tester.tap(find.bySemanticsLabel('Remover Maria Silva'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Remover'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Maria Silva'), findsNothing);
+    expect(find.text('0/5'), findsOneWidget);
+    expect(controller.contacts, isEmpty);
+  });
 }

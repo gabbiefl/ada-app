@@ -12,13 +12,15 @@ class ContactCard extends StatelessWidget {
     required this.name,
     required this.phone,
     required this.color,
+    this.onTap,
     this.onRemove,
   });
 
   final String name;
   final String phone;
   final Color color; // cor do avatar
-  final VoidCallback? onRemove;
+  final VoidCallback? onTap; // tocar no card (abre a edição)
+  final VoidCallback? onRemove; // tocar no "x"
 
   // Iniciais: primeira letra do primeiro e do último nome ("Gabriela Flores" -> "GF").
   String get _initials {
@@ -32,6 +34,16 @@ class ContactCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
+    // GestureDetector: faz o card inteiro reagir ao toque. O "x" abaixo tem o
+    // próprio toque e tem prioridade sobre este.
+    return GestureDetector(
+      onTap: onTap,
+      behavior: HitTestBehavior.opaque,
+      child: _buildCard(theme),
+    );
+  }
+
+  Widget _buildCard(ThemeData theme) {
     return Container(
       height: 88,
       padding: const EdgeInsets.symmetric(horizontal: 21),
@@ -69,12 +81,22 @@ class ContactCard extends StatelessWidget {
               ],
             ),
           ),
-          InkResponse(
-            onTap: onRemove,
-            child: const Icon(
-              LucideIcons.x,
-              size: 12,
-              color: AppColors.placeholder,
+          // O ícone é pequeno (12), mas a área de toque tem 48x48 e o leitor
+          // de tela anuncia "Remover <nome>" (acessibilidade).
+          Semantics(
+            button: true,
+            label: 'Remover $name',
+            child: InkResponse(
+              onTap: onRemove,
+              child: const SizedBox(
+                width: 48,
+                height: 48,
+                child: Icon(
+                  LucideIcons.x,
+                  size: 12,
+                  color: AppColors.placeholder,
+                ),
+              ),
             ),
           ),
         ],

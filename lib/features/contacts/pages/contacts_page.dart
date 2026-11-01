@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 
 import 'package:ada_app/core/routes/app_router.dart';
 import 'package:ada_app/core/theme/app_colors.dart';
+import 'package:ada_app/features/contacts/models/contact.dart';
 import 'package:ada_app/features/contacts/state/contacts_controller.dart';
 import 'package:ada_app/features/contacts/widgets/add_contact_card.dart';
 import 'package:ada_app/features/contacts/widgets/contact_card.dart';
@@ -22,6 +23,38 @@ class ContactsPage extends StatelessWidget {
     AppColors.avatarGreen,
     AppColors.modeAttention,
   ];
+
+  // Pergunta antes de remover: tirar alguém da rede de emergência não deve
+  // acontecer por um toque sem querer.
+  Future<void> _confirmRemove(BuildContext context, Contact contact) async {
+    // Pega o controlador ANTES do await: depois dele o context pode já não valer.
+    final controller = context.read<ContactsController>();
+
+    // showDialog devolve um Future: ele "espera" a usuária escolher e entrega
+    // o valor passado ao Navigator.pop (true = remover, false/null = cancelar).
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: const Text('Remover contato?'),
+        content: Text('Remover ${contact.name} da sua rede de confiança?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: const Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            style: TextButton.styleFrom(
+              foregroundColor: Theme.of(dialogContext).colorScheme.error,
+            ),
+            child: const Text('Remover'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true) controller.remove(contact.id);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,6 +100,9 @@ class ContactsPage extends StatelessWidget {
                   name: contacts[i].name,
                   phone: contacts[i].formattedPhone,
                   color: _avatarColors[i % _avatarColors.length],
+                  onTap: () =>
+                      context.push(AppRoutes.editContact(contacts[i].id)),
+                  onRemove: () => _confirmRemove(context, contacts[i]),
                 ),
                 const SizedBox(height: 9),
               ],

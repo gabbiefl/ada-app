@@ -51,7 +51,7 @@ Transformar as telas estáticas de contatos em funcionalidade real: cadastrar, e
 | 3 ✅ | `ContactsController` em memória: adicionar, editar, remover, limite de 5, telefone repetido; testes | M | Reaproveitar `ChangeNotifier`, regras de negócio |
 | 4 ✅ | Fornecer o controlador no app e a Rede ler a lista dele (contador e espaços vazios dinâmicos) | M | `context.watch` com lista |
 | 5 ✅ | Formulário de verdade: `Form` + `validator`, salvar chama o controlador e volta | G | Formulários e validação |
-| 6 | Remover (com confirmação) e editar (toque no card abre o formulário preenchido) | M | Diálogo, passar dado entre telas |
+| 6 ✅ | Remover (com confirmação) e editar (toque no card abre o formulário preenchido) | M | Diálogo, passar dado entre telas |
 | 7 | Rede cheia (5/5): esconde "Adicionar" e mostra o aviso (F3-12) | P | Estado derivado da lista |
 | 8 | Persistência: repositório + armazenamento escolhido; o controlador carrega ao iniciar e grava a cada mudança | G | `async`/`await`, `Future`, repositório |
 | 9 | Testes de fluxo (cadastrar → aparece → remover), `flutter analyze`, retrospectiva, resumos e backlog | M | Fechar a fase |
