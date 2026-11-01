@@ -64,6 +64,9 @@ class AppTheme {
         enabledBorder: _fieldBorder(AppColors.textSecondary),
         // Ao digitar, a borda fica azul-marinho e mais grossa.
         focusedBorder: _fieldBorder(AppColors.modeNormal, width: 1.5),
+        // Campo com erro de validação: borda vermelha (a mensagem usa colorScheme.error).
+        errorBorder: _fieldBorder(AppColors.modeDanger),
+        focusedErrorBorder: _fieldBorder(AppColors.modeDanger, width: 1.5),
       ),
       // Botão principal (preenchido, azul-marinho).
       filledButtonTheme: FilledButtonThemeData(style: _buttonStyle()),
