@@ -18,11 +18,7 @@ class Contact {
   // copyWith: devolve um contato novo, trocando só o que for informado.
   // `String?` aceita null, que significa "mantenha o valor atual".
   Contact copyWith({String? name, String? phone}) {
-    return Contact(
-      id: id,
-      name: name ?? this.name,
-      phone: phone ?? this.phone,
-    );
+    return Contact(id: id, name: name ?? this.name, phone: phone ?? this.phone);
   }
 
   // Vira um Map para ser gravado como JSON (usado na persistência, passo 8).
