@@ -37,10 +37,17 @@ Resumos diretos para consulta, escritos enquanto o ADA é construído. Cada tema
 | 03 | [Animação e desenho customizado](03-interface/03-animacao-e-desenho-customizado.md) |
 | 04 | [Campos de texto e botões no tema](03-interface/04-campos-de-texto-e-botoes-no-tema.md) |
 
+### ✅ 04 — Navegação e estado (Fase 4)
+| # | Resumo |
+|---|---|
+| 01 | [Rotas e go_router](04-navegacao-e-estado/01-rotas-e-go-router.md) |
+| 02 | [enum e ChangeNotifier](04-navegacao-e-estado/02-enum-e-changenotifier.md) |
+| 03 | [Provider](04-navegacao-e-estado/03-provider.md) |
+| 04 | [Testando navegação e estado](04-navegacao-e-estado/04-testando-navegacao-e-estado.md) |
+
 ### 🔜 Próximos temas (entram quando a fase correspondente for feita)
 | Pasta | Tema | Fase |
 |---|---|---|
-| 04-navegacao-e-estado | go_router, Provider, UI separada da lógica | 4 |
 | 05-dados-locais | Models, formulários, validação, armazenamento | 5 e 6 |
 | 06-recursos-do-celular | Permissões, localização, url_launcher | 8 e 9 |
 | 07-qualidade | Testes, acessibilidade, privacidade | 11 |
