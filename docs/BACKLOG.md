@@ -13,7 +13,7 @@
 
 ## Fase atual
 
-**Fase 4 — Navegação e estado** concluída (falta aprovar os resumos de aprendizado). A Fase 3 segue com telas pendentes (ver F3-07 a F3-14). Falta você escrever o "O que aprendi" das Fases 1 a 4. O passo 9 da Fase 1 (Android) segue adiado para antes da Fase 7.
+**Fase 4 — Navegação e estado** concluída, com os resumos de aprendizado escritos. A Fase 3 segue com telas pendentes (ver F3-07 a F3-14). Falta você escrever o "O que aprendi" das Fases 1 a 4. O passo 9 da Fase 1 (Android) segue adiado para antes da Fase 7.
 
 ---
 

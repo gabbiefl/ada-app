@@ -1,6 +1,6 @@
 # Fase 4 — Navegação e estado
 
-> **Status:** ✅ concluída (resumos de aprendizado pendentes de aprovação)
+> **Status:** ✅ concluída
 > **Itens do backlog:** F4-01, F4-02
 
 ## 1. Objetivo
@@ -46,7 +46,7 @@ Fazer o app navegável (barra inferior, abrir e voltar de telas) e guardar o mod
 | 5 ✅ | Adicionar `provider` e fornecer o controlador ao app | P | Provider, `context.watch` x `context.read` |
 | 6 ✅ | Home lê o modo do controlador (sempre Normal por enquanto); `dangerActive` deixa de ser parâmetro; toques nos cards ficam para depois de ler o Figma | M | Estado global, reconstrução da tela |
 | 7 ✅ | Testes de navegação e de estado; `flutter analyze` | P | Testar fluxo, não só tela |
-| 8 🔄 | Retrospectiva, resumos em `docs/aprendizado/`, backlog e commit | P | Fechar a fase |
+| 8 ✅ | Retrospectiva, resumos em `docs/aprendizado/`, backlog e commit | P | Fechar a fase |
 
 ## 7. Decisões técnicas
 | Decisão | Alternativas consideradas | Motivo |
