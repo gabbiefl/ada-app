@@ -10,7 +10,7 @@
 ![Material 3](https://img.shields.io/badge/Material%20Design%203-757575?style=for-the-badge&logo=materialdesign&logoColor=white)
 
 ![Status](https://img.shields.io/badge/status-em%20desenvolvimento-yellow)
-![Fase atual](https://img.shields.io/badge/fase%20atual-4%20%E2%80%94%20navega%C3%A7%C3%A3o-orange)
+![Fase atual](https://img.shields.io/badge/fase%20atual-5%20%E2%80%94%20contatos-orange)
 ![Projeto acadêmico](https://img.shields.io/badge/projeto-acad%C3%AAmico-blue)
 
 </div>
@@ -31,7 +31,8 @@ A proposta é oferecer uma forma **rápida e simples de pedir ajuda em situaçõ
 | 0 e 1 | Viabilidade, fundamentos e estrutura do projeto | ✅ |
 | 2 | Tema e design system (cores, fonte Nunito, cores dos modos 🔵🟡🔴) | ✅ |
 | 3 | Telas estáticas: Home, Rede, Novo contato, Configurações, Mensagens e Editar mensagem | ✅ (faltam splash, onboarding e permissões) |
-| 4 em diante | Navegação, rede de contatos, modos de alerta, localização e envio | 🔄 Fase 4 a seguir |
+| 4 | Navegação (`go_router`, barra inferior) e estado do modo atual (`provider`) | ✅ |
+| 5 em diante | Rede de contatos, modos de alerta, localização e envio | 🔄 Fase 5 a seguir |
 
 O plano de cada fase está em [`docs/planejamento/`](docs/planejamento/) e a lista de itens em [`docs/BACKLOG.md`](docs/BACKLOG.md).
 
@@ -40,6 +41,7 @@ O plano de cada fase está em [`docs/planejamento/`](docs/planejamento/) e a lis
 - **Flutter** e **Dart**, com Material Design 3
 - **Android** como plataforma principal
 - **Figma** para o design das telas, lido pelo Claude Code via MCP
+- **go_router** (navegação) e **provider** (estado)
 - **Nunito** como fonte e **Lucide** como família de ícones (pacote `lucide_icons_flutter`)
 
 ## ▶️ Como rodar
@@ -66,6 +68,8 @@ Para conferir a qualidade do código: `flutter analyze` e `flutter test`.
 ```
 lib/
 ├── core/
+│   ├── routes/     # mapa de telas e endereços (go_router)
+│   ├── state/      # estado global (SecurityMode, ModeController)
 │   ├── theme/      # cores, textos e tema do app (AppTheme, ModeColors)
 │   └── widgets/    # widgets usados em várias telas (barra de navegação, cabeçalho)
 └── features/       # uma pasta por funcionalidade (home, contacts, modes...)

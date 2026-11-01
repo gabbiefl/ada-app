@@ -13,11 +13,11 @@
 
 ## Fase atual
 
-**Fase 3 — Telas estáticas** concluída com telas pendentes (ver F3-09 a F3-13). Falta você escrever o "O que aprendi" das Fases 1, 2 e 3. O passo 9 da Fase 1 (Android) segue adiado para antes da Fase 7.
+**Fase 4 — Navegação e estado** concluída (falta aprovar os resumos de aprendizado). A Fase 3 segue com telas pendentes (ver F3-07 a F3-14). Falta você escrever o "O que aprendi" das Fases 1 a 4. O passo 9 da Fase 1 (Android) segue adiado para antes da Fase 7.
 
 ---
 
-> Próxima: **Fase 4 — Navegação e estado** (`go_router` e estado global; cada pacote pede a sua confirmação).
+> Próxima: **Fase 5 — Rede de contatos** (criar o plano antes; cada pacote novo pede a sua confirmação).
 
 ## Fase 0 — Entendimento e viabilidade
 
@@ -80,7 +80,7 @@
 | ID | Item | Prio | Status |
 |---|---|---|---|
 | F4-01 | Configurar rotas (`go_router`) e barra inferior | M | ✅ |
-| F4-02 | Estado global do modo atual | M | ⬜ |
+| F4-02 | Estado global do modo atual (`ModeController` com `provider`; toques nos cards dependem de F3-14) | M | ✅ |
 
 ## Fase 5 — Rede de contatos
 

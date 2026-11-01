@@ -1,6 +1,6 @@
 # Fase 4 — Navegação e estado
 
-> **Status:** 🔄 em execução (plano aprovado)
+> **Status:** ✅ concluída (resumos de aprendizado pendentes de aprovação)
 > **Itens do backlog:** F4-01, F4-02
 
 ## 1. Objetivo
@@ -45,8 +45,8 @@ Fazer o app navegável (barra inferior, abrir e voltar de telas) e guardar o mod
 | 4 ✅ | Criar `SecurityMode` (enum) e `ModeController` (`ChangeNotifier`) com teste unitário | M | `enum`, `ChangeNotifier`, teste de lógica |
 | 5 ✅ | Adicionar `provider` e fornecer o controlador ao app | P | Provider, `context.watch` x `context.read` |
 | 6 ✅ | Home lê o modo do controlador (sempre Normal por enquanto); `dangerActive` deixa de ser parâmetro; toques nos cards ficam para depois de ler o Figma | M | Estado global, reconstrução da tela |
-| 7 | Testes de navegação e de estado; `flutter analyze` | P | Testar fluxo, não só tela |
-| 8 | Retrospectiva, resumos em `docs/aprendizado/`, backlog e commit | P | Fechar a fase |
+| 7 ✅ | Testes de navegação e de estado; `flutter analyze` | P | Testar fluxo, não só tela |
+| 8 🔄 | Retrospectiva, resumos em `docs/aprendizado/`, backlog e commit | P | Fechar a fase |
 
 ## 7. Decisões técnicas
 | Decisão | Alternativas consideradas | Motivo |
@@ -65,14 +65,14 @@ Fazer o app navegável (barra inferior, abrir e voltar de telas) e guardar o mod
 | Prazo da mostra (23/11/2026) | Passo 8 e extras não cabem | Priorizar passos 1 a 6; testes e resumos no fim |
 
 ## 9. Critérios de pronto
-- [ ] Barra inferior navega entre as 4 abas
-- [ ] Configurações → Mensagens → Editar e voltar funcionam
-- [ ] Modo atual vive em um único controlador, lido pela Home
-- [ ] Controlador do modo com `activate`/`deactivate` testado (toques na Home ficam para depois de ler o Figma)
-- [ ] Teste unitário do controlador e teste de navegação passando
-- [ ] `flutter analyze` sem avisos
-- [ ] Testado no Chrome
-- [ ] Backlog atualizado e commit feito
+- [x] Barra inferior navega entre as 4 abas
+- [x] Configurações → Mensagens → Editar e voltar funcionam
+- [x] Modo atual vive em um único controlador, lido pela Home
+- [x] Controlador do modo com `activate`/`deactivate` testado (toques na Home ficam para depois de ler o Figma)
+- [x] Teste unitário do controlador e teste de navegação passando
+- [x] `flutter analyze` sem avisos
+- [x] Testado no Chrome
+- [x] Backlog atualizado e commit feito
 
 ## 10. Como testar
 `flutter run -d chrome`, tocar na barra, abrir Mensagens e editar, ativar e desativar o Modo Perigo. `flutter analyze` e `flutter test`.
@@ -90,7 +90,11 @@ Fazer o app navegável (barra inferior, abrir e voltar de telas) e guardar o mod
 - <...>
 
 **O que mudou em relação ao plano:**
-- <...>
+- Os testes de navegação já existiam desde o passo 3; no passo 7 só acrescentamos os que faltavam (telas provisórias, seta de voltar e o controlador no app).
+- Os toques nos cards da Home continuam sem ativar nada, como combinado (F3-14).
 
 **Dívidas técnicas e novos itens para o backlog:**
-- <...>
+- F3-14: ler Atenção e Perigo ativos no Figma e ligar os toques dos cards (o controlador já tem `activate`/`deactivate`).
+- Mapa, Horário de cobertura e Histórico seguem como telas provisórias (F3-11, F3-07, F3-08).
+- O modo não é salvo ao fechar o app (persistência: Fase 5 em diante).
+- Desativação segura contra toque acidental: F7-03.
