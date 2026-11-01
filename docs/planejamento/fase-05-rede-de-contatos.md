@@ -49,7 +49,7 @@ Transformar as telas estáticas de contatos em funcionalidade real: cadastrar, e
 | 1 ✅ | `Contact` (model) com `copyWith`, `toJson`/`fromJson` e teste | M | Classes, imutabilidade, JSON |
 | 2 ✅ | Validação de nome e telefone (funções puras) e testes | P | Regras testáveis, `RegExp` |
 | 3 ✅ | `ContactsController` em memória: adicionar, editar, remover, limite de 5, telefone repetido; testes | M | Reaproveitar `ChangeNotifier`, regras de negócio |
-| 4 | Fornecer o controlador no app e a Rede ler a lista dele (contador e espaços vazios dinâmicos) | M | `context.watch` com lista |
+| 4 ✅ | Fornecer o controlador no app e a Rede ler a lista dele (contador e espaços vazios dinâmicos) | M | `context.watch` com lista |
 | 5 | Formulário de verdade: `Form` + `validator`, salvar chama o controlador e volta | G | Formulários e validação |
 | 6 | Remover (com confirmação) e editar (toque no card abre o formulário preenchido) | M | Diálogo, passar dado entre telas |
 | 7 | Rede cheia (5/5): esconde "Adicionar" e mostra o aviso (F3-12) | P | Estado derivado da lista |

@@ -36,6 +36,14 @@ void main() {
     expect(other, isNot(contact));
   });
 
+  test('formattedPhone formata celular e fixo', () {
+    expect(contact.formattedPhone, '(51) 99999-0001');
+    expect(
+      const Contact(id: '2', name: 'Ana', phone: '5133330003').formattedPhone,
+      '(51) 3333-0003',
+    );
+  });
+
   test('toString não mostra o telefone nem o nome', () {
     expect(contact.toString(), isNot(contains('51999990001')));
     expect(contact.toString(), isNot(contains('Maria')));

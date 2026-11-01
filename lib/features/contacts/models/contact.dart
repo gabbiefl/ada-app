@@ -21,6 +21,16 @@ class Contact {
     return Contact(id: id, name: name ?? this.name, phone: phone ?? this.phone);
   }
 
+  // Telefone para exibir: '51999990001' vira '(51) 99999-0001'.
+  // Guardamos só dígitos e formatamos apenas na hora de mostrar.
+  String get formattedPhone {
+    final isMobile = phone.length == 11;
+    final split = isMobile ? 7 : 6; // onde fica o hífen
+    if (phone.length != 10 && !isMobile) return phone;
+    return '(${phone.substring(0, 2)}) '
+        '${phone.substring(2, split)}-${phone.substring(split)}';
+  }
+
   // Vira um Map para ser gravado como JSON (usado na persistência, passo 8).
   Map<String, dynamic> toJson() => {'id': id, 'name': name, 'phone': phone};
 
