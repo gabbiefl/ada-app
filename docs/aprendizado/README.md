@@ -45,10 +45,17 @@ Resumos diretos para consulta, escritos enquanto o ADA é construído. Cada tema
 | 03 | [Provider](04-navegacao-e-estado/03-provider.md) |
 | 04 | [Testando navegação e estado](04-navegacao-e-estado/04-testando-navegacao-e-estado.md) |
 
+### ✅ 05 — Dados locais (Fase 5)
+| # | Resumo |
+|---|---|
+| 01 | [Models em Dart](05-dados-locais/01-models-em-dart.md) |
+| 02 | [Formulários e validação](05-dados-locais/02-formularios-e-validacao.md) |
+| 03 | [Persistência local](05-dados-locais/03-persistencia-local.md) |
+| 04 | [Regras de negócio testáveis](05-dados-locais/04-regras-de-negocio-testaveis.md) |
+
 ### 🔜 Próximos temas (entram quando a fase correspondente for feita)
 | Pasta | Tema | Fase |
 |---|---|---|
-| 05-dados-locais | Models, formulários, validação, armazenamento | 5 e 6 |
 | 06-recursos-do-celular | Permissões, localização, url_launcher | 8 e 9 |
 | 07-qualidade | Testes, acessibilidade, privacidade | 11 |
 
