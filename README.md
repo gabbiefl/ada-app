@@ -1,6 +1,8 @@
 <div align="center">
 
-# 🛡️ ADA — Alerta, Defesa e Apoio
+<img src="docs/imagens/simbolo-ada.png" alt="Símbolo do ADA — Alerta, Defesa e Apoio" width="160">
+
+# ADA — Alerta, Defesa e Apoio
 
 **Pedir ajuda em situações de risco, com poucos toques.**
 
@@ -22,6 +24,8 @@
 O **ADA** é um aplicativo mobile pensado para **mulheres em situação de vulnerabilidade**.
 A proposta é oferecer uma forma **rápida e simples de pedir ajuda em situações de risco**, reduzindo o esforço e o tempo necessários nesses momentos.
 
+> 📅 **Mostra científica:** o ADA será apresentado no Centro Universitário Cesuca em **12/11/2026**.
+>
 > 🚧 **Projeto em desenvolvimento.** O app está sendo construído em etapas, e a ideia, o escopo e as funcionalidades ainda podem mudar ao longo do caminho.
 
 ## 📍 Onde estamos
