@@ -53,7 +53,7 @@ Transformar as telas estáticas de contatos em funcionalidade real: cadastrar, e
 | 5 ✅ | Formulário de verdade: `Form` + `validator`, salvar chama o controlador e volta | G | Formulários e validação |
 | 6 ✅ | Remover (com confirmação) e editar (toque no card abre o formulário preenchido) | M | Diálogo, passar dado entre telas |
 | 7 ✅ | Rede cheia (5/5): esconde "Adicionar" e mostra o aviso (F3-12) | P | Estado derivado da lista |
-| 8 | Persistência: repositório + armazenamento escolhido; o controlador carrega ao iniciar e grava a cada mudança | G | `async`/`await`, `Future`, repositório |
+| 8 ✅ | Persistência: repositório + armazenamento escolhido; o controlador carrega ao iniciar e grava a cada mudança | G | `async`/`await`, `Future`, repositório |
 | 9 | Testes de fluxo (cadastrar → aparece → remover), `flutter analyze`, retrospectiva, resumos e backlog | M | Fechar a fase |
 
 Ordem pensada para sempre ter algo funcionando: primeiro tudo em memória (passos 1 a 7), e só então a persistência (passo 8). Se o prazo apertar, o app já funciona na demonstração, só sem guardar ao fechar.
@@ -92,7 +92,7 @@ Ordem pensada para sempre ter algo funcionando: primeiro tudo em memória (passo
 `flutter run -d chrome`: cadastrar 5 contatos, ver o limite, editar, remover, fechar a aba e reabrir. `flutter analyze` e `flutter test`.
 
 ## 11. Perguntas em aberto
-- **Armazenamento** (`flutter_secure_storage` x `shared_preferences`): decidir e confirmar o pacote antes do passo 8.
+- ✅ **Armazenamento:** `flutter_secure_storage` (confirmado pela usuária no passo 8).
 - ✅ **Editar:** mesmo formulário, título "Editar contato" e **sem** o card "Escolher da agenda" (decisão da usuária).
 - ✅ **"Escolher da agenda":** fica para depois (vai para o backlog como ideia).
 - ✅ **Remover:** modal simples de confirmação.

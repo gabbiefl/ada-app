@@ -87,10 +87,10 @@
 | ID | Item | Prio | Status |
 |---|---|---|---|
 | F5-01 | Model de contato | M | ✅ |
-| F5-02 | Cadastrar, editar e remover contatos | M | ⬜ |
-| F5-03 | Limite de 5 contatos | M | ⬜ |
-| F5-04 | Validação de nome e telefone | M | ⬜ |
-| F5-05 | Persistência local dos contatos | M | ⬜ |
+| F5-02 | Cadastrar, editar e remover contatos | M | ✅ |
+| F5-03 | Limite de 5 contatos | M | ✅ |
+| F5-04 | Validação de nome e telefone | M | ✅ |
+| F5-05 | Persistência local dos contatos | M | ✅ |
 
 ## Fase 6 — Mensagens e configurações
 

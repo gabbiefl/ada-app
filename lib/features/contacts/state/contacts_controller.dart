@@ -6,12 +6,14 @@
 //   - nome e telefone válidos;
 //   - o mesmo telefone não entra duas vezes.
 //
-// Por enquanto a lista vive só na memória. Gravar no aparelho entra no passo 8.
+// A lista é carregada de um ContactsRepository ao abrir o app (load) e gravada
+// de novo a cada mudança. Sem repositório, ela vive só na memória.
 
 import 'dart:collection';
 
 import 'package:flutter/foundation.dart';
 
+import 'package:ada_app/features/contacts/data/contacts_repository.dart';
 import 'package:ada_app/features/contacts/models/contact.dart';
 import 'package:ada_app/features/contacts/validators/contact_validators.dart';
 
@@ -22,7 +24,57 @@ enum ContactsError { limitReached, duplicatePhone, invalidData, notFound }
 class ContactsController extends ChangeNotifier {
   static const maxContacts = 5;
 
+  // O repositório é recebido de fora (injeção de dependência): no app é o
+  // armazenamento seguro; nos testes, um repositório em memória.
+  ContactsController({this.repository});
+
+  final ContactsRepository? repository;
   final List<Contact> _contacts = [];
+
+  // Fila de gravações: cada uma só começa quando a anterior termina, para a
+  // última lista gravada ser sempre a mais nova.
+  Future<void> _pendingSave = Future.value();
+  bool _disposed = false;
+
+  // Lê os contatos guardados e mostra na tela. Chamado uma vez, ao abrir o app.
+  // async/await: "espera" o armazenamento responder sem travar a tela.
+  Future<void> load() async {
+    final repository = this.repository;
+    if (repository == null) return;
+
+    try {
+      final saved = await repository.load();
+      if (_disposed) return;
+      _contacts
+        ..clear()
+        ..addAll(saved.take(maxContacts));
+      notifyListeners();
+    } catch (_) {
+      // Dado ilegível ou armazenamento indisponível: a rede começa vazia, em
+      // vez de o app fechar. Nada é impresso: telefone é dado pessoal.
+    }
+  }
+
+  // Avisa as telas e grava a lista nova. Chamado depois de toda mudança.
+  void _changed() {
+    notifyListeners();
+
+    final repository = this.repository;
+    if (repository == null) return;
+
+    // Cópia da lista neste instante: se ela mudar de novo antes de gravar,
+    // esta gravação continua com os dados certos.
+    final snapshot = List<Contact>.of(_contacts);
+    _pendingSave = _pendingSave
+        .then((_) => repository.save(snapshot))
+        .catchError((_) {}); // falha ao gravar não derruba o app
+  }
+
+  @override
+  void dispose() {
+    _disposed = true;
+    super.dispose();
+  }
 
   // Visão só de leitura: quem está de fora não consegue dar .add() na lista
   // (isso pularia as regras e o notifyListeners).
@@ -42,7 +94,7 @@ class ContactsController extends ChangeNotifier {
     if (_phoneInUse(digits)) return ContactsError.duplicatePhone;
 
     _contacts.add(Contact(id: _newId(), name: name.trim(), phone: digits));
-    notifyListeners();
+    _changed();
     return null;
   }
 
@@ -63,7 +115,7 @@ class ContactsController extends ChangeNotifier {
       name: name.trim(),
       phone: digits,
     );
-    notifyListeners();
+    _changed();
     return null;
   }
 
@@ -71,7 +123,7 @@ class ContactsController extends ChangeNotifier {
     final before = _contacts.length;
     _contacts.removeWhere((c) => c.id == id);
     if (_contacts.length == before) return ContactsError.notFound;
-    notifyListeners();
+    _changed();
     return null;
   }
 

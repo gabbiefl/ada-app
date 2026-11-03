@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:ada_app/core/routes/app_router.dart';
 import 'package:ada_app/core/state/mode_controller.dart';
 import 'package:ada_app/core/theme/app_theme.dart';
+import 'package:ada_app/features/contacts/data/contacts_repository.dart';
 import 'package:ada_app/features/contacts/state/contacts_controller.dart';
 
 // StatelessWidget: um widget que NÃO guarda dados que mudam.
@@ -30,7 +31,13 @@ class AdaApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ModeController()),
-        ChangeNotifierProvider(create: (_) => ContactsController()),
+        // `..load()` (cascata): cria o controlador e, em seguida, já manda
+        // carregar os contatos guardados no aparelho.
+        ChangeNotifierProvider(
+          create: (_) =>
+              ContactsController(repository: SecureContactsRepository())
+                ..load(),
+        ),
       ],
       child: MaterialApp.router(
         // Nome que o sistema usa, por exemplo na lista de apps recentes.
