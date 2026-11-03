@@ -1,6 +1,6 @@
 # Fase 5 — Rede de contatos
 
-> **Status:** 🔄 em execução (plano aprovado)
+> **Status:** ✅ concluída no código (falta o teste manual no Chrome e no Android)
 > **Itens do backlog:** F5-01 a F5-05 (e F3-12, a rede cheia, que depende do limite)
 
 ## 1. Objetivo
@@ -54,7 +54,7 @@ Transformar as telas estáticas de contatos em funcionalidade real: cadastrar, e
 | 6 ✅ | Remover (com confirmação) e editar (toque no card abre o formulário preenchido) | M | Diálogo, passar dado entre telas |
 | 7 ✅ | Rede cheia (5/5): esconde "Adicionar" e mostra o aviso (F3-12) | P | Estado derivado da lista |
 | 8 ✅ | Persistência: repositório + armazenamento escolhido; o controlador carrega ao iniciar e grava a cada mudança | G | `async`/`await`, `Future`, repositório |
-| 9 | Testes de fluxo (cadastrar → aparece → remover), `flutter analyze`, retrospectiva, resumos e backlog | M | Fechar a fase |
+| 9 ✅ | Testes de fluxo (cadastrar → aparece → remover), `flutter analyze`, retrospectiva, resumos e backlog | M | Fechar a fase |
 
 Ordem pensada para sempre ter algo funcionando: primeiro tudo em memória (passos 1 a 7), e só então a persistência (passo 8). Se o prazo apertar, o app já funciona na demonstração, só sem guardar ao fechar.
 
@@ -65,7 +65,7 @@ Ordem pensada para sempre ter algo funcionando: primeiro tudo em memória (passo
 | Telefone guardado só com dígitos, exibido formatado | Guardar com máscara | Fica fácil validar, comparar duplicados e usar em `tel:` e `wa.me` na Fase 9 |
 | `ContactsController` com `ChangeNotifier` + `provider` | Riverpod; `setState` na tela | Mesmo padrão da Fase 4; a lista é usada por Rede, formulário e (depois) alertas |
 | Repositório (classe que lê e grava) separado do controlador | Controlador gravando direto | Trocar o armazenamento sem mexer na lógica, e testar o controlador com um repositório falso |
-| **Armazenamento: `flutter_secure_storage`** (aprovado na base da Fase 0 por guardar dados de terceiros criptografados) | `shared_preferences` (mais simples, sem criptografia); `sqflite`/`drift` (exagero para 5 itens) | Telefones de terceiros são dado pessoal sensível (LGPD). **Pede a sua confirmação** |
+| **Armazenamento: `flutter_secure_storage`** (recomendado na Fase 0 por guardar dados de terceiros criptografados; confirmado pela usuária) | `shared_preferences` (mais simples, sem criptografia); `sqflite`/`drift` (exagero para 5 itens) | Telefones de terceiros são dado pessoal sensível (LGPD) |
 | Validar telefone BR de forma simples (10 ou 11 dígitos, DDD) | Pacote de validação | Regra pequena; evita pacote novo |
 | "Escolher da agenda" fora da fase | Implementar com pacote de contatos | Pacote + permissão + risco de ler a agenda inteira; o cadastro manual atende RF01 |
 
@@ -78,15 +78,15 @@ Ordem pensada para sempre ter algo funcionando: primeiro tudo em memória (passo
 | Contato repetido ou telefone inválido | Dado ruim na rede de emergência | Validação + bloqueio de telefone duplicado, com testes |
 
 ## 9. Critérios de pronto
-- [ ] Cadastrar, editar e remover contatos funcionando na interface
-- [ ] Limite de 5 respeitado (botão some e há aviso)
-- [ ] Nome e telefone validados com mensagens claras
-- [ ] Contatos continuam ao fechar e abrir o app
-- [ ] Nenhum telefone em `print`/`debugPrint` (P6 da Fase 0)
-- [ ] Testes unitários (model, validação, controlador) e de fluxo passando
-- [ ] `flutter analyze` sem avisos
-- [ ] Testado no Chrome
-- [ ] Backlog atualizado e commit feito
+- [x] Cadastrar, editar e remover contatos funcionando na interface
+- [x] Limite de 5 respeitado (botão some e há aviso)
+- [x] Nome e telefone validados com mensagens claras
+- [ ] Contatos continuam ao fechar e abrir o app (testado com armazenamento simulado; confirmar no Chrome e no Android)
+- [x] Nenhum telefone em `print`/`debugPrint` (P6 da Fase 0)
+- [x] Testes unitários (model, validação, máscara, controlador, repositório) e de fluxo passando
+- [x] `flutter analyze` sem avisos
+- [ ] Testado no Chrome (a usuária confere)
+- [x] Backlog atualizado (commit: a usuária faz)
 
 ## 10. Como testar
 `flutter run -d chrome`: cadastrar 5 contatos, ver o limite, editar, remover, fechar a aba e reabrir. `flutter analyze` e `flutter test`.
@@ -106,7 +106,14 @@ Ordem pensada para sempre ter algo funcionando: primeiro tudo em memória (passo
 - <...>
 
 **O que mudou em relação ao plano:**
-- <...>
+- Acrescentamos a máscara de telefone enquanto se digita (pedido da usuária), com um `TextInputFormatter` feito à mão, sem pacote.
+- O botão de remover ganhou área de toque de 48x48 e rótulo para leitor de tela.
+- O aviso de rede cheia e a edição de contato não existem no Figma: o visual foi derivado de componentes que já existiam e precisa de revisão da designer.
+- O armazenamento foi confirmado como `flutter_secure_storage`, como a Fase 0 recomendava.
 
 **Dívidas técnicas e novos itens para o backlog:**
-- <...>
+- Confirmar a persistência e a criptografia no Android real (depende de F1-04); no Chrome o armazenamento não é seguro de verdade.
+- Confirmar o `minSdk` exigido pelo `flutter_secure_storage` ao configurar o Android.
+- IDEIA-08: "Escolher da agenda" (precisa de pacote, permissão e cuidado para não ler a agenda inteira).
+- O "Olá, Gabriela" da Home ainda é fixo; o nome da usuária depende de decidir sobre login/cadastro (F3-13).
+- Revisar com a designer o visual da edição de contato e do aviso de rede cheia.

@@ -10,7 +10,7 @@
 ![Material 3](https://img.shields.io/badge/Material%20Design%203-757575?style=for-the-badge&logo=materialdesign&logoColor=white)
 
 ![Status](https://img.shields.io/badge/status-em%20desenvolvimento-yellow)
-![Fase atual](https://img.shields.io/badge/fase%20atual-5%20%E2%80%94%20contatos-orange)
+![Fase atual](https://img.shields.io/badge/fase%20atual-6%20%E2%80%94%20mensagens-orange)
 ![Projeto acadêmico](https://img.shields.io/badge/projeto-acad%C3%AAmico-blue)
 
 </div>
@@ -32,7 +32,8 @@ A proposta é oferecer uma forma **rápida e simples de pedir ajuda em situaçõ
 | 2 | Tema e design system (cores, fonte Nunito, cores dos modos 🔵🟡🔴) | ✅ |
 | 3 | Telas estáticas: Home, Rede, Novo contato, Configurações, Mensagens e Editar mensagem | ✅ (faltam splash, onboarding e permissões) |
 | 4 | Navegação (`go_router`, barra inferior) e estado do modo atual (`provider`) | ✅ |
-| 5 em diante | Rede de contatos, modos de alerta, localização e envio | 🔄 Fase 5 a seguir |
+| 5 | Rede de contatos: cadastrar, editar e remover (até 5), com validação e armazenamento seguro | ✅ |
+| 6 em diante | Mensagens, modos de alerta, localização e envio | 🔄 Fase 6 a seguir |
 
 O plano de cada fase está em [`docs/planejamento/`](docs/planejamento/) e a lista de itens em [`docs/BACKLOG.md`](docs/BACKLOG.md).
 
@@ -41,7 +42,7 @@ O plano de cada fase está em [`docs/planejamento/`](docs/planejamento/) e a lis
 - **Flutter** e **Dart**, com Material Design 3
 - **Android** como plataforma principal
 - **Figma** para o design das telas, lido pelo Claude Code via MCP
-- **go_router** (navegação) e **provider** (estado)
+- **go_router** (navegação), **provider** (estado) e **flutter_secure_storage** (contatos guardados com criptografia)
 - **Nunito** como fonte e **Lucide** como família de ícones (pacote `lucide_icons_flutter`)
 
 ## ▶️ Como rodar

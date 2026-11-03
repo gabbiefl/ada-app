@@ -13,11 +13,11 @@
 
 ## Fase atual
 
-**Fase 4 — Navegação e estado** concluída, com os resumos de aprendizado escritos. A Fase 3 segue com telas pendentes (ver F3-07 a F3-14). Falta você escrever o "O que aprendi" das Fases 1 a 4. O passo 9 da Fase 1 (Android) segue adiado para antes da Fase 7.
+**Fase 5 — Rede de contatos** concluída no código (falta propor e escrever os resumos e testar no Chrome e no Android). A Fase 4 está concluída. A Fase 3 segue com telas pendentes (ver F3-07 a F3-14). Falta você escrever o "O que aprendi" das Fases 1 a 5. O passo 9 da Fase 1 (Android) segue adiado para antes da Fase 7.
 
 ---
 
-> Próxima: **Fase 5 — Rede de contatos** (criar o plano antes; cada pacote novo pede a sua confirmação).
+> Próxima: **Fase 6 — Mensagens e configurações** (criar o plano antes; cada pacote novo pede a sua confirmação).
 
 ## Fase 0 — Entendimento e viabilidade
 
@@ -165,6 +165,7 @@
 | IDEIA-05 | Tela de apoio com telefones úteis | C | ⬜ |
 | IDEIA-06 | Suporte a iOS | W | ⬜ |
 | IDEIA-07 | Modo escuro (o design atual só tem tema claro) | W | ⬜ |
+| IDEIA-08 | "Escolher da agenda" no cadastro de contato (pacote de contatos + permissão; escolher um a um, sem ler a agenda inteira) | C | ⬜ |
 
 ## Riscos e dúvidas em aberto
 
