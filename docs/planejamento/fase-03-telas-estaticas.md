@@ -55,7 +55,7 @@ O app mostra a Home com o visual do design (saudação, símbolo central, cards 
 | Risco | Impacto | Plano B |
 |---|---|---|
 | Limite de chamadas do Figma | Não dá para ler todas as telas | Ler Home e uma tela de formulário; as outras seguem os mesmos padrões ou são definidas com você |
-| Prazo da mostra (23/11/2026) | Telas fora do MVP não ficam prontas | Prioridade: Home, rede, cadastro; mensagens e configurações podem ser mais simples |
+| Prazo da mostra (12/11/2026) | Telas fora do MVP não ficam prontas | Prioridade: Home, rede, cadastro; mensagens e configurações podem ser mais simples |
 | Mudar de web para Android só na Fase 7 | Problema de layout só aparece tarde | Testar no Chrome com largura de celular (393 × 852) |
 
 ## 9. Critérios de pronto

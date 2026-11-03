@@ -62,7 +62,7 @@ Fazer o app navegável (barra inferior, abrir e voltar de telas) e guardar o mod
 |---|---|---|
 | Ativar o Modo Perigo por toque acidental no card | Alerta falso no futuro (hoje só visual) | Fica registrado em F7-03; na Fase 7 entra confirmação ou segurar para ativar |
 | Nome das rotas e barra inferior confusos no começo | Atraso | Começar pelas rotas simples (passo 1) e só depois a barra |
-| Prazo da mostra (23/11/2026) | Passo 8 e extras não cabem | Priorizar passos 1 a 6; testes e resumos no fim |
+| Prazo da mostra (12/11/2026) | Passo 8 e extras não cabem | Priorizar passos 1 a 6; testes e resumos no fim |
 
 ## 9. Critérios de pronto
 - [x] Barra inferior navega entre as 4 abas

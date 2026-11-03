@@ -73,7 +73,7 @@ Ordem pensada para sempre ter algo funcionando: primeiro tudo em memória (passo
 | Risco | Impacto | Plano B |
 |---|---|---|
 | `flutter_secure_storage` no Chrome não é seguro de verdade e pode se comportar diferente do Android | Dá para testar o fluxo, mas não a criptografia; só o Android real valida | Usar o Chrome para o fluxo; confirmar a criptografia quando o Android for configurado (F1-04, antes da Fase 7). Se der problema, `shared_preferences` por trás do mesmo repositório |
-| Prazo da mostra (23/11/2026) | Passo 8 e 9 não cabem | Passos 1 a 7 já entregam o cadastro funcionando; persistência e testes de fluxo entram depois |
+| Prazo da mostra (12/11/2026) | Passo 8 e 9 não cabem | Passos 1 a 7 já entregam o cadastro funcionando; persistência e testes de fluxo entram depois |
 | Não há design da edição de contato nem do aviso de limite no Figma | Visual improvisado | Reaproveitar o formulário existente (título "Editar contato") e derivar o aviso do `InfoBox` já existente; mostrar a você antes de fechar |
 | Contato repetido ou telefone inválido | Dado ruim na rede de emergência | Validação + bloqueio de telefone duplicado, com testes |
 

@@ -175,7 +175,7 @@ A localização não está na lista legal de "dados sensíveis", mas é dado pes
 ## 10. Riscos e plano B
 | Risco | Impacto | Plano B |
 |---|---|---|
-| Prazo curto (mostra em 23/11/2026) | Nível 2 não ficar pronto | Congelar o Nível 1 até ~02/11; se atrasar, o Nível 2 vira apenas demonstração parcial |
+| Prazo curto (mostra em 12/11/2026) | Nível 2 não ficar pronto | Congelar o Nível 1 até ~02/11; se atrasar, o Nível 2 vira apenas demonstração parcial |
 | Internet do local instável | Acompanhamento ao vivo falhar na apresentação | Demonstrar o Nível 1 (link estático) e ter um vídeo gravado do Nível 2 |
 | Android encerra serviço em segundo plano (Xiaomi, Samsung) | Rastreamento para de enviar | Testar em aparelho real; orientar desativar otimização de bateria |
 | Limites do plano gratuito do Firebase mudarem | Custo inesperado | Conferir os limites antes de implementar; alternativa Supabase |
@@ -194,7 +194,7 @@ A localização não está na lista legal de "dados sensíveis", mas é dado pes
 Não há código. A validação é a usuária conseguir explicar, para cada funcionalidade, o que é automático, o que exige toque e qual é o plano B.
 
 ## 13. Perguntas em aberto
-- ✅ Prazo: a mostra é em **23/11/2026** (cerca de 7 semanas a partir de 06/10/2026). O Nível 2 só começa se o Nível 1 estiver estável por volta de 02/11, restando ~3 semanas.
+- ✅ Prazo: a mostra é em **12/11/2026** (cerca de 5 semanas a partir de 06/10/2026; antes era 23/11/2026). O Nível 2 só começa se o Nível 1 estiver estável por volta de 02/11, restando ~10 dias.
 - ✅ Internet: **haverá internet** no local, então o acompanhamento ao vivo pode ser demonstrado. O link estático continua como plano B.
 
 ---
