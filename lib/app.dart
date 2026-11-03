@@ -10,6 +10,7 @@ import 'package:ada_app/core/state/mode_controller.dart';
 import 'package:ada_app/core/theme/app_theme.dart';
 import 'package:ada_app/features/contacts/data/contacts_repository.dart';
 import 'package:ada_app/features/contacts/state/contacts_controller.dart';
+import 'package:ada_app/features/messages/state/messages_controller.dart';
 
 // StatelessWidget: um widget que NÃO guarda dados que mudam.
 // A configuração do app é fixa, então não precisamos de StatefulWidget.
@@ -38,6 +39,9 @@ class AdaApp extends StatelessWidget {
               ContactsController(repository: SecureContactsRepository())
                 ..load(),
         ),
+        // Mensagens de emergência (por enquanto só em memória; a gravação no
+        // aparelho entra no passo 4 da Fase 6).
+        ChangeNotifierProvider(create: (_) => MessagesController()),
       ],
       child: MaterialApp.router(
         // Nome que o sistema usa, por exemplo na lista de apps recentes.

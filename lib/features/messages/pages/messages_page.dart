@@ -1,23 +1,40 @@
 // Tela "Mensagens": as três mensagens enviadas nos alertas (Perigo, Atenção e
-// "Cheguei bem"). Estática: o "Editar" ainda não abre a edição (Fase 4) e as
-// mensagens são de exemplo (armazenamento na Fase 6).
+// "Cheguei bem"). Os textos vêm do MessagesController; o "Editar" ainda abre a
+// mesma edição para todas (passo 3 da Fase 6 corrige isso).
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:provider/provider.dart';
 
 import 'package:ada_app/core/routes/app_router.dart';
 import 'package:ada_app/core/theme/app_colors.dart';
 import 'package:ada_app/core/theme/mode_colors.dart';
 import 'package:ada_app/core/widgets/page_header.dart';
+import 'package:ada_app/features/messages/models/message_kind.dart';
+import 'package:ada_app/features/messages/state/messages_controller.dart';
 import 'package:ada_app/features/messages/widgets/message_card.dart';
 
 class MessagesPage extends StatelessWidget {
   const MessagesPage({super.key});
 
+  // Cor do pontinho de cada mensagem (a mesma do modo a que ela pertence).
+  Color _colorOf(MessageKind kind, ModeColors modeColors) {
+    switch (kind) {
+      case MessageKind.danger:
+        return modeColors.danger;
+      case MessageKind.attention:
+        return modeColors.attention;
+      case MessageKind.arrived:
+        return AppColors.avatarGreen;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final modeColors = ModeColors.of(context);
+    // watch: a tela se redesenha quando um texto muda.
+    final messages = context.watch<MessagesController>();
 
     return Scaffold(
       body: SafeArea(
@@ -35,26 +52,16 @@ class MessagesPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 32),
-              MessageCard(
-                title: 'Modo perigo',
-                text: 'Preciso de ajuda. estou em situação de perigo. Minha localização está sendo compartilhada.',
-                color: modeColors.danger,
-                onEdit: () => context.push(AppRoutes.editMessage),
-              ),
-              const SizedBox(height: 15),
-              MessageCard(
-                title: 'Modo atenção',
-                text: 'Estou me sentindo insegura. Acompanhe minha localização e fique atento ao meu contato.',
-                color: modeColors.attention,
-                onEdit: () => context.push(AppRoutes.editMessage),
-              ),
-              const SizedBox(height: 15),
-              MessageCard(
-                onEdit: () => context.push(AppRoutes.editMessage),
-                title: 'Cheguei bem',
-                text: 'Cheguei em segurança. Pode ficar tranquilo(a). Obrigada por acompanhar!',
-                color: AppColors.avatarGreen,
-              ),
+              // Uma lista de cards gerada a partir do enum: um por mensagem.
+              for (final kind in MessageKind.values) ...[
+                MessageCard(
+                  title: kind.title,
+                  text: messages.textOf(kind),
+                  color: _colorOf(kind, modeColors),
+                  onEdit: () => context.push(AppRoutes.editMessage),
+                ),
+                if (kind != MessageKind.values.last) const SizedBox(height: 15),
+              ],
             ],
           ),
         ),
