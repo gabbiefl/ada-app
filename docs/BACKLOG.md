@@ -13,7 +13,7 @@
 
 ## Fase atual
 
-**Fase 5 — Rede de contatos** concluída no código (falta propor e escrever os resumos e testar no Chrome e no Android). A Fase 4 está concluída. A Fase 3 segue com telas pendentes (ver F3-07 a F3-14). Falta você escrever o "O que aprendi" das Fases 1 a 5. O passo 9 da Fase 1 (Android) segue adiado para antes da Fase 7.
+**Fase 5 — Rede de contatos** concluída no código, com os resumos de aprendizado escritos (falta testar no Chrome e no Android). A Fase 4 está concluída. A Fase 3 segue com telas pendentes (ver F3-07 a F3-14). Falta você escrever o "O que aprendi" das Fases 1 a 5. O passo 9 da Fase 1 (Android) segue adiado para antes da Fase 7.
 
 ---
 
