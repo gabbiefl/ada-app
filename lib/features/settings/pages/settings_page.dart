@@ -25,10 +25,7 @@ class SettingsPage extends StatelessWidget {
             children: [
               Text('Configurações', style: textTheme.headlineSmall),
               // Esta frase vem do Figma, mas parece cópia da tela Rede. Confirmar.
-              Text(
-                'Cadastre a sua rede de confiança.',
-                style: textTheme.bodyLarge,
-              ),
+              Text('Ajuste o app do seu jeito.', style: textTheme.bodyLarge),
               const SizedBox(height: 48),
               SettingsTile(
                 onTap: () => context.push(AppRoutes.coverage),

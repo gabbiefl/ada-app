@@ -1,30 +1,60 @@
 // Tela "Mensagens - Editar": edição do texto de uma mensagem.
 //
-// StatefulWidget porque guarda o controlador do campo de texto. O contador
-// (94/200) e o "Resetar para padrão" já funcionam; salvar de verdade entra na
-// Fase 6.
+// Recebe QUAL mensagem editar (MessageKind). StatefulWidget porque guarda o
+// controlador do campo de texto e a mensagem de erro. Salvar passa pelo
+// MessagesController, que aplica as regras (vazio / mais de 200 letras).
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:provider/provider.dart';
 
 import 'package:ada_app/core/theme/app_colors.dart';
 import 'package:ada_app/core/widgets/page_header.dart';
+import 'package:ada_app/features/messages/models/message_kind.dart';
+import 'package:ada_app/features/messages/state/messages_controller.dart';
 
 class MessageEditPage extends StatefulWidget {
-  const MessageEditPage({super.key});
+  const MessageEditPage({super.key, required this.kind});
+
+  final MessageKind kind;
 
   @override
   State<MessageEditPage> createState() => _MessageEditPageState();
 }
 
 class _MessageEditPageState extends State<MessageEditPage> {
-  static const _maxLength = 200;
-  static const _defaultText =
-      'Preciso de ajuda. estou em situação de perigo. Minha localização está sendo compartilhada.';
-
   // TextEditingController: guarda e controla o texto do campo.
-  final _controller = TextEditingController(text: _defaultText);
+  late final TextEditingController _controller;
+
+  // Motivo da recusa ao salvar (null = sem erro para mostrar).
+  String? _error;
+
+  @override
+  void initState() {
+    super.initState();
+    // read (e não watch): só queremos o texto atual, uma vez, ao abrir.
+    final current = context.read<MessagesController>().textOf(widget.kind);
+    _controller = TextEditingController(text: current);
+  }
+
+  void _save() {
+    final error = context.read<MessagesController>().save(
+      widget.kind,
+      _controller.text,
+    );
+    if (error == null) {
+      context.pop();
+      return;
+    }
+    setState(() {
+      _error = switch (error) {
+        MessagesError.empty => 'Escreva uma mensagem antes de salvar.',
+        MessagesError.tooLong =>
+          'A mensagem pode ter no máximo ${MessageKind.maxLength} letras.',
+      };
+    });
+  }
 
   @override
   void dispose() {
@@ -49,7 +79,7 @@ class _MessageEditPageState extends State<MessageEditPage> {
                   children: [
                     PageHeader(
                       title: 'Mensagens',
-                      subtitle: 'Personalize as mensagens enviadas em alertas.',
+                      subtitle: 'Editando: ${widget.kind.title}',
                       trailing: IconButton(
                         onPressed: () => context.pop(),
                         icon: const Icon(LucideIcons.arrowLeft),
@@ -72,7 +102,7 @@ class _MessageEditPageState extends State<MessageEditPage> {
                           height: 172,
                           child: TextField(
                             controller: _controller,
-                            maxLength: _maxLength,
+                            maxLength: MessageKind.maxLength,
                             // expands + maxLines null: o texto ocupa a caixa toda.
                             expands: true,
                             maxLines: null,
@@ -98,7 +128,7 @@ class _MessageEditPageState extends State<MessageEditPage> {
                           child: ListenableBuilder(
                             listenable: _controller,
                             builder: (context, _) => Text(
-                              '${_controller.text.length}/$_maxLength',
+                              '${_controller.text.length}/${MessageKind.maxLength}',
                               style: textTheme.bodySmall?.copyWith(
                                 fontSize: 11,
                               ),
@@ -107,11 +137,23 @@ class _MessageEditPageState extends State<MessageEditPage> {
                         ),
                       ],
                     ),
+                    if (_error != null) ...[
+                      const SizedBox(height: 8),
+                      Text(
+                        _error!,
+                        style: textTheme.bodySmall?.copyWith(
+                          color: AppColors.modeDanger,
+                        ),
+                      ),
+                    ],
                     const SizedBox(height: 8),
                     Align(
                       alignment: Alignment.centerRight,
                       child: InkWell(
-                        onTap: () => _controller.text = _defaultText,
+                        onTap: () => setState(() {
+                          _controller.text = widget.kind.defaultText;
+                          _error = null;
+                        }),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -149,7 +191,7 @@ class _MessageEditPageState extends State<MessageEditPage> {
                   ),
                   const SizedBox(height: 11),
                   FilledButton(
-                    onPressed: () {},
+                    onPressed: _save,
                     child: const Text('Salvar mensagem'),
                   ),
                 ],

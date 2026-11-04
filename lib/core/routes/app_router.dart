@@ -12,6 +12,7 @@ import 'package:ada_app/core/widgets/coming_soon_page.dart';
 import 'package:ada_app/features/contacts/pages/contact_form_page.dart';
 import 'package:ada_app/features/contacts/pages/contacts_page.dart';
 import 'package:ada_app/features/home/pages/home_page.dart';
+import 'package:ada_app/features/messages/models/message_kind.dart';
 import 'package:ada_app/features/messages/pages/message_edit_page.dart';
 import 'package:ada_app/features/messages/pages/messages_page.dart';
 import 'package:ada_app/features/settings/pages/settings_page.dart';
@@ -28,7 +29,9 @@ class AppRoutes {
   static const map = '/map';
   static const settings = '/settings';
   static const messages = '/settings/messages';
-  static const editMessage = '/settings/messages/edit';
+  // Função: o endereço leva qual mensagem editar, ex.: /settings/messages/edit/danger.
+  static String editMessage(MessageKind kind) =>
+      '/settings/messages/edit/${kind.name}';
   static const coverage = '/settings/coverage';
   static const history = '/settings/history';
 }
@@ -106,8 +109,19 @@ final appRouter = GoRouter(
                   builder: (context, state) => const MessagesPage(),
                   routes: [
                     GoRoute(
-                      path: 'edit',
-                      builder: (context, state) => const MessageEditPage(),
+                      path: 'edit/:kind',
+                      builder: (context, state) {
+                        // Texto da rota -> enum. asNameMap()['danger'] acha
+                        // MessageKind.danger; nome desconhecido dá null.
+                        final kind = MessageKind.values
+                            .asNameMap()[state.pathParameters['kind']];
+                        if (kind == null) {
+                          return const ComingSoonPage(
+                            title: 'Mensagem não encontrada',
+                          );
+                        }
+                        return MessageEditPage(kind: kind);
+                      },
                     ),
                   ],
                 ),

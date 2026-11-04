@@ -1,6 +1,6 @@
 // Tela "Mensagens": as três mensagens enviadas nos alertas (Perigo, Atenção e
-// "Cheguei bem"). Os textos vêm do MessagesController; o "Editar" ainda abre a
-// mesma edição para todas (passo 3 da Fase 6 corrige isso).
+// "Cheguei bem"). Os textos vêm do MessagesController; "Editar" abre a edição
+// da mensagem tocada.
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -58,7 +58,7 @@ class MessagesPage extends StatelessWidget {
                   title: kind.title,
                   text: messages.textOf(kind),
                   color: _colorOf(kind, modeColors),
-                  onEdit: () => context.push(AppRoutes.editMessage),
+                  onEdit: () => context.push(AppRoutes.editMessage(kind)),
                 ),
                 if (kind != MessageKind.values.last) const SizedBox(height: 15),
               ],
