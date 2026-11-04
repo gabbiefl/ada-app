@@ -37,21 +37,23 @@ Resumos diretos para consulta, escritos enquanto o ADA é construído. Cada tema
 | 03 | [Animação e desenho customizado](03-interface/03-animacao-e-desenho-customizado.md) |
 | 04 | [Campos de texto e botões no tema](03-interface/04-campos-de-texto-e-botoes-no-tema.md) |
 
-### ✅ 04 — Navegação e estado (Fase 4)
+### ✅ 04 — Navegação e estado (Fases 4 e 6)
 | # | Resumo |
 |---|---|
 | 01 | [Rotas e go_router](04-navegacao-e-estado/01-rotas-e-go-router.md) |
 | 02 | [enum e ChangeNotifier](04-navegacao-e-estado/02-enum-e-changenotifier.md) |
 | 03 | [Provider](04-navegacao-e-estado/03-provider.md) |
 | 04 | [Testando navegação e estado](04-navegacao-e-estado/04-testando-navegacao-e-estado.md) |
+| 05 | [Parâmetros de rota e enum com propriedades](04-navegacao-e-estado/05-parametros-de-rota-e-enum.md) |
 
-### ✅ 05 — Dados locais (Fase 5)
+### ✅ 05 — Dados locais (Fases 5 e 6)
 | # | Resumo |
 |---|---|
 | 01 | [Models em Dart](05-dados-locais/01-models-em-dart.md) |
 | 02 | [Formulários e validação](05-dados-locais/02-formularios-e-validacao.md) |
 | 03 | [Persistência local](05-dados-locais/03-persistencia-local.md) |
 | 04 | [Regras de negócio testáveis](05-dados-locais/04-regras-de-negocio-testaveis.md) |
+| 05 | [Reusar o padrão e não confiar no dado guardado](05-dados-locais/05-reuso-do-padrao-e-dado-guardado.md) |
 
 ### 🔜 Próximos temas (entram quando a fase correspondente for feita)
 | Pasta | Tema | Fase |
