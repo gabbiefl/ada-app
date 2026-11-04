@@ -1,6 +1,7 @@
 // Testa as telas Mensagens e Mensagens - Editar.
 
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
 
@@ -115,6 +116,25 @@ void main() {
     expect(find.text('Estou insegura.'), findsOneWidget);
     expect(find.text(MessageKind.danger.defaultText), findsOneWidget);
 
+    appRouter.go(AppRoutes.home);
+  });
+
+  // "Fechar e abrir o app": o armazenamento já tem um texto salvo antes de o app
+  // nascer, e a tela Mensagens precisa mostrá-lo.
+  testWidgets('Fluxo: mensagem salva antes aparece ao abrir o app', (
+    tester,
+  ) async {
+    FlutterSecureStorage.setMockInitialValues({
+      'ada_messages': '{"arrived":"Cheguei, mãe!"}',
+    });
+    appRouter.go(AppRoutes.messages);
+    await tester.pumpWidget(const AdaApp());
+    await tester.pump(const Duration(milliseconds: 300));
+
+    expect(find.text('Cheguei, mãe!'), findsOneWidget);
+    expect(find.text(MessageKind.arrived.defaultText), findsNothing);
+
+    FlutterSecureStorage.setMockInitialValues({});
     appRouter.go(AppRoutes.home);
   });
 }
