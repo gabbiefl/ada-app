@@ -43,7 +43,7 @@ Fazer as três mensagens de emergência (Perigo, Atenção e "Cheguei bem") exis
 | 1 ✅ | `MessageKind` (enum com título e texto padrão) e `MessagesController` em memória: ler, salvar, resetar, validar; testes | M | Enum com propriedades, `Map` |
 | 2 ✅ | Fornecer o controlador no app; a tela Mensagens mostra os textos atuais | P | Reuso do `provider` |
 | 3 ✅ | Rota de edição com a mensagem escolhida; a edição carrega o texto, valida, salva e reseta o padrão **da mensagem certa** | M | Parâmetro de rota, enum a partir de texto |
-| 4 | Persistência: repositório e gravação a cada mudança | M | Reuso do padrão repositório |
+| 4 ✅ | Persistência: repositório e gravação a cada mudança | M | Reuso do padrão repositório |
 | 5 | Testes de fluxo, `flutter analyze`, retrospectiva, resumos e backlog | P | Fechar a fase |
 
 ## 7. Decisões técnicas
