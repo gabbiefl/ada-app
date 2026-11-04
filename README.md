@@ -37,7 +37,8 @@ A proposta é oferecer uma forma **rápida e simples de pedir ajuda em situaçõ
 | 3 | Telas estáticas: Home, Rede, Novo contato, Configurações, Mensagens e Editar mensagem | ✅ (faltam splash, onboarding e permissões) |
 | 4 | Navegação (`go_router`, barra inferior) e estado do modo atual (`provider`) | ✅ |
 | 5 | Rede de contatos: cadastrar, editar e remover (até 5), com validação e armazenamento seguro | ✅ |
-| 6 em diante | Mensagens, modos de alerta, localização e envio | 🔄 Fase 6 a seguir |
+| 6 | Mensagens de emergência: texto padrão, edição, validação (até 200 letras) e armazenamento seguro | ✅ |
+| 7 em diante | Modos de alerta, localização e envio | 🔜 Fase 7 a seguir |
 
 O plano de cada fase está em [`docs/planejamento/`](docs/planejamento/) e a lista de itens em [`docs/BACKLOG.md`](docs/BACKLOG.md).
 

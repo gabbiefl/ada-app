@@ -1,6 +1,6 @@
 # Fase 6 — Mensagens e configurações
 
-> **Status:** 🔄 em execução (plano original mantido pela usuária)
+> **Status:** ✅ concluída (falta testar no Chrome e no Android)
 > **Itens do backlog:** F6-01, F6-02, F6-03
 
 ## 1. Objetivo
@@ -44,7 +44,7 @@ Fazer as três mensagens de emergência (Perigo, Atenção e "Cheguei bem") exis
 | 2 ✅ | Fornecer o controlador no app; a tela Mensagens mostra os textos atuais | P | Reuso do `provider` |
 | 3 ✅ | Rota de edição com a mensagem escolhida; a edição carrega o texto, valida, salva e reseta o padrão **da mensagem certa** | M | Parâmetro de rota, enum a partir de texto |
 | 4 ✅ | Persistência: repositório e gravação a cada mudança | M | Reuso do padrão repositório |
-| 5 | Testes de fluxo, `flutter analyze`, retrospectiva, resumos e backlog | P | Fechar a fase |
+| 5 ✅ | Testes de fluxo, `flutter analyze`, retrospectiva, resumos e backlog | P | Fechar a fase |
 
 ## 7. Decisões técnicas
 | Decisão | Alternativas consideradas | Motivo |
@@ -64,15 +64,16 @@ Fazer as três mensagens de emergência (Perigo, Atenção e "Cheguei bem") exis
 | Texto com dado pessoal fica no aparelho | Privacidade | Armazenamento seguro; sem logs do texto (P6 da Fase 0) |
 
 ## 9. Critérios de pronto
-- [ ] As três mensagens aparecem com o texto atual e abrem a edição correta
-- [ ] Editar, salvar e resetar funcionam para cada mensagem
-- [ ] Texto vazio ou acima de 200 letras é recusado com explicação
-- [ ] As mensagens continuam ao fechar e abrir o app
-- [ ] Nenhum texto de mensagem em `print`/`debugPrint`
-- [ ] Testes unitários (controlador, repositório) e de fluxo passando
-- [ ] `flutter analyze` sem avisos
+- [x] As três mensagens aparecem com o texto atual e abrem a edição correta
+- [x] Editar, salvar e resetar funcionam para cada mensagem
+- [x] Texto vazio ou acima de 200 letras é recusado com explicação
+- [x] As mensagens continuam ao fechar e abrir o app
+- [x] Nenhum texto de mensagem em `print`/`debugPrint`
+- [x] Testes unitários (controlador, repositório) e de fluxo passando
+- [x] `flutter analyze` sem avisos
 - [ ] Testado no Chrome
-- [ ] Backlog atualizado e commit feito
+- [x] Backlog atualizado
+- [ ] Commit feito (por você)
 
 ## 10. Como testar
 `flutter run -d chrome`: Configurações → Mensagens → Editar cada uma, salvar, resetar, tentar salvar vazio, reiniciar com `R`. `flutter analyze` e `flutter test`.
@@ -88,10 +89,15 @@ Fazer as três mensagens de emergência (Perigo, Atenção e "Cheguei bem") exis
 ## Retrospectiva (preencher ao concluir)
 
 **O que aprendi:**
-- <...>
+- (preencha com as suas palavras)
 
 **O que mudou em relação ao plano:**
-- <...>
+- As perguntas em aberto ficaram com as opções recomendadas: armazenamento seguro (sem pacote novo), título "Editando: …", volta à lista ao salvar e subtítulo "Ajuste o app do seu jeito." em Configurações.
+- O texto padrão do Perigo ganhou a maiúscula em "Estou" (o Figma trazia minúscula).
+- "Resetar para padrão" só preenche o campo; vale ao salvar.
 
 **Dívidas técnicas e novos itens para o backlog:**
-- <...>
+- Testar a persistência e a criptografia no Android (Keystore); no Chrome só o fluxo é testado.
+- Textos de Atenção e "Cheguei bem" na edição não foram lidos no Figma; confirmar o visual.
+- A mensagem é só um modelo: montar o texto final com o link de localização fica para as Fases 8 e 9.
+- Ideia (se sobrar tempo): variáveis no texto, como `{nome}`.

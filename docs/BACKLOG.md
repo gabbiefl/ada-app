@@ -13,11 +13,11 @@
 
 ## Fase atual
 
-**Fase 5 — Rede de contatos** concluída no código, com os resumos de aprendizado escritos (falta testar no Chrome e no Android). A Fase 4 está concluída. A Fase 3 segue com telas pendentes (ver F3-07 a F3-14). Falta você escrever o "O que aprendi" das Fases 1 a 5. O passo 9 da Fase 1 (Android) segue adiado para antes da Fase 7.
+**Fase 6 — Mensagens** concluída no código, com os resumos escritos (falta testar no Chrome e no Android). As Fases 4 e 5 estão concluídas. A Fase 3 segue com telas pendentes (ver F3-07 a F3-14). Falta você escrever o "O que aprendi" das Fases 1 a 6. O passo 9 da Fase 1 (Android) segue adiado para antes da Fase 7.
 
 ---
 
-> Próxima: **Fase 6 — Mensagens e configurações** (criar o plano antes; cada pacote novo pede a sua confirmação).
+> Próxima: **Fase 7 — Modos Atenção e Perigo** (criar o plano antes; depende de F3-14, as variações do Figma; cada pacote novo pede a sua confirmação).
 
 ## Fase 0 — Entendimento e viabilidade
 
@@ -96,9 +96,9 @@
 
 | ID | Item | Prio | Status |
 |---|---|---|---|
-| F6-01 | Mensagem de emergência pré-configurada | M | ⬜ |
-| F6-02 | Edição das mensagens pela usuária | S | ⬜ |
-| F6-03 | Persistência das preferências | S | ⬜ |
+| F6-01 | Mensagem de emergência pré-configurada | M | ✅ |
+| F6-02 | Edição das mensagens pela usuária | S | ✅ |
+| F6-03 | Persistência das preferências | S | ✅ |
 
 ## Fase 7 — Modos Atenção e Perigo
 
