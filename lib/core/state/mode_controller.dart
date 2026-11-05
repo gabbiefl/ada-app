@@ -9,12 +9,18 @@
 
 import 'package:flutter/foundation.dart';
 
+import 'package:ada_app/core/feedback/haptics.dart';
 import 'package:ada_app/core/state/security_mode.dart';
 
 // Motivo pelo qual uma mudança de modo pode ser recusada.
 enum ModeError { deactivateFirst }
 
 class ModeController extends ChangeNotifier {
+  // O "vibrador" vem de fora (injeção de dependência). Sem ele, não vibra.
+  ModeController({this.haptics});
+
+  final Haptics? haptics;
+
   SecurityMode _mode = SecurityMode.normal;
 
   // Só leitura por fora: para mudar, é preciso passar por activate/deactivate.
@@ -29,6 +35,8 @@ class ModeController extends ChangeNotifier {
 
     _mode = mode;
     notifyListeners();
+    // Só o Perigo vibra, e só quando o modo MUDOU para ele.
+    if (mode == SecurityMode.danger) haptics?.alert();
     return null;
   }
 

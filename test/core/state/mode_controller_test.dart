@@ -2,6 +2,7 @@
 
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:ada_app/core/feedback/haptics.dart';
 import 'package:ada_app/core/state/mode_controller.dart';
 import 'package:ada_app/core/state/security_mode.dart';
 
@@ -85,4 +86,70 @@ void main() {
       }
     });
   });
+
+  group('vibração', () {
+    test('vibra ao ativar o Perigo', () {
+      final haptics = _FakeHaptics();
+      final controller = ModeController(haptics: haptics);
+
+      controller.activate(SecurityMode.danger);
+
+      expect(haptics.vibrations, 1);
+    });
+
+    test('não vibra de novo se o Perigo já estava ativo', () {
+      final haptics = _FakeHaptics();
+      final controller = ModeController(haptics: haptics)
+        ..activate(SecurityMode.danger);
+
+      controller.activate(SecurityMode.danger);
+
+      expect(haptics.vibrations, 1);
+    });
+
+    test('Atenção e desativar não vibram', () {
+      final haptics = _FakeHaptics();
+      final controller = ModeController(haptics: haptics);
+
+      controller.activate(SecurityMode.attention);
+      controller.deactivate();
+
+      expect(haptics.vibrations, 0);
+    });
+
+    test('subir da Atenção para o Perigo vibra', () {
+      final haptics = _FakeHaptics();
+      final controller = ModeController(haptics: haptics)
+        ..activate(SecurityMode.attention);
+
+      controller.activate(SecurityMode.danger);
+
+      expect(haptics.vibrations, 1);
+    });
+
+    test('mudança recusada não vibra', () {
+      final haptics = _FakeHaptics();
+      final controller = ModeController(haptics: haptics)
+        ..activate(SecurityMode.danger);
+
+      controller.activate(SecurityMode.attention); // recusado
+
+      expect(haptics.vibrations, 1); // só a do primeiro activate
+    });
+
+    test('sem vibrador, tudo funciona normalmente', () {
+      final controller = ModeController();
+
+      expect(controller.activate(SecurityMode.danger), isNull);
+      expect(controller.mode, SecurityMode.danger);
+    });
+  });
+}
+
+// Vibrador falso: só conta quantas vezes "vibrou".
+class _FakeHaptics implements Haptics {
+  int vibrations = 0;
+
+  @override
+  Future<void> alert() async => vibrations++;
 }

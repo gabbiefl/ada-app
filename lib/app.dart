@@ -5,6 +5,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'package:ada_app/core/feedback/haptics.dart';
 import 'package:ada_app/core/routes/app_router.dart';
 import 'package:ada_app/core/state/mode_controller.dart';
 import 'package:ada_app/core/theme/app_theme.dart';
@@ -32,7 +33,9 @@ class AdaApp extends StatelessWidget {
     // provider chama dispose() do controlador quando o app fecha.
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => ModeController()),
+        ChangeNotifierProvider(
+          create: (_) => ModeController(haptics: const SystemHaptics()),
+        ),
         // `..load()` (cascata): cria o controlador e, em seguida, já manda
         // carregar os contatos guardados no aparelho.
         ChangeNotifierProvider(
