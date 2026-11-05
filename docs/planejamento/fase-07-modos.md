@@ -1,6 +1,6 @@
 # Fase 7 — Modos Atenção e Perigo
 
-> **Status:** 📝 em planejamento (aguardando aprovação)
+> **Status:** 🔄 em execução (plano aprovado)
 > **Itens do backlog:** F7-01, F7-02, F7-03, F7-04 (e F3-14, parte visual da Atenção)
 
 ## 1. Objetivo
@@ -45,7 +45,7 @@ Fazer os três níveis de segurança funcionarem: tocar nos cards da Home ativa 
 ## 6. Passos
 | # | Passo | Tamanho | O que a usuária aprende |
 |---|---|---|---|
-| 1 | Regras de transição no `ModeController` (o que pode ir para onde) e testes | M | Máquina de estados, enum com comportamento |
+| 1 ✅ | Regras de transição no `ModeController` (o que pode ir para onde) e testes | M | Máquina de estados, enum com comportamento |
 | 2 | Ligar os cards da Home ao controlador; **Atenção** ativa direto | P | Eventos de toque, `context.read` |
 | 3 | **Perigo** com confirmação (diálogo) e **desativar** tocando no símbolo, também com confirmação | M | Confirmação em dois toques, `showDialog` |
 | 4 | Visual do estado de Atenção na Home (símbolo, anéis, chip e frase) | M | Estado derivado, reuso do que já existe |
@@ -56,7 +56,7 @@ Fazer os três níveis de segurança funcionarem: tocar nos cards da Home ativa 
 | Decisão | Alternativas consideradas | Motivo |
 |---|---|---|
 | Regras de transição dentro do `ModeController` | Regras nas telas | As telas só pedem; o controlador decide e devolve o motivo da recusa. Testável sem tela, como os outros controladores |
-| Perigo exige confirmação; Atenção ativa direto | Os dois com confirmação; nenhum | Perigo dispara o fluxo de emergência (Fases 8 e 9), então um toque acidental custa caro. Atenção é só acompanhamento. Total de 2 toques no Perigo, dentro do RNF01 |
+| Perigo exige confirmação; Atenção ativa direto | Os dois com confirmação; nenhum | Definido pela usuária: a Atenção só compartilha a localização, sem chamada, então um toque acidental custa pouco. O Perigo dispara o fluxo de emergência completo (Fases 8 e 9), e um toque acidental custa caro. Total de 2 toques no Perigo, dentro do RNF01. Se a usuária preferir, a Atenção também pode ganhar confirmação |
 | Desativar sempre pede confirmação | Desativar com 1 toque | Evita encerrar um alerta por engano, que é o pior erro neste app (F7-03) |
 | De Perigo não se vai direto para Atenção: é preciso desativar antes | Permitir qualquer troca | Rebaixar o alerta sem querer é arriscado. Atenção → Perigo é permitido (a situação piorou) |
 | Vibração com `HapticFeedback` (já vem no Flutter) | Pacote `vibration` | Nenhum pacote novo. Basta para a demonstração; no Chrome não faz nada |
