@@ -46,8 +46,8 @@ Fazer os três níveis de segurança funcionarem: tocar nos cards da Home ativa 
 | # | Passo | Tamanho | O que a usuária aprende |
 |---|---|---|---|
 | 1 ✅ | Regras de transição no `ModeController` (o que pode ir para onde) e testes | M | Máquina de estados, enum com comportamento |
-| 2 | Ligar os cards da Home ao controlador; **Atenção** ativa direto | P | Eventos de toque, `context.read` |
-| 3 | **Perigo** com confirmação (diálogo) e **desativar** tocando no símbolo, também com confirmação | M | Confirmação em dois toques, `showDialog` |
+| 2 ✅ | Ligar os cards da Home ao controlador; **Atenção** ativa direto | P | Eventos de toque, `context.read` |
+| 3 ✅ | **Perigo** com confirmação (diálogo) e **desativar** tocando no símbolo, também com confirmação | M | Confirmação em dois toques, `showDialog` |
 | 4 | Visual do estado de Atenção na Home (símbolo, anéis, chip e frase) | M | Estado derivado, reuso do que já existe |
 | 5 | Vibração ao ativar o Perigo (`HapticFeedback`) atrás de uma interface, injetada no controlador | P | Injeção de dependência, recursos do aparelho |
 | 6 | Testes de fluxo, `flutter analyze`, retrospectiva, resumos e backlog | P | Fechar a fase |

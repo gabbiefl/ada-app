@@ -52,6 +52,79 @@ class _HomePageState extends State<HomePage>
     super.dispose();
   }
 
+  // Toque no card Atenção: pede ao controlador e, se ele recusar (estando no
+  // Perigo), explica o motivo. A tela não conhece a regra, só mostra o resultado.
+  void _activateAttention() {
+    final error = context.read<ModeController>().activate(
+      SecurityMode.attention,
+    );
+    if (error == ModeError.deactivateFirst) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Desative o Modo perigo antes de mudar para Atenção.'),
+        ),
+      );
+    }
+  }
+
+  // Diálogo de confirmação em dois botões. Devolve true só se a usuária confirmar
+  // (Cancelar, ou tocar fora do diálogo, devolve false/null).
+  Future<bool> _confirm({
+    required String title,
+    required String message,
+    required String confirmLabel,
+    Color? confirmColor,
+  }) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(title),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: const Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            style: TextButton.styleFrom(foregroundColor: confirmColor),
+            child: Text(confirmLabel),
+          ),
+        ],
+      ),
+    );
+    return confirmed == true;
+  }
+
+  // Perigo dispara o fluxo de emergência, então o primeiro toque só PERGUNTA;
+  // o segundo (em "Ativar") é que ativa. Total: 2 toques (meta do RNF01).
+  Future<void> _activateDanger() async {
+    // Pega o controlador ANTES do await: depois dele o context pode não valer.
+    final controller = context.read<ModeController>();
+    if (controller.mode == SecurityMode.danger) return; // já está ativo
+
+    final confirmed = await _confirm(
+      title: 'Ativar o Modo perigo?',
+      message: 'Use apenas em caso de emergência.',
+      confirmLabel: 'Ativar',
+      confirmColor: ModeColors.of(context).danger,
+    );
+    if (confirmed) controller.activate(SecurityMode.danger);
+  }
+
+  // Encerrar um alerta por engano é o pior erro deste app: também confirma.
+  Future<void> _deactivate() async {
+    final controller = context.read<ModeController>();
+    if (controller.mode == SecurityMode.normal) return;
+
+    final confirmed = await _confirm(
+      title: 'Desativar o alerta?',
+      message: 'O ADA voltará ao modo normal.',
+      confirmLabel: 'Desativar',
+    );
+    if (confirmed) controller.deactivate();
+  }
+
   @override
   Widget build(BuildContext context) {
     // Cores e estilos vêm do tema, e não de valores fixos aqui.
@@ -157,15 +230,27 @@ class _HomePageState extends State<HomePage>
                       alignment: Alignment.center,
                       children: [
                         ModeRings(color: ringColor, pulse: _pulse),
-                        Container(
-                          width: 134,
-                          height: 134,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: circleColor,
+                        // Tocar no símbolo desativa (com confirmação). No modo
+                        // Normal ele não faz nada, e o leitor de tela não o
+                        // anuncia como botão.
+                        Semantics(
+                          button: mode != SecurityMode.normal,
+                          label: mode != SecurityMode.normal
+                              ? 'Desativar alerta'
+                              : null,
+                          child: GestureDetector(
+                            onTap: _deactivate,
+                            child: Container(
+                              width: 134,
+                              height: 134,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: circleColor,
+                              ),
+                              padding: const EdgeInsets.all(30),
+                              child: Image.asset(symbol),
+                            ),
                           ),
-                          padding: const EdgeInsets.all(30),
-                          child: Image.asset(symbol),
                         ),
                       ],
                     ),
@@ -194,6 +279,7 @@ class _HomePageState extends State<HomePage>
                       icon: LucideIcons.triangleAlert,
                       color: modeColors.danger,
                       textColor: modeColors.dangerText,
+                      onTap: _activateDanger,
                     ),
                     const SizedBox(height: 16),
                     ModeCard(
@@ -202,6 +288,7 @@ class _HomePageState extends State<HomePage>
                       icon: LucideIcons.eye,
                       color: modeColors.attention,
                       textColor: modeColors.attentionText,
+                      onTap: _activateAttention,
                     ),
                     const SizedBox(height: 24),
                   ],
