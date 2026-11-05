@@ -38,7 +38,8 @@ A proposta é oferecer uma forma **rápida e simples de pedir ajuda em situaçõ
 | 4 | Navegação (`go_router`, barra inferior) e estado do modo atual (`provider`) | ✅ |
 | 5 | Rede de contatos: cadastrar, editar e remover (até 5), com validação e armazenamento seguro | ✅ |
 | 6 | Mensagens de emergência: texto padrão, edição, validação (até 200 letras) e armazenamento seguro | ✅ |
-| 7 em diante | Modos de alerta, localização e envio | 🔜 Fase 7 a seguir |
+| 7 | Modos Atenção e Perigo: ativar, confirmar o Perigo, desativar com segurança e vibração | ✅ |
+| 8 em diante | Localização e envio | 🔜 Fase 8 a seguir |
 
 O plano de cada fase está em [`docs/planejamento/`](docs/planejamento/) e a lista de itens em [`docs/BACKLOG.md`](docs/BACKLOG.md).
 

@@ -13,11 +13,11 @@
 
 ## Fase atual
 
-**Fase 6 — Mensagens** concluída no código, com os resumos escritos (falta testar no Chrome e no Android). As Fases 4 e 5 estão concluídas. A Fase 3 segue com telas pendentes (ver F3-07 a F3-14). Falta você escrever o "O que aprendi" das Fases 1 a 6. O passo 9 da Fase 1 (Android) segue adiado para antes da Fase 7.
+**Fase 7 — Modos** concluída no código (falta testar no Chrome, sentir a vibração no Android e escrever os resumos). As Fases 4 a 6 estão concluídas. A Fase 3 segue com telas pendentes (ver F3-07 a F3-14). Falta você escrever o "O que aprendi" das Fases 1 a 7. O passo 9 da Fase 1 (Android) segue adiado para antes da Fase 8.
 
 ---
 
-> Próxima: **Fase 7 — Modos Atenção e Perigo** (criar o plano antes; depende de F3-14, as variações do Figma; cada pacote novo pede a sua confirmação).
+> Próxima: **Fase 8 — Localização** (criar o plano antes; exige o ambiente Android, F1-04 e F1-05, e decidir F3-11, a aba Mapa; cada pacote novo pede a sua confirmação).
 
 ## Fase 0 — Entendimento e viabilidade
 
@@ -68,7 +68,7 @@
 ### Telas que ainda faltam (a Fase 3 foi fechada sem elas)
 | ID | Item | Prio | Status |
 |---|---|---|---|
-| F3-14 | Ler as variações dos estados Atenção e Perigo ativos no Figma e ligar os toques dos cards da Home | M | ⬜ |
+| F3-14 | Ler as variações dos estados Atenção e Perigo ativos no Figma e ligar os toques dos cards da Home. Toques ligados na Fase 7 (Atenção derivada da tela de Perigo); falta **conferir o visual com o Figma** | M | 🔄 |
 | F3-09 | Splash e 3 telas de onboarding (já existem no Figma; ler antes) | M | ⬜ |
 | F3-10 | Tela de permissões (localização, notificações; já existe no Figma) | M | ⬜ |
 | F3-11 | Tela de mapa/localização (aba "Mapa"). Acompanhamento em tempo real é incerto (F0-02, F8-04): ideia da usuária de usar **checkpoints** da posição. Ler o Figma e decidir o conteúdo antes da Fase 8 | M | ⬜ |
@@ -104,10 +104,10 @@
 
 | ID | Item | Prio | Status |
 |---|---|---|---|
-| F7-01 | Lógica de transição entre os modos | M | ⬜ |
-| F7-02 | Ação rápida de ativação do Modo Perigo (meta: até 2 toques; limite aceitável: 3, ver RNF01) | M | ⬜ |
-| F7-03 | Desativação segura (evitar acionamento acidental) | S | ⬜ |
-| F7-04 | Feedback visual e háptico | C | ⬜ |
+| F7-01 | Lógica de transição entre os modos | M | ✅ |
+| F7-02 | Ação rápida de ativação do Modo Perigo (meta: até 2 toques; limite aceitável: 3, ver RNF01) | M | ✅ |
+| F7-03 | Desativação segura (evitar acionamento acidental) | S | ✅ |
+| F7-04 | Feedback visual e háptico | C | ✅ |
 
 ## Fase 8 — Localização
 

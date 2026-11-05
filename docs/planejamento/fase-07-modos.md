@@ -1,6 +1,6 @@
 # Fase 7 — Modos Atenção e Perigo
 
-> **Status:** 🔄 em execução (plano aprovado)
+> **Status:** ✅ concluída (falta testar no Chrome e sentir a vibração no Android)
 > **Itens do backlog:** F7-01, F7-02, F7-03, F7-04 (e F3-14, parte visual da Atenção)
 
 ## 1. Objetivo
@@ -48,9 +48,9 @@ Fazer os três níveis de segurança funcionarem: tocar nos cards da Home ativa 
 | 1 ✅ | Regras de transição no `ModeController` (o que pode ir para onde) e testes | M | Máquina de estados, enum com comportamento |
 | 2 ✅ | Ligar os cards da Home ao controlador; **Atenção** ativa direto | P | Eventos de toque, `context.read` |
 | 3 ✅ | **Perigo** com confirmação (diálogo) e **desativar** tocando no símbolo, também com confirmação | M | Confirmação em dois toques, `showDialog` |
-| 4 | Visual do estado de Atenção na Home (símbolo, anéis, chip e frase) | M | Estado derivado, reuso do que já existe |
-| 5 | Vibração ao ativar o Perigo (`HapticFeedback`) atrás de uma interface, injetada no controlador | P | Injeção de dependência, recursos do aparelho |
-| 6 | Testes de fluxo, `flutter analyze`, retrospectiva, resumos e backlog | P | Fechar a fase |
+| 4 ✅ | Visual do estado de Atenção na Home (símbolo, anéis, chip e frase) | M | Estado derivado, reuso do que já existe |
+| 5 ✅ | Vibração ao ativar o Perigo (`HapticFeedback`) atrás de uma interface, injetada no controlador | P | Injeção de dependência, recursos do aparelho |
+| 6 ✅ | Testes de fluxo, `flutter analyze`, retrospectiva, resumos e backlog | P | Fechar a fase |
 
 ## 7. Decisões técnicas
 | Decisão | Alternativas consideradas | Motivo |
@@ -73,16 +73,18 @@ Fazer os três níveis de segurança funcionarem: tocar nos cards da Home ativa 
 | Toque acidental no símbolo desativa o alerta | Alerta encerrado sem querer | Confirmação ao desativar (passo 3) |
 
 ## 9. Critérios de pronto
-- [ ] Atenção ativa por um toque; Perigo ativa após confirmação (2 toques)
-- [ ] Desativar pede confirmação e volta ao Normal
-- [ ] De Perigo não se vai direto para Atenção (regra testada)
-- [ ] A Home mostra os três estados com chip e frase corretos
-- [ ] Vibra ao ativar o Perigo (conferido com o vibrador falso; no aparelho quando possível)
-- [ ] Nenhum dado pessoal em `print`/`debugPrint`
-- [ ] Testes unitários e de fluxo passando
-- [ ] `flutter analyze` sem avisos
+- [x] Atenção ativa por um toque; Perigo ativa após confirmação (2 toques)
+- [x] Desativar pede confirmação e volta ao Normal
+- [x] De Perigo não se vai direto para Atenção (regra testada)
+- [x] A Home mostra os três estados com chip e frase corretos
+- [x] Vibra ao ativar o Perigo (conferido com o vibrador falso)
+- [ ] Vibração sentida no aparelho Android
+- [x] Nenhum dado pessoal em `print`/`debugPrint`
+- [x] Testes unitários e de fluxo passando
+- [x] `flutter analyze` sem avisos
 - [ ] Testado no Chrome
-- [ ] Backlog atualizado e commit feito
+- [x] Backlog atualizado
+- [ ] Commit feito (por você)
 
 ## 10. Como testar
 `flutter run -d chrome`: na Home, tocar em MODO ATENÇÃO; tocar em MODO PERIGO e confirmar; tocar no símbolo e confirmar a desativação; tentar cancelar cada confirmação. `flutter analyze` e `flutter test`. A vibração: num emulador ou celular Android.
@@ -98,10 +100,16 @@ Fazer os três níveis de segurança funcionarem: tocar nos cards da Home ativa 
 ## Retrospectiva (preencher ao concluir)
 
 **O que aprendi:**
-- <...>
+- (preencha com as suas palavras)
 
 **O que mudou em relação ao plano:**
-- <...>
+- As perguntas em aberto ficaram com as opções assumidas: sem chamada ao Figma (Atenção derivada da tela de Perigo, usando o símbolo amarelo que já estava no projeto), o modo volta a Normal ao fechar o app, subida direta de Atenção para Perigo permitida e diálogo simples na confirmação.
+- A Atenção ativa sem confirmação foi decisão da usuária: ela só compartilha a localização, sem chamada.
+- O card Perigo só foi ligado no passo 3, junto com a confirmação (e não no passo 2), para nunca existir Perigo sem confirmar.
+- Na Atenção, tocar no card Perigo (já ativo) ou estar no Perigo e tocar na Atenção mostra aviso, regra que não estava no plano.
 
 **Dívidas técnicas e novos itens para o backlog:**
-- <...>
+- F3-14: conferir o visual da Atenção ativa e da confirmação do Perigo com o Figma.
+- Sentir a vibração num Android (depende de F1-04 e F1-05).
+- O modo não é gravado: ao reabrir o app, volta a Normal. Reavaliar junto da Fase 9.
+- Os modos só mudam a interface: localização, mensagem e ligação vêm nas Fases 8 e 9 (o Perigo usará `MessageKind.danger`).
