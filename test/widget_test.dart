@@ -206,4 +206,48 @@ void main() {
 
     expect(find.byType(AlertDialog), findsNothing);
   });
+
+  testWidgets('Atenção ativa: a Home mostra chip e instrução do modo', (
+    tester,
+  ) async {
+    final controller = await pumpHome(tester);
+
+    controller.activate(SecurityMode.attention);
+    await tester.pump(short);
+
+    expect(find.text('Modo atenção ativo'), findsOneWidget);
+    expect(find.text('Toque no ícone para desativar.'), findsOneWidget);
+    expect(find.text('Modo perigo ativo'), findsNothing);
+    expect(find.text('Nenhum alerta ativo no momento.'), findsNothing);
+  });
+
+  testWidgets('Atenção: o símbolo desativa com confirmação', (tester) async {
+    final controller = await pumpHome(tester);
+    controller.activate(SecurityMode.attention);
+    await tester.pump(short);
+
+    await tester.tap(find.bySemanticsLabel('Desativar alerta'));
+    await tester.pump(short);
+    await tester.tap(find.text('Desativar'));
+    await tester.pump(short);
+
+    expect(controller.mode, SecurityMode.normal);
+    expect(find.text('Nenhum alerta ativo no momento.'), findsOneWidget);
+  });
+
+  testWidgets('Da Atenção, o card Perigo sobe o alerta após confirmar', (
+    tester,
+  ) async {
+    final controller = await pumpHome(tester);
+    controller.activate(SecurityMode.attention);
+    await tester.pump(short);
+
+    await tester.tap(find.text('MODO PERIGO'));
+    await tester.pump(short);
+    await tester.tap(find.text('Ativar'));
+    await tester.pump(short);
+
+    expect(controller.mode, SecurityMode.danger);
+    expect(find.text('Modo perigo ativo'), findsOneWidget);
+  });
 }

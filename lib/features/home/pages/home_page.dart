@@ -134,19 +134,31 @@ class _HomePageState extends State<HomePage>
 
     // context.watch: "assina" o controlador. Quando o modo muda e ele chama
     // notifyListeners(), este build roda de novo e a tela se atualiza.
-    // O visual do Modo Atenção ainda não foi lido no Figma, então por ora só o
-    // Perigo muda a tela.
     final mode = context.watch<ModeController>().mode;
 
-    // Cores do símbolo central, conforme o estado.
-    final active = mode == SecurityMode.danger;
-    final ringColor = active ? modeColors.danger : modeColors.normal;
+    // Estado derivado: tudo o que a tela mostra sai do modo atual, sem guardar
+    // nada a mais. No Normal o círculo é azul-marinho; nos alertas, branco com o
+    // símbolo colorido (o mesmo desenho, só mudam cor, símbolo e textos).
+    final active = mode != SecurityMode.normal;
+    final ringColor = switch (mode) {
+      SecurityMode.normal => modeColors.normal,
+      SecurityMode.attention => modeColors.attention,
+      SecurityMode.danger => modeColors.danger,
+    };
     final circleColor = active
         ? theme.colorScheme.onPrimary
         : modeColors.normal;
-    final symbol = active
-        ? 'assets/images/simbolo_perigo.png'
-        : 'assets/images/simbolo_ada.png';
+    final symbol = switch (mode) {
+      SecurityMode.normal => 'assets/images/simbolo_ada.png',
+      SecurityMode.attention => 'assets/images/simbolo_atencao.png',
+      SecurityMode.danger => 'assets/images/simbolo_perigo.png',
+    };
+    final chipLabel = mode == SecurityMode.attention
+        ? 'Modo atenção ativo'
+        : 'Modo perigo ativo';
+    final chipTextColor = mode == SecurityMode.attention
+        ? modeColors.attentionText
+        : modeColors.dangerText;
 
     return Scaffold(
       body: SafeArea(
@@ -258,9 +270,9 @@ class _HomePageState extends State<HomePage>
                     // Estado ativo: chip e instrução. Normal: frase de apoio.
                     if (active) ...[
                       StatusChip(
-                        label: 'Modo perigo ativo',
-                        color: modeColors.danger,
-                        textColor: modeColors.dangerText,
+                        label: chipLabel,
+                        color: ringColor,
+                        textColor: chipTextColor,
                       ),
                       const SizedBox(height: 8),
                       Text(
