@@ -71,7 +71,7 @@
 | F3-14 | Ler as variações dos estados Atenção e Perigo ativos no Figma e ligar os toques dos cards da Home. Toques ligados na Fase 7 (Atenção derivada da tela de Perigo); falta **conferir o visual com o Figma** | M | 🔄 |
 | F3-09 | Splash e 3 telas de onboarding (já existem no Figma; ler antes) | M | ⬜ |
 | F3-10 | Tela de permissões (localização, notificações; já existe no Figma) | M | ⬜ |
-| F3-11 | Tela de mapa/localização (aba "Mapa"). Acompanhamento em tempo real é incerto (F0-02, F8-04): ideia da usuária de usar **checkpoints** da posição. Ler o Figma e decidir o conteúdo antes da Fase 8 | M | ⬜ |
+| F3-11 | Tela de mapa/localização (aba "Mapa"). Acompanhamento em tempo real é incerto (F0-02, F8-04): ideia da usuária de usar **checkpoints** da posição. Decidido em 06/11/2026: Fase 8 mostra só a localização atual (placeholder); mapa visual em F8-05 e tempo real em F8-04. Figma da aba ainda não lido | M | 🔄 |
 | F3-12 | Rede cheia (5/5): estado sem espaços vazios e aviso de limite (derivar do design existente) | M | ✅ |
 | F3-13 | Login/cadastro da usuária: **não foi desenhado no Figma**. Decidir antes se o MVP precisa de conta (o app guarda tudo no aparelho) | S | ⬜ |
 
@@ -116,6 +116,7 @@
 | F8-01 | Solicitar e tratar permissões de localização | M | ⬜ |
 | F8-02 | Obter a localização atual | M | ⬜ |
 | F8-03 | Compartilhar a localização na mensagem (link de mapa) | M | ⬜ |
+| F8-05 | **Mapa visual** na aba Mapa (ideia da usuária: é o ideal, entra se sobrar tempo; sugestão: `flutter_map` + OpenStreetMap, sem chave de API; pede confirmação do pacote). Na Fase 8 a aba mostra só a localização atual | C | ⬜ |
 | F8-04 | Link de acompanhamento ao vivo (Firebase + página web), Nível 2 do MVP, depois da Fase 9 `[plano B]` | S | ⬜ |
 
 ## Fase 9 — Comunicação
