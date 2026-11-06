@@ -1,4 +1,4 @@
-package com.example.ada_app
+package br.academico.cesuca.ada
 
 import io.flutter.embedding.android.FlutterActivity
 
