@@ -1,6 +1,6 @@
 # Fase 8 — Localização
 
-> **Status:** 📝 em planejamento (aguardando aprovação)
+> **Status:** 🔄 em execução (plano aprovado)
 > **Itens do backlog:** F8-01, F8-02, F8-03 (e F3-11, versão simples da aba Mapa)
 
 ## 1. Objetivo
@@ -46,7 +46,7 @@ Obter a localização atual da usuária, com permissão e tratamento de erros, m
 ## 6. Passos
 | # | Passo | Tamanho | O que a usuária aprende |
 |---|---|---|---|
-| 1 | `geolocator` e permissões no manifesto; `GeoPoint`, `LocationService` (interface e versão falsa) e a função do link de mapa, com testes | M | Pacote novo, manifesto, interface para testar |
+| 1 ✅ | `geolocator` e permissões no manifesto; `GeoPoint`, `LocationService` (interface e versão falsa) e a função do link de mapa, com testes | M | Pacote novo, manifesto, interface para testar |
 | 2 | Versão real do serviço: checar GPS e permissão, explicar antes de pedir, buscar a posição com tempo limite e devolver cada falha | M | Permissões em tempo de execução, `timeout` |
 | 3 | `LocationController` (estados: parado, carregando, sucesso, falha) e `provider` | M | Reuso do padrão controlador |
 | 4 | Aba **Mapa**: botão, explicação, resultado, link e erros com ação (tentar de novo, abrir configurações) | M | Estados de tela, tratamento de erro |

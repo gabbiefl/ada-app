@@ -1,4 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Localização aproximada e precisa, só com o app aberto. Não pedimos
+         localização em segundo plano. A permissão é pedida na hora de uso. -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <application
         android:label="ADA"
         android:name="${applicationName}"
