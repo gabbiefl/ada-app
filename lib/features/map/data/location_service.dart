@@ -33,6 +33,11 @@ class LocationResult {
 
 abstract class LocationService {
   Future<LocationResult> current();
+
+  // Atalhos para quando só a própria usuária resolve: liberar a permissão
+  // (negada "para sempre") ou ligar o GPS do aparelho.
+  Future<void> openAppSettings();
+  Future<void> openLocationSettings();
 }
 
 // Versão para testes: devolve sempre o resultado combinado e conta os pedidos.
@@ -41,10 +46,18 @@ class FakeLocationService implements LocationService {
 
   LocationResult result;
   int requests = 0;
+  int appSettingsOpened = 0;
+  int locationSettingsOpened = 0;
 
   @override
   Future<LocationResult> current() async {
     requests++;
     return result;
   }
+
+  @override
+  Future<void> openAppSettings() async => appSettingsOpened++;
+
+  @override
+  Future<void> openLocationSettings() async => locationSettingsOpened++;
 }
