@@ -13,11 +13,11 @@
 
 ## Fase atual
 
-**Fase 7 — Modos** concluída no código (falta testar no Chrome, sentir a vibração no Android e escrever os resumos). As Fases 4 a 6 estão concluídas. A Fase 3 segue com telas pendentes (ver F3-07 a F3-14). Falta você escrever o "O que aprendi" das Fases 1 a 7. O passo 9 da Fase 1 (Android) segue adiado para antes da Fase 8.
+**Fase 7 — Modos** concluída no código (falta testar no Chrome, sentir a vibração no Android e escrever os resumos). As Fases 4 a 6 estão concluídas. A Fase 3 segue com telas pendentes (ver F3-07 a F3-14). Falta você escrever o "O que aprendi" das Fases 1 a 7. O emulador Android já roda o ADA (F1-04 ✅); falta aplicar o `applicationId` (F1-05).
 
 ---
 
-> Próxima: **Fase 8 — Localização** (criar o plano antes; exige o ambiente Android, F1-04 e F1-05, e decidir F3-11, a aba Mapa; cada pacote novo pede a sua confirmação).
+> Próxima: **Fase 8 — Localização** (criar o plano antes; exige o ambiente Android (F1-04 ✅; falta F1-05) e decidir F3-11, a aba Mapa; cada pacote novo pede a sua confirmação).
 
 ## Fase 0 — Entendimento e viabilidade
 
@@ -38,7 +38,7 @@
 | F1-01 | Organizar pastas conforme o CLAUDE.md | M | ✅ |
 | F1-02 | Limpar o código de exemplo do `flutter create` | M | ✅ |
 | F1-03 | Configurar Git e `.gitignore`, primeiro commit (conferido na Fase 1) | M | ✅ |
-| F1-04 | Criar e configurar o emulador Android (AVD). Adiado: desenvolvimento no Chrome por enquanto; fazer antes da Fase 7 | M | ⏸️ |
+| F1-04 | Criar e configurar o emulador Android (AVD). Feito em 06/11/2026: Android Studio, cmdline-tools, NDK 28.2.13676358 e CMake instalados; ADA roda no emulador, com armazenamento seguro funcionando | M | ✅ |
 | F1-05 | Definir o nome do app e o `applicationId` (hoje `com.example.ada_app`; escolhido `br.academico.cesuca.ada`, aplicar junto com o Android) | S | ⏸️ |
 
 ## Fase 2 — Tema e design system
