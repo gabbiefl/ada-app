@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
+import android.util.Log
 import android.telephony.SmsManager
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
@@ -16,7 +17,8 @@ import io.flutter.plugin.common.MethodChannel
 // O Dart chama estes métodos por um MethodChannel. Quem PEDE a permissão à
 // usuária é o Dart (permission_handler); aqui só conferimos se ela existe.
 //
-// Privacidade: o telefone e o texto NUNCA são impressos (nada de Log aqui).
+// Privacidade: o telefone e o texto NUNCA são impressos. No Log vai só o TIPO do
+// erro (ex.: SecurityException), para dar para diagnosticar sem expor dados.
 // Os erros voltam ao Dart só como um código curto:
 //   permission_denied  -> falta a permissão
 //   not_available      -> o aparelho não tem telefonia
@@ -81,7 +83,8 @@ class MainActivity : FlutterActivity() {
             }
             result.success(true)
         } catch (e: Exception) {
-            result.error("failed", null, null)
+            Log.w(TAG, "Falha ao enviar SMS: ${e.javaClass.simpleName}")
+            result.error("failed", e.javaClass.simpleName, null)
         }
     }
 
@@ -106,11 +109,13 @@ class MainActivity : FlutterActivity() {
             startActivity(intent)
             result.success(true)
         } catch (e: Exception) {
-            result.error("failed", null, null)
+            Log.w(TAG, "Falha ao ligar: ${e.javaClass.simpleName}")
+            result.error("failed", e.javaClass.simpleName, null)
         }
     }
 
     companion object {
         const val CHANNEL = "br.academico.cesuca.ada/emergency"
+        private const val TAG = "AdaAlert"
     }
 }
