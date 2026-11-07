@@ -13,11 +13,11 @@
 
 ## Fase atual
 
-**Fase 7 — Modos** concluída no código (falta testar no Chrome, sentir a vibração no Android e escrever os resumos). As Fases 4 a 6 estão concluídas. A Fase 3 segue com telas pendentes (ver F3-07 a F3-14). Falta você escrever o "O que aprendi" das Fases 1 a 7. O emulador Android já roda o ADA (F1-04 ✅) e o `applicationId` foi aplicado (F1-05 ✅).
+**Fase 8 — Localização** concluída no código (falta testar os erros no emulador e escrever os resumos). As Fases 4 a 7 estão concluídas. A Fase 3 segue com telas pendentes (ver F3-07 a F3-14). Falta você escrever o "O que aprendi" das Fases 1 a 8. O emulador Android já roda o ADA (F1-04 ✅) e o `applicationId` foi aplicado (F1-05 ✅).
 
 ---
 
-> Próxima: **Fase 8 — Localização** (criar o plano antes; tem o ambiente Android pronto (F1-04 e F1-05 ✅) e falta decidir F3-11, a aba Mapa; cada pacote novo pede a sua confirmação).
+> Próxima: **Fase 9 — Comunicação** (criar o plano antes; usa `url_launcher`, que pede a sua confirmação; decidir WhatsApp x SMS e acionamento simultâneo x sequencial).
 
 ## Fase 0 — Entendimento e viabilidade
 
@@ -113,9 +113,9 @@
 
 | ID | Item | Prio | Status |
 |---|---|---|---|
-| F8-01 | Solicitar e tratar permissões de localização | M | ⬜ |
-| F8-02 | Obter a localização atual | M | ⬜ |
-| F8-03 | Compartilhar a localização na mensagem (link de mapa) | M | ⬜ |
+| F8-01 | Solicitar e tratar permissões de localização | M | ✅ |
+| F8-02 | Obter a localização atual | M | ✅ |
+| F8-03 | Compartilhar a localização na mensagem (link de mapa) | M | ✅ |
 | F8-05 | **Mapa visual** na aba Mapa (o protótipo do Figma tem um **mapa interativo**: é a versão fiel ao design; entra se sobrar tempo; sugestão: `flutter_map` + OpenStreetMap, sem chave de API; pede confirmação do pacote). Na Fase 8 a aba mostra só a localização atual | C | ⬜ |
 | F8-04 | Link de acompanhamento ao vivo (Firebase + página web), Nível 2 do MVP, depois da Fase 9 `[plano B]` | S | ⬜ |
 

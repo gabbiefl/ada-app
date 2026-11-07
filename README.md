@@ -39,7 +39,8 @@ A proposta é oferecer uma forma **rápida e simples de pedir ajuda em situaçõ
 | 5 | Rede de contatos: cadastrar, editar e remover (até 5), com validação e armazenamento seguro | ✅ |
 | 6 | Mensagens de emergência: texto padrão, edição, validação (até 200 letras) e armazenamento seguro | ✅ |
 | 7 | Modos Atenção e Perigo: ativar, confirmar o Perigo, desativar com segurança e vibração | ✅ |
-| 8 em diante | Localização e envio | 🔜 Fase 8 a seguir |
+| 8 | Localização: permissões, localização atual na aba Mapa e link de mapa para o alerta | ✅ |
+| 9 em diante | Envio dos alertas, horários e entrega final | 🔜 Fase 9 a seguir |
 
 O plano de cada fase está em [`docs/planejamento/`](docs/planejamento/) e a lista de itens em [`docs/BACKLOG.md`](docs/BACKLOG.md).
 
@@ -48,7 +49,7 @@ O plano de cada fase está em [`docs/planejamento/`](docs/planejamento/) e a lis
 - **Flutter** e **Dart**, com Material Design 3
 - **Android** como plataforma principal
 - **Figma** para o design das telas, lido pelo Claude Code via MCP
-- **go_router** (navegação), **provider** (estado) e **flutter_secure_storage** (contatos guardados com criptografia)
+- **go_router** (navegação), **provider** (estado), **flutter_secure_storage** (contatos e mensagens guardados com criptografia) e **geolocator** (localização)
 - **Nunito** como fonte e **Lucide** como família de ícones (pacote `lucide_icons_flutter`)
 
 ## ▶️ Como rodar

@@ -1,6 +1,6 @@
 # Fase 8 — Localização
 
-> **Status:** 🔄 em execução (plano aprovado)
+> **Status:** ✅ concluída (falta testar os erros no emulador: GPS desligado e permissão bloqueada)
 > **Itens do backlog:** F8-01, F8-02, F8-03 (e F3-11, versão simples da aba Mapa)
 
 ## 1. Objetivo
@@ -51,7 +51,7 @@ Obter a localização atual da usuária, com permissão e tratamento de erros, m
 | 3 ✅ | `LocationController` (estados: parado, carregando, sucesso, falha) e `provider` | M | Reuso do padrão controlador |
 | 4 ✅ | Aba **Mapa**: botão, explicação, resultado, link e erros com ação (tentar de novo, abrir configurações) | M | Estados de tela, tratamento de erro |
 | 5 ✅ | Montar o texto do alerta: mensagem + link, ou mensagem + aviso se faltar localização | P | Template de texto (fecha a ideia da Fase 6) |
-| 6 | Teste no emulador (localização simulada), testes de fluxo, `flutter analyze`, retrospectiva, resumos e backlog | P | Fechar a fase, simular GPS |
+| 6 ✅ | Teste no emulador (localização simulada), testes de fluxo, `flutter analyze`, retrospectiva, resumos e backlog | P | Fechar a fase, simular GPS |
 
 ## 7. Decisões técnicas
 | Decisão | Alternativas consideradas | Motivo |
@@ -78,15 +78,17 @@ Obter a localização atual da usuária, com permissão e tratamento de erros, m
 | Localização é dado de alto risco | Exposição | Não gravar, não imprimir, pedir só ao usar e explicar antes |
 
 ## 9. Critérios de pronto
-- [ ] Botão da aba Mapa pede a localização, com explicação antes do diálogo do Android
-- [ ] Com permissão e GPS, a tela mostra a localização e o link de mapa
-- [ ] Permissão negada, negada para sempre, GPS desligado e tempo esgotado têm explicação e não fecham o app
-- [ ] A função monta o texto do alerta com o link, e sem localização avisa isso
-- [ ] Nenhuma coordenada em `print`/`debugPrint`, e nada guardado no aparelho
-- [ ] Testes unitários, de widget e de fluxo passando (serviço falso)
-- [ ] `flutter analyze` sem avisos
-- [ ] Testado no emulador com localização simulada
-- [ ] Backlog atualizado e commit feito
+- [x] Botão da aba Mapa pede a localização, com explicação antes do diálogo do Android
+- [x] Com permissão e GPS, a tela mostra a localização e o link de mapa
+- [x] Permissão negada, negada para sempre, GPS desligado e tempo esgotado têm explicação e não fecham o app
+- [x] A função monta o texto do alerta com o link, e sem localização avisa isso
+- [x] Nenhuma coordenada em `print`/`debugPrint`, e nada guardado no aparelho
+- [x] Testes unitários, de widget e de fluxo passando (serviço falso)
+- [x] `flutter analyze` sem avisos
+- [x] Testado no emulador (permissão e localização simulada)
+- [ ] Erros testados no emulador (GPS desligado, permissão bloqueada)
+- [x] Backlog atualizado
+- [ ] Commit feito (por você)
 
 ## 10. Como testar
 `flutter run -d emulator-5554`: aba Mapa → tocar no botão → permitir. No emulador, ajustar a posição em **⋯ → Location**. Testar também negar a permissão, negar para sempre e desligar a localização do emulador. `flutter analyze` e `flutter test`.
@@ -102,10 +104,18 @@ Obter a localização atual da usuária, com permissão e tratamento de erros, m
 ## Retrospectiva (preencher ao concluir)
 
 **O que aprendi:**
-- <...>
+- (preencha com as suas palavras)
 
 **O que mudou em relação ao plano:**
-- <...>
+- A aba Mapa ficou simples (coordenadas e link), como combinado. O protótipo do Figma tem um mapa interativo: fica em F8-05.
+- A explicação antes do diálogo do Android ficou como caixa fixa na tela, e não como um passo separado do serviço (o serviço só pergunta).
+- O serviço ganhou `openAppSettings` e `openLocationSettings`, usados nos atalhos de erro (não estavam no plano).
+- O teste de fluxo no app inteiro confere só a busca em andamento: sem plugin no teste, o serviço real não responde. Sucesso e erros estão em `map_page_test.dart`, com GPS falso.
+- Houve dois comandos de emulador que travaram na instalação do ambiente (NDK, CMake e emulador offline); não afetam o código.
 
 **Dívidas técnicas e novos itens para o backlog:**
-- <...>
+- F8-05: mapa interativo (versão fiel ao Figma), com `flutter_map` e OpenStreetMap.
+- F8-04: acompanhamento em tempo real (depois da Fase 9).
+- Conferir o visual da aba Mapa com o Figma (F3-11).
+- A busca não tem tempo limite para o diálogo de permissão (depende da usuária) nem para as checagens rápidas; só a leitura do GPS tem 10 s.
+- Usar `buildAlertText` e o `LocationController` ao ativar o Perigo (Fase 9).
