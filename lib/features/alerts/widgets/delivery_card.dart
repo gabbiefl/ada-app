@@ -7,7 +7,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-import 'package:ada_app/core/theme/app_colors.dart';
 import 'package:ada_app/features/alerts/data/alert_actions.dart';
 import 'package:ada_app/features/alerts/state/alert_controller.dart';
 
@@ -52,6 +51,9 @@ class DeliveryCard extends StatelessWidget {
     super.key,
     required this.delivery,
     required this.canCall,
+    required this.foreground,
+    required this.background,
+    required this.accent,
     required this.onWhatsApp,
     required this.onSms,
     required this.onCall,
@@ -63,6 +65,13 @@ class DeliveryCard extends StatelessWidget {
   // O botão Ligar só existe no Modo Perigo.
   final bool canCall;
 
+  // Cores vindas da tela Alerta (que muda de cor conforme o modo): texto e ícones,
+  // fundo do cartão (escuro e translúcido, como os cartões de progresso) e a cor
+  // do texto do botão branco "Tentar de novo".
+  final Color foreground;
+  final Color background;
+  final Color accent;
+
   final VoidCallback onWhatsApp;
   final VoidCallback onSms;
   final VoidCallback onCall;
@@ -72,52 +81,50 @@ class DeliveryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final failed = delivery.status == DeliveryStatus.failed;
-    final statusColor = failed
-        ? AppColors.modeDangerText
-        : delivery.status == DeliveryStatus.sent
-        ? AppColors.avatarGreen
-        : AppColors.textSecondary;
 
     return Container(
       padding: const EdgeInsets.fromLTRB(20, 16, 20, 12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: background,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: failed
-              ? AppColors.modeDanger.withValues(alpha: 0.5)
-              : AppColors.placeholder.withValues(alpha: 0.3),
-        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(delivery.contact.name, style: theme.textTheme.titleMedium),
+          Text(
+            delivery.contact.name,
+            style: theme.textTheme.titleMedium?.copyWith(color: foreground),
+          ),
           const SizedBox(height: 4),
+          // O estado aparece no ÍCONE (✓, aviso, relógio, girando), como nos
+          // cartões de progresso; a cor é sempre a do texto da tela.
           Row(
             children: [
               if (delivery.status == DeliveryStatus.sending)
-                const SizedBox(
+                SizedBox(
                   width: 14,
                   height: 14,
-                  child: CircularProgressIndicator(strokeWidth: 2),
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    color: foreground,
+                  ),
                 )
               else
                 Icon(
                   failed
                       ? LucideIcons.triangleAlert
                       : delivery.status == DeliveryStatus.sent
-                      ? LucideIcons.circleCheck
+                      ? LucideIcons.check
                       : LucideIcons.clock,
                   size: 16,
-                  color: statusColor,
+                  color: foreground,
                 ),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
                   deliveryStatusText(delivery),
                   style: theme.textTheme.bodySmall?.copyWith(
-                    color: statusColor,
+                    color: foreground.withValues(alpha: 0.9),
                   ),
                 ),
               ),
@@ -130,13 +137,26 @@ class DeliveryCard extends StatelessWidget {
             runSpacing: 4,
             children: [
               if (failed)
-                FilledButton.tonal(
+                FilledButton(
                   onPressed: onRetry,
+                  style: FilledButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: accent,
+                  ),
                   child: const Text('Tentar de novo'),
                 ),
-              _ActionButton(label: 'WhatsApp', onPressed: onWhatsApp),
-              _ActionButton(label: 'SMS', onPressed: onSms),
-              if (canCall) _ActionButton(label: 'Ligar', onPressed: onCall),
+              _ActionButton(
+                label: 'WhatsApp',
+                color: foreground,
+                onPressed: onWhatsApp,
+              ),
+              _ActionButton(label: 'SMS', color: foreground, onPressed: onSms),
+              if (canCall)
+                _ActionButton(
+                  label: 'Ligar',
+                  color: foreground,
+                  onPressed: onCall,
+                ),
             ],
           ),
         ],
@@ -147,16 +167,24 @@ class DeliveryCard extends StatelessWidget {
 
 // Botão pequeno de texto, com área de toque de 48 de altura (acessibilidade).
 class _ActionButton extends StatelessWidget {
-  const _ActionButton({required this.label, required this.onPressed});
+  const _ActionButton({
+    required this.label,
+    required this.color,
+    required this.onPressed,
+  });
 
   final String label;
+  final Color color;
   final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: onPressed,
-      style: TextButton.styleFrom(minimumSize: const Size(48, 48)),
+      style: TextButton.styleFrom(
+        minimumSize: const Size(48, 48),
+        foregroundColor: color,
+      ),
       child: Text(label),
     );
   }

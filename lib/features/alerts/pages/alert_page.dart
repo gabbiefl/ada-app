@@ -153,6 +153,10 @@ class _Palette {
   final String? symbol; // imagem do círculo central
   final String title;
 
+  // Cor do texto sobre um botão BRANCO: o vermelho no Perigo (fundo branco +
+  // texto branco não se enxergaria) e o azul-marinho na Atenção.
+  Color get onWhite => foreground == Colors.white ? background : foreground;
+
   static _Palette of(BuildContext context, MessageKind? kind) {
     final colors = ModeColors.of(context);
     switch (kind) {
@@ -362,6 +366,9 @@ class _Content extends StatelessWidget {
             DeliveryCard(
               delivery: delivery,
               canCall: isDanger,
+              foreground: palette.foreground,
+              background: palette.card,
+              accent: palette.onWhite,
               onWhatsApp: () => onManual(
                 () => alert.openWhatsApp(delivery.contact),
                 'Não foi possível abrir o WhatsApp.',
@@ -476,17 +483,11 @@ class _WhiteButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // O texto do botão usa a cor escura do modo (vermelho no Perigo, azul-marinho
-    // na Atenção) sobre o branco.
-    final color = palette.foreground == Colors.white
-        ? palette.background
-        : palette.foreground;
-
     return FilledButton(
       onPressed: onPressed,
       style: FilledButton.styleFrom(
         backgroundColor: Colors.white,
-        foregroundColor: color,
+        foregroundColor: palette.onWhite,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
