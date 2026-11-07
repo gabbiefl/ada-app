@@ -11,6 +11,8 @@ import 'package:ada_app/core/state/mode_controller.dart';
 import 'package:ada_app/core/theme/app_theme.dart';
 import 'package:ada_app/features/contacts/data/contacts_repository.dart';
 import 'package:ada_app/features/contacts/state/contacts_controller.dart';
+import 'package:ada_app/features/map/data/geolocator_location_service.dart';
+import 'package:ada_app/features/map/state/location_controller.dart';
 import 'package:ada_app/features/messages/data/messages_repository.dart';
 import 'package:ada_app/features/messages/state/messages_controller.dart';
 
@@ -49,6 +51,12 @@ class AdaApp extends StatelessWidget {
           create: (_) =>
               MessagesController(repository: SecureMessagesRepository())
                 ..load(),
+        ),
+        // Localização atual: só busca quando a usuária pede (aba Mapa), e nunca
+        // guarda a posição.
+        ChangeNotifierProvider(
+          create: (_) =>
+              LocationController(service: GeolocatorLocationService()),
         ),
       ],
       child: MaterialApp.router(

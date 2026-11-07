@@ -48,7 +48,7 @@ Obter a localização atual da usuária, com permissão e tratamento de erros, m
 |---|---|---|---|
 | 1 ✅ | `geolocator` e permissões no manifesto; `GeoPoint`, `LocationService` (interface e versão falsa) e a função do link de mapa, com testes | M | Pacote novo, manifesto, interface para testar |
 | 2 ✅ | Versão real do serviço: checar GPS e permissão, explicar antes de pedir, buscar a posição com tempo limite e devolver cada falha | M | Permissões em tempo de execução, `timeout` |
-| 3 | `LocationController` (estados: parado, carregando, sucesso, falha) e `provider` | M | Reuso do padrão controlador |
+| 3 ✅ | `LocationController` (estados: parado, carregando, sucesso, falha) e `provider` | M | Reuso do padrão controlador |
 | 4 | Aba **Mapa**: botão, explicação, resultado, link e erros com ação (tentar de novo, abrir configurações) | M | Estados de tela, tratamento de erro |
 | 5 | Montar o texto do alerta: mensagem + link, ou mensagem + aviso se faltar localização | P | Template de texto (fecha a ideia da Fase 6) |
 | 6 | Teste no emulador (localização simulada), testes de fluxo, `flutter analyze`, retrospectiva, resumos e backlog | P | Fechar a fase, simular GPS |
