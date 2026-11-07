@@ -1,6 +1,6 @@
 # Fase 9 — Comunicação: chamada, mensagem e WhatsApp
 
-> **Status:** 📝 em planejamento (revisado em 06/11/2026 com as respostas da usuária; aguardando aprovação)
+> **Status:** 🔄 em execução (plano aprovado)
 > **Itens do backlog:** F9-01, F9-02, F9-03, F9-04
 
 ## 1. Objetivo
@@ -55,7 +55,7 @@ Ao ativar o Modo Perigo, o app **age sozinho**: busca a localização, manda a m
 ## 6. Passos
 | # | Passo | Tamanho | O que a usuária aprende |
 |---|---|---|---|
-| 1 | Parte em Dart pura: `AlertActions` (interface e versão falsa), funções das URLs (`wa.me`, `tel:`), telefone no formato internacional, `url_launcher`; testes | M | Esquemas de URL, codificação de texto |
+| 1 ✅ | Parte em Dart pura: `AlertActions` (interface e versão falsa), funções das URLs (`wa.me`, `tel:`), telefone no formato internacional, `url_launcher`; testes | M | Esquemas de URL, codificação de texto |
 | 2 | Parte nativa: `MethodChannel` em Kotlin que envia SMS direto (mensagem longa em partes) e liga direto; permissões no manifesto e `permission_handler`; plano B (compositor de SMS e discador) | G | Código nativo, permissões sensíveis, intents |
 | 3 | `AlertController`: busca a localização, monta o texto, **envia o SMS aos outros contatos e só depois liga** (a ligação toma a tela), guardando o resultado de cada um | G | Orquestrar passos em ordem |
 | 4 | Tela **Alerta**: resultado por contato, reenviar, WhatsApp manual, rede vazia, avisos | M | Tela de vários estados |
