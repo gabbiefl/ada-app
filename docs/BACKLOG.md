@@ -116,7 +116,7 @@
 | F8-01 | Solicitar e tratar permissões de localização | M | ⬜ |
 | F8-02 | Obter a localização atual | M | ⬜ |
 | F8-03 | Compartilhar a localização na mensagem (link de mapa) | M | ⬜ |
-| F8-05 | **Mapa visual** na aba Mapa (ideia da usuária: é o ideal, entra se sobrar tempo; sugestão: `flutter_map` + OpenStreetMap, sem chave de API; pede confirmação do pacote). Na Fase 8 a aba mostra só a localização atual | C | ⬜ |
+| F8-05 | **Mapa visual** na aba Mapa (o protótipo do Figma tem um **mapa interativo**: é a versão fiel ao design; entra se sobrar tempo; sugestão: `flutter_map` + OpenStreetMap, sem chave de API; pede confirmação do pacote). Na Fase 8 a aba mostra só a localização atual | C | ⬜ |
 | F8-04 | Link de acompanhamento ao vivo (Firebase + página web), Nível 2 do MVP, depois da Fase 9 `[plano B]` | S | ⬜ |
 
 ## Fase 9 — Comunicação
