@@ -26,13 +26,21 @@ class AdaApp extends StatelessWidget {
   // `super.key` repassa a `key` (identificador do widget) para a classe-mãe.
   // `const` no construtor permite criar o widget com `const AdaApp()`.
   //
-  // Os dois serviços abaixo existem para os TESTES trocarem o GPS e o envio de
-  // SMS por versões falsas (nenhum teste manda mensagem ou liga de verdade). No
-  // app de verdade ficam vazios e valem os serviços reais.
-  const AdaApp({super.key, this.locationService, this.alertActions});
+  // Os parâmetros abaixo existem para os TESTES trocarem o GPS, o envio de SMS e
+  // o armazenamento por versões falsas (nenhum teste manda mensagem, liga ou
+  // depende do aparelho). No app de verdade ficam vazios e valem os reais.
+  const AdaApp({
+    super.key,
+    this.locationService,
+    this.alertActions,
+    this.contactsRepository,
+    this.messagesRepository,
+  });
 
   final LocationService? locationService;
   final AlertActions? alertActions;
+  final ContactsRepository? contactsRepository;
+  final MessagesRepository? messagesRepository;
 
   // `build` descreve COMO este widget aparece: ele devolve outros widgets.
   // O Flutter chama `build` sempre que precisa desenhar (ou redesenhar) a tela.
@@ -51,17 +59,22 @@ class AdaApp extends StatelessWidget {
         ),
         // `..load()` (cascata): cria o controlador e, em seguida, já manda
         // carregar os contatos guardados no aparelho.
+        // lazy: false -> cria e já carrega ao ABRIR o app. Sem isso, o controlador
+        // só nasceria na primeira tela que o lesse, e um alerta disparado direto
+        // da Home enxergaria a rede vazia.
         ChangeNotifierProvider(
-          create: (_) =>
-              ContactsController(repository: SecureContactsRepository())
-                ..load(),
+          lazy: false,
+          create: (_) => ContactsController(
+            repository: contactsRepository ?? SecureContactsRepository(),
+          )..load(),
         ),
         // Mensagens de emergência: carrega e grava os textos editados no
         // armazenamento seguro, igual aos contatos.
         ChangeNotifierProvider(
-          create: (_) =>
-              MessagesController(repository: SecureMessagesRepository())
-                ..load(),
+          lazy: false,
+          create: (_) => MessagesController(
+            repository: messagesRepository ?? SecureMessagesRepository(),
+          )..load(),
         ),
         // Localização atual: só busca quando a usuária pede (aba Mapa), e nunca
         // guarda a posição.

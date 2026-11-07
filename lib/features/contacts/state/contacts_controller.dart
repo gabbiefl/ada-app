@@ -36,9 +36,19 @@ class ContactsController extends ChangeNotifier {
   Future<void> _pendingSave = Future.value();
   bool _disposed = false;
 
+  // O carregamento em andamento (ou já feito). Quem precisa dos dados prontos,
+  // como o alerta, espera por `ready` em vez de ler uma lista ainda vazia.
+  Future<void>? _loading;
+
+  // Completa quando os contatos guardados já foram lidos. Sem repositório, ou
+  // antes de load() ser chamado, já está pronto.
+  Future<void> get ready => _loading ?? Future.value();
+
   // Lê os contatos guardados e mostra na tela. Chamado uma vez, ao abrir o app.
   // async/await: "espera" o armazenamento responder sem travar a tela.
-  Future<void> load() async {
+  Future<void> load() => _loading = _load();
+
+  Future<void> _load() async {
     final repository = this.repository;
     if (repository == null) return;
 

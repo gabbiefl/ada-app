@@ -5,6 +5,8 @@
 //
 // Nada aqui envia SMS, liga ou usa GPS de verdade: o alerta usa serviços falsos.
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
@@ -18,10 +20,13 @@ import 'package:ada_app/core/theme/app_theme.dart';
 import 'package:ada_app/features/alerts/data/alert_actions.dart';
 import 'package:ada_app/features/alerts/pages/alert_page.dart';
 import 'package:ada_app/features/alerts/state/alert_controller.dart';
+import 'package:ada_app/features/contacts/data/contacts_repository.dart';
+import 'package:ada_app/features/contacts/models/contact.dart';
 import 'package:ada_app/features/contacts/state/contacts_controller.dart';
 import 'package:ada_app/features/home/pages/home_page.dart';
 import 'package:ada_app/features/map/data/location_service.dart';
 import 'package:ada_app/features/map/models/geo_point.dart';
+import 'package:ada_app/features/messages/data/messages_repository.dart';
 import 'package:ada_app/features/messages/models/message_kind.dart';
 import 'package:ada_app/features/messages/state/messages_controller.dart';
 
@@ -46,7 +51,12 @@ const _short = Duration(milliseconds: 600);
 // Monta a Home com uma rede de [contacts] contatos e o alerta com serviços
 // falsos. Usa um GoRouter próprio (só a Home e a tela Alerta), porque tocar em
 // "Ativar" abre a tela de progresso.
-Future<_Home> _pumpHome(WidgetTester tester, {int contacts = 3}) async {
+Future<_Home> _pumpHome(
+  WidgetTester tester, {
+  int contacts = 3,
+  ContactsController? network,
+  MessagesController? messages,
+}) async {
   _tallScreen(tester);
 
   final actions = FakeAlertActions();
@@ -59,12 +69,19 @@ Future<_Home> _pumpHome(WidgetTester tester, {int contacts = 3}) async {
     ),
     actions: actions,
   );
-  final network = ContactsController();
-  for (var i = 1; i <= contacts; i++) {
-    network.add(name: 'Contato $i', phone: '5199999000$i');
+  final contactsController = network ?? ContactsController();
+  if (network == null) {
+    for (var i = 1; i <= contacts; i++) {
+      contactsController.add(name: 'Contato $i', phone: '5199999000$i');
+    }
   }
-  final messages = MessagesController();
-  for (final controller in [mode, alert, network, messages]) {
+  final messagesController = messages ?? MessagesController();
+  for (final controller in [
+    mode,
+    alert,
+    contactsController,
+    messagesController,
+  ]) {
     addTearDown(controller.dispose);
   }
 
@@ -82,13 +99,27 @@ Future<_Home> _pumpHome(WidgetTester tester, {int contacts = 3}) async {
       providers: [
         ChangeNotifierProvider.value(value: mode),
         ChangeNotifierProvider.value(value: alert),
-        ChangeNotifierProvider.value(value: network),
-        ChangeNotifierProvider.value(value: messages),
+        ChangeNotifierProvider.value(value: contactsController),
+        ChangeNotifierProvider.value(value: messagesController),
       ],
       child: MaterialApp.router(theme: AppTheme.light, routerConfig: router),
     ),
   );
   return _Home(mode, alert, actions);
+}
+
+// Repositório que só entrega os contatos quando o teste mandar (ou nunca): simula
+// o armazenamento ainda lendo na hora em que o alerta é ativado.
+class _SlowContactsRepository implements ContactsRepository {
+  final _completer = Completer<List<Contact>>();
+
+  void finish(List<Contact> contacts) => _completer.complete(contacts);
+
+  @override
+  Future<List<Contact>> load() => _completer.future;
+
+  @override
+  Future<void> save(List<Contact> contacts) async {}
 }
 
 List<String> _phones(FakeAlertActions actions, AlertActionKind kind) => [
@@ -440,6 +471,76 @@ void main() {
       expect(home.mode.mode, SecurityMode.danger);
       expect(home.alert.phase, AlertPhase.done);
       expect(find.byType(AlertPage), findsOneWidget);
+    });
+  });
+
+  group('Dados ainda carregando na hora de ativar', () {
+    const maria = Contact(id: '1', name: 'Maria', phone: '51999990001');
+    const ana = Contact(id: '2', name: 'Ana', phone: '51999990002');
+
+    testWidgets('o alerta espera a rede carregar em vez de ver a lista vazia', (
+      tester,
+    ) async {
+      final repository = _SlowContactsRepository();
+      final network = ContactsController(repository: repository)..load();
+      final home = await _pumpHome(tester, network: network);
+
+      await tester.tap(find.text('MODO PERIGO'));
+      await tester.pump(_short);
+      await tester.tap(find.text('Ativar'));
+      await tester.pump(_short);
+
+      // A rede ainda não carregou: o alerta aguarda, e nada saiu.
+      expect(find.byType(AlertPage), findsNothing);
+      expect(home.actions.calls, isEmpty);
+
+      repository.finish([maria, ana]);
+      await tester.pump(_short);
+
+      // Carregou: o alerta sai para a rede de verdade, sem "rede vazia".
+      expect(find.byType(AlertPage), findsOneWidget);
+      expect(find.textContaining('ainda não tem contatos'), findsNothing);
+      expect(_phones(home.actions, AlertActionKind.sendSms), ['51999990002']);
+      expect(_phones(home.actions, AlertActionKind.call), ['51999990001']);
+    });
+
+    testWidgets('se a leitura travar, o alerta sai mesmo assim após o prazo', (
+      tester,
+    ) async {
+      final network = ContactsController(repository: _SlowContactsRepository())
+        ..load(); // nunca termina
+      final home = await _pumpHome(tester, network: network);
+
+      await tester.tap(find.text('MODO PERIGO'));
+      await tester.pump(_short);
+      await tester.tap(find.text('Ativar'));
+      await tester.pump(_short);
+      expect(find.byType(AlertPage), findsNothing); // ainda esperando
+
+      await tester.pump(const Duration(seconds: 3)); // passou do prazo
+
+      // Não ficou preso: o modo está ativo e a tela do alerta abriu.
+      expect(home.mode.mode, SecurityMode.danger);
+      expect(find.byType(AlertPage), findsOneWidget);
+    });
+
+    testWidgets('o alerta usa a mensagem que a usuária editou', (tester) async {
+      final messages = MessagesController(
+        repository: InMemoryMessagesRepository({
+          MessageKind.danger: 'Texto que eu mesma escrevi.',
+        }),
+      )..load();
+      final home = await _pumpHome(tester, messages: messages);
+
+      await tester.tap(find.text('MODO PERIGO'));
+      await tester.pump(_short);
+      await tester.tap(find.text('Ativar'));
+      await tester.pump(_short);
+
+      final sms = home.actions.calls.firstWhere(
+        (c) => c.kind == AlertActionKind.sendSms,
+      );
+      expect(sms.text, startsWith('Texto que eu mesma escrevi.'));
     });
   });
 }

@@ -40,6 +40,9 @@ class HomePage extends StatefulWidget {
 // avançar a cada quadro. Todo AnimationController precisa de um.
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
+  // Quanto o alerta espera, no máximo, a rede e as mensagens carregarem.
+  static const _loadTimeout = Duration(seconds: 2);
+
   late final AnimationController _pulse;
 
   @override
@@ -78,16 +81,34 @@ class _HomePageState extends State<HomePage>
 
   // Dispara o alerta e abre a tela de progresso. Chamado logo depois de o modo
   // ser ativado. Junta os dados de outros controladores: a rede e a mensagem.
-  void _startAlert(MessageKind kind) {
+  Future<void> _startAlert(MessageKind kind) async {
     final alert = context.read<AlertController>();
-    final contacts = context.read<ContactsController>().contacts.toList();
-    final message = context.read<MessagesController>().textOf(kind);
+    final network = context.read<ContactsController>();
+    final messages = context.read<MessagesController>();
+
+    // Espera a rede e as mensagens guardadas terminarem de carregar: ler antes
+    // disso daria uma lista vazia ou o texto padrão no lugar do editado. Quando
+    // já carregaram (o normal), não espera nada.
+    // Com prazo: se a leitura travar, o alerta NÃO pode ficar esperando para
+    // sempre. Passado o limite, sai com o que já estiver carregado.
+    try {
+      await Future.wait([network.ready, messages.ready]).timeout(_loadTimeout);
+    } on TimeoutException {
+      // segue com o que houver
+    }
+    if (!mounted) return;
 
     // Um alerta anterior (ex.: a Atenção, ao subir para o Perigo) é encerrado
     // antes de começar o novo.
     alert.reset();
     // Sem await: a tela de progresso acompanha enquanto o alerta anda.
-    unawaited(alert.start(kind: kind, contacts: contacts, message: message));
+    unawaited(
+      alert.start(
+        kind: kind,
+        contacts: network.contacts.toList(),
+        message: messages.textOf(kind),
+      ),
+    );
     context.push(AppRoutes.alert);
   }
 
@@ -116,7 +137,7 @@ class _HomePageState extends State<HomePage>
     if (!confirmed || !mounted) return;
 
     if (controller.activate(SecurityMode.attention) == null) {
-      _startAlert(MessageKind.attention);
+      await _startAlert(MessageKind.attention);
     }
   }
 
@@ -139,7 +160,7 @@ class _HomePageState extends State<HomePage>
     if (!confirmed || !mounted) return;
 
     if (controller.activate(SecurityMode.danger) == null) {
-      _startAlert(MessageKind.danger);
+      await _startAlert(MessageKind.danger);
     }
   }
 
