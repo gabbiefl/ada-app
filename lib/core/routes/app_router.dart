@@ -12,6 +12,7 @@ import 'package:ada_app/core/widgets/coming_soon_page.dart';
 import 'package:ada_app/features/contacts/pages/contact_form_page.dart';
 import 'package:ada_app/features/contacts/pages/contacts_page.dart';
 import 'package:ada_app/features/home/pages/home_page.dart';
+import 'package:ada_app/features/map/pages/map_page.dart';
 import 'package:ada_app/features/messages/models/message_kind.dart';
 import 'package:ada_app/features/messages/pages/message_edit_page.dart';
 import 'package:ada_app/features/messages/pages/messages_page.dart';
@@ -94,7 +95,7 @@ final appRouter = GoRouter(
           routes: [
             GoRoute(
               path: AppRoutes.map,
-              builder: (context, state) => const ComingSoonPage(title: 'Mapa'),
+              builder: (context, state) => const MapPage(),
             ),
           ],
         ),
