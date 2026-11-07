@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Azul-marinho do fundo do ícone do ADA. -->
+    <color name="ic_launcher_background">#1A293E</color>
+</resources>
