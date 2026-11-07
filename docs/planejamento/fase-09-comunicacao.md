@@ -56,9 +56,9 @@ Ao ativar o Modo Perigo, o app **age sozinho**: busca a localização, manda a m
 | # | Passo | Tamanho | O que a usuária aprende |
 |---|---|---|---|
 | 1 ✅ | Parte em Dart pura: `AlertActions` (interface e versão falsa), funções das URLs (`wa.me`, `tel:`), telefone no formato internacional, `url_launcher`; testes | M | Esquemas de URL, codificação de texto |
-| 2 | Parte nativa: `MethodChannel` em Kotlin que envia SMS direto (mensagem longa em partes) e liga direto; permissões no manifesto e `permission_handler`; plano B (compositor de SMS e discador) | G | Código nativo, permissões sensíveis, intents |
-| 3 | `AlertController`: busca a localização, monta o texto, **envia o SMS aos outros contatos e só depois liga** (a ligação toma a tela), guardando o resultado de cada um | G | Orquestrar passos em ordem |
-| 4 | Tela **Alerta**: resultado por contato, reenviar, WhatsApp manual, rede vazia, avisos | M | Tela de vários estados |
+| 2 ✅ | Parte nativa: `MethodChannel` em Kotlin que envia SMS direto (mensagem longa em partes) e liga direto; permissões no manifesto e `permission_handler`; plano B (compositor de SMS e discador) | G | Código nativo, permissões sensíveis, intents |
+| 3 ✅ | `AlertController`: busca a localização, monta o texto, **envia o SMS aos outros contatos e só depois liga** (a ligação toma a tela), guardando o resultado de cada um | G | Orquestrar passos em ordem |
+| 4 ✅ | Tela **Alerta**: resultado por contato, reenviar, WhatsApp manual, rede vazia, avisos | M | Tela de vários estados |
 | 5 | Ligar o **Ativar do Perigo** (e a Atenção, sem ligar) ao fluxo; botão para reabrir a tela | P | Disparar o fluxo a partir de uma ação |
 | 6 | Testes de fluxo, teste no emulador, `flutter analyze`, retrospectiva, resumos e backlog | M | Fechar a fase |
 

@@ -8,6 +8,8 @@ import 'package:provider/provider.dart';
 import 'package:ada_app/core/feedback/haptics.dart';
 import 'package:ada_app/core/routes/app_router.dart';
 import 'package:ada_app/core/state/mode_controller.dart';
+import 'package:ada_app/features/alerts/data/platform_alert_actions.dart';
+import 'package:ada_app/features/alerts/state/alert_controller.dart';
 import 'package:ada_app/core/theme/app_theme.dart';
 import 'package:ada_app/features/contacts/data/contacts_repository.dart';
 import 'package:ada_app/features/contacts/state/contacts_controller.dart';
@@ -57,6 +59,14 @@ class AdaApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) =>
               LocationController(service: GeolocatorLocationService()),
+        ),
+        // Alerta: junta localização, SMS e ligação. Só dispara quando o Perigo ou
+        // a Atenção são ativados (a ligação a esses toques vem no passo 5).
+        ChangeNotifierProvider(
+          create: (_) => AlertController(
+            locationService: GeolocatorLocationService(),
+            actions: PlatformAlertActions(),
+          ),
         ),
       ],
       child: MaterialApp.router(

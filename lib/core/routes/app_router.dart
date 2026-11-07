@@ -9,6 +9,7 @@ import 'package:go_router/go_router.dart';
 
 import 'package:ada_app/core/widgets/ada_bottom_nav.dart';
 import 'package:ada_app/core/widgets/coming_soon_page.dart';
+import 'package:ada_app/features/alerts/pages/alert_page.dart';
 import 'package:ada_app/features/contacts/pages/contact_form_page.dart';
 import 'package:ada_app/features/contacts/pages/contacts_page.dart';
 import 'package:ada_app/features/home/pages/home_page.dart';
@@ -35,6 +36,7 @@ class AppRoutes {
       '/settings/messages/edit/${kind.name}';
   static const coverage = '/settings/coverage';
   static const history = '/settings/history';
+  static const alert = '/alert';
 }
 
 // Navegador "raiz": telas abertas nele cobrem a barra inferior (ex.: Novo contato).
@@ -141,6 +143,12 @@ final appRouter = GoRouter(
           ],
         ),
       ],
+    ),
+    // Tela do alerta: fora da moldura, então cobre a barra inferior. Aberta ao
+    // ativar o Perigo ou a Atenção.
+    GoRoute(
+      path: AppRoutes.alert,
+      builder: (context, state) => const AlertPage(),
     ),
   ],
 );
