@@ -27,6 +27,11 @@ class ActionResult {
 }
 
 abstract class AlertActions {
+  // Pede, de uma vez e com antecedência, as permissões de SMS e de ligação, para
+  // o alerta não parar no meio esperando a usuária responder ao Android.
+  // Devolve true se as duas foram dadas.
+  Future<bool> requestPermissions();
+
   // Automáticas: não pedem toque da usuária (precisam de permissão).
   Future<ActionResult> sendSms(String phone, String text);
   Future<ActionResult> call(String phone);
@@ -64,6 +69,16 @@ class AlertActionCall {
 class FakeAlertActions implements AlertActions {
   final List<AlertActionCall> calls = [];
   final Map<AlertActionKind, ActionResult> results = {};
+
+  // O que requestPermissions devolve, e quantas vezes foi chamado.
+  bool permissionsGranted = true;
+  int permissionRequests = 0;
+
+  @override
+  Future<bool> requestPermissions() async {
+    permissionRequests++;
+    return permissionsGranted;
+  }
 
   ActionResult _record(AlertActionKind kind, String phone, [String? text]) {
     calls.add(AlertActionCall(kind, phone, text));

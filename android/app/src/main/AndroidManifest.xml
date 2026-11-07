@@ -3,6 +3,16 @@
          localização em segundo plano. A permissão é pedida na hora de uso. -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- Alerta automático (Fase 9): enviar SMS e ligar sem abrir outro app.
+         São permissões sensíveis: o Android pergunta à usuária em tempo de uso,
+         e se ela negar usamos o plano B (compositor de SMS e discador). A Play
+         Store restringe SEND_SMS; o APK da mostra é instalado direto. -->
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <!-- required=false: o app também instala em aparelhos sem chip (tablet,
+         emulador sem telefonia); nesses o envio de SMS e a ligação ficam
+         indisponíveis e o app usa o plano B. -->
+    <uses-feature android:name="android.hardware.telephony" android:required="false" />
     <application
         android:label="ADA"
         android:name="${applicationName}"
@@ -45,5 +55,25 @@
             <action android:name="android.intent.action.PROCESS_TEXT"/>
             <data android:mimeType="text/plain"/>
         </intent>
+        <!-- Apps que o ADA precisa enxergar (Android 11 ou mais): discador,
+             mensagens, WhatsApp (link https://wa.me) e navegador. -->
+        <intent>
+            <action android:name="android.intent.action.DIAL"/>
+            <data android:scheme="tel"/>
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.SENDTO"/>
+            <data android:scheme="smsto"/>
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW"/>
+            <data android:scheme="sms"/>
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW"/>
+            <data android:scheme="https"/>
+        </intent>
+        <package android:name="com.whatsapp"/>
+        <package android:name="com.whatsapp.w4b"/>
     </queries>
 </manifest>
