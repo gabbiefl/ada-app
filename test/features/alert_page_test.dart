@@ -100,8 +100,11 @@ void main() {
     );
     await _pumpAlert(tester, controller);
 
+    // Cartão de progresso da localização girando; as outras etapas aguardam.
     expect(find.byType(CircularProgressIndicator), findsOneWidget);
-    expect(find.textContaining('Preparando o alerta'), findsOneWidget);
+    expect(find.text('Compartilhando localização'), findsOneWidget);
+    expect(find.text('Buscando onde você está…'), findsOneWidget);
+    expect(find.text('Aguardando a localização…'), findsOneWidget);
 
     slow.completer.complete(const LocationResult.success(_porto));
     await running;
@@ -115,16 +118,19 @@ void main() {
     await danger(tester);
 
     expect(find.text('Modo perigo ativo'), findsOneWidget);
+    // Detalhes por contato.
     expect(find.text('Maria'), findsOneWidget);
     expect(find.text('Ana'), findsOneWidget);
     expect(find.text('Bia'), findsOneWidget);
     expect(find.text('SMS enviado'), findsNWidgets(2));
-    expect(find.text('Ligação iniciada'), findsOneWidget);
-    expect(find.text('Tudo certo: 3 de 3 avisos feitos.'), findsOneWidget);
-    expect(
-      find.text('A sua localização foi incluída na mensagem.'),
-      findsOneWidget,
-    );
+    // Cartões de progresso, um por etapa.
+    expect(find.text('Localização compartilhada'), findsOneWidget);
+    expect(find.text('Mensagens enviadas'), findsOneWidget);
+    expect(find.text('2 de 2 enviadas'), findsOneWidget);
+    expect(find.text('Ligando para Maria'), findsOneWidget);
+    // "Ligação iniciada" aparece no cartão de progresso e no do contato.
+    expect(find.text('Ligação iniciada'), findsNWidgets(2));
+    expect(find.text('Detalhes por contato'), findsOneWidget);
   });
 
   testWidgets('Perigo: botão Ligar em cada contato; Atenção: nenhum', (
@@ -168,11 +174,10 @@ void main() {
 
     await danger(tester);
 
-    expect(
-      find.textContaining('A mensagem foi enviada sem ela.'),
-      findsOneWidget,
-    );
-    expect(find.text('Tudo certo: 3 de 3 avisos feitos.'), findsOneWidget);
+    expect(find.text('Localização indisponível'), findsOneWidget);
+    expect(find.text('As mensagens saem sem o link do mapa.'), findsOneWidget);
+    // Mesmo assim, as mensagens saem.
+    expect(find.text('Mensagens enviadas'), findsOneWidget);
   });
 
   testWidgets('SMS que falhou mostra o motivo e "Tentar de novo"', (
@@ -186,8 +191,10 @@ void main() {
 
     expect(find.text('Sem permissão para enviar SMS'), findsNWidgets(2));
     expect(find.text('Tentar de novo'), findsNWidgets(2));
+    // Nenhum SMS saiu: a etapa de mensagens aparece como falha.
+    expect(find.text('Algumas mensagens falharam'), findsOneWidget);
     expect(
-      find.text('1 de 3 avisos feitos. Veja abaixo o que falhou.'),
+      find.text('0 de 2 enviadas. Veja os detalhes abaixo.'),
       findsOneWidget,
     );
   });
@@ -219,7 +226,8 @@ void main() {
 
     await danger(tester);
 
-    expect(find.text('Discador aberto'), findsOneWidget);
+    // No cartão de progresso e no do contato.
+    expect(find.text('Discador aberto'), findsNWidgets(2));
   });
 
   testWidgets('Rede vazia: explica e oferece cadastrar contato', (
@@ -239,7 +247,8 @@ void main() {
 
     expect(find.textContaining('Modo de demonstração'), findsOneWidget);
     expect(find.text('SMS simulado'), findsNWidgets(2));
-    expect(find.text('Ligação simulada'), findsOneWidget);
+    expect(find.text('2 de 2 enviadas (simulado)'), findsOneWidget);
+    expect(find.text('Ligação simulada'), findsNWidgets(2));
     expect(actions.calls, isEmpty);
   });
 

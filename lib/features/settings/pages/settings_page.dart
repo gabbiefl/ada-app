@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import 'package:ada_app/core/routes/app_router.dart';
+import 'package:ada_app/features/settings/widgets/demo_mode_tile.dart';
 import 'package:ada_app/features/settings/widgets/settings_tile.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -49,6 +50,8 @@ class SettingsPage extends StatelessWidget {
                 title: 'Mensagens personalizadas',
                 description: 'Personalize as mensagens enviadas em alertas.',
               ),
+              const SizedBox(height: 11),
+              const DemoModeTile(),
             ],
           ),
         ),

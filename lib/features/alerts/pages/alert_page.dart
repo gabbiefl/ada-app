@@ -1,10 +1,12 @@
-// Tela "Alerta": mostra o que está acontecendo (ou aconteceu) com cada contato
-// depois de ativar o Modo Perigo ou o Modo Atenção.
+// Tela "Alerta": acompanha o alerta depois de ativar o Modo Perigo ou o Modo
+// Atenção.
 //
-// A tela só DESENHA o estado do AlertController: nada de lógica aqui. O envio
-// automático (SMS e ligação) já foi disparado ao ativar o modo; aqui a usuária
-// acompanha, tenta de novo o que falhou e usa o WhatsApp (que só abre a conversa:
-// ela precisa tocar em enviar).
+// No topo, um cartão de PROGRESSO para cada etapa (localização, mensagens,
+// ligação), com um ícone que gira e vira ✓. Embaixo, os DETALHES por contato,
+// onde a usuária tenta de novo o que falhou e usa o WhatsApp (que só abre a
+// conversa: ela precisa tocar em enviar).
+//
+// A tela só DESENHA o estado do AlertController: nada de lógica aqui.
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -16,7 +18,9 @@ import 'package:ada_app/core/theme/app_colors.dart';
 import 'package:ada_app/core/widgets/page_header.dart';
 import 'package:ada_app/features/alerts/data/alert_actions.dart';
 import 'package:ada_app/features/alerts/state/alert_controller.dart';
+import 'package:ada_app/features/alerts/state/alert_progress.dart';
 import 'package:ada_app/features/alerts/widgets/delivery_card.dart';
+import 'package:ada_app/features/alerts/widgets/progress_step_card.dart';
 import 'package:ada_app/features/messages/models/message_kind.dart';
 
 class AlertPage extends StatelessWidget {
@@ -87,111 +91,62 @@ class AlertPage extends StatelessWidget {
     AlertController alert,
     bool isDanger,
   ) {
-    switch (alert.phase) {
-      case AlertPhase.idle:
-        return const [
-          _Notice(
-            icon: LucideIcons.info,
-            color: AppColors.info,
-            text: 'Nenhum alerta em andamento.',
-          ),
-        ];
-
-      case AlertPhase.preparing:
-        return const [
-          _Progress(text: 'Preparando o alerta… buscando a sua localização.'),
-        ];
-
-      case AlertPhase.sending:
-      case AlertPhase.done:
-        if (alert.hasNoContacts) return [_NoContacts()];
-        return [
-          if (alert.phase == AlertPhase.sending)
-            const _Progress(text: 'Avisando a sua rede…')
-          else
-            _Summary(alert: alert),
-          const SizedBox(height: 16),
-          _LocationNote(alert: alert),
-          const SizedBox(height: 16),
-          for (final delivery in alert.deliveries) ...[
-            DeliveryCard(
-              delivery: delivery,
-              canCall: isDanger,
-              onWhatsApp: () => _manual(
-                context,
-                () => alert.openWhatsApp(delivery.contact),
-                'Não foi possível abrir o WhatsApp.',
-              ),
-              onSms: () => _manual(
-                context,
-                () => alert.openSmsComposer(delivery.contact),
-                'Não foi possível abrir o app de mensagens.',
-              ),
-              onCall: () => _manual(
-                context,
-                () => alert.callContact(delivery.contact),
-                'Não foi possível ligar.',
-              ),
-              onRetry: () => alert.retry(delivery.contact),
-            ),
-            const SizedBox(height: 12),
-          ],
-          const SizedBox(height: 4),
-          const _Notice(
-            icon: LucideIcons.info,
-            color: AppColors.info,
-            text:
-                'O SMS é enviado automaticamente. O WhatsApp só abre a '
-                'conversa: toque em enviar por lá. A mensagem fica no '
-                'histórico do SMS e do WhatsApp deste celular.',
-          ),
-        ];
+    if (alert.phase == AlertPhase.idle) {
+      return const [
+        _Notice(
+          icon: LucideIcons.info,
+          color: AppColors.info,
+          text: 'Nenhum alerta em andamento.',
+        ),
+      ];
     }
-  }
-}
+    if (alert.hasNoContacts) return [_NoContacts()];
 
-// Resumo no fim: quantos envios deram certo.
-class _Summary extends StatelessWidget {
-  const _Summary({required this.alert});
-
-  final AlertController alert;
-
-  @override
-  Widget build(BuildContext context) {
-    final total = alert.deliveries.length;
-    final sent = alert.deliveries
-        .where((d) => d.status == DeliveryStatus.sent)
-        .length;
-    final allSent = sent == total;
-
-    return _Notice(
-      icon: allSent ? LucideIcons.circleCheck : LucideIcons.triangleAlert,
-      color: allSent ? AppColors.avatarGreen : AppColors.modeDangerText,
-      text: allSent
-          ? 'Tudo certo: $sent de $total avisos feitos.'
-          : '$sent de $total avisos feitos. Veja abaixo o que falhou.',
-    );
-  }
-}
-
-// Avisa se a localização entrou na mensagem ou não.
-class _LocationNote extends StatelessWidget {
-  const _LocationNote({required this.alert});
-
-  final AlertController alert;
-
-  @override
-  Widget build(BuildContext context) {
-    final hasLocation = alert.location != null;
-
-    return _Notice(
-      icon: LucideIcons.mapPin,
-      color: hasLocation ? AppColors.avatarGreen : AppColors.modeDangerText,
-      text: hasLocation
-          ? 'A sua localização foi incluída na mensagem.'
-          : 'Não foi possível obter a sua localização. A mensagem foi '
-                'enviada sem ela.',
-    );
+    return [
+      // Progresso: um cartão por etapa.
+      for (final step in buildProgressSteps(alert)) ...[
+        ProgressStepCard(step: step),
+        const SizedBox(height: 12),
+      ],
+      const SizedBox(height: 12),
+      Text(
+        'Detalhes por contato',
+        style: Theme.of(context).textTheme.titleMedium,
+      ),
+      const SizedBox(height: 12),
+      for (final delivery in alert.deliveries) ...[
+        DeliveryCard(
+          delivery: delivery,
+          canCall: isDanger,
+          onWhatsApp: () => _manual(
+            context,
+            () => alert.openWhatsApp(delivery.contact),
+            'Não foi possível abrir o WhatsApp.',
+          ),
+          onSms: () => _manual(
+            context,
+            () => alert.openSmsComposer(delivery.contact),
+            'Não foi possível abrir o app de mensagens.',
+          ),
+          onCall: () => _manual(
+            context,
+            () => alert.callContact(delivery.contact),
+            'Não foi possível ligar.',
+          ),
+          onRetry: () => alert.retry(delivery.contact),
+        ),
+        const SizedBox(height: 12),
+      ],
+      const SizedBox(height: 4),
+      const _Notice(
+        icon: LucideIcons.info,
+        color: AppColors.info,
+        text:
+            'O SMS é enviado automaticamente. O WhatsApp só abre a '
+            'conversa: toque em enviar por lá. A mensagem fica no '
+            'histórico do SMS e do WhatsApp deste celular.',
+      ),
+    ];
   }
 }
 
@@ -212,27 +167,6 @@ class _NoContacts extends StatelessWidget {
         FilledButton(
           onPressed: () => context.push(AppRoutes.newContact),
           child: const Text('Cadastrar contato'),
-        ),
-      ],
-    );
-  }
-}
-
-class _Progress extends StatelessWidget {
-  const _Progress({required this.text});
-
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const CircularProgressIndicator(semanticsLabel: 'Preparando o alerta'),
-        const SizedBox(height: 16),
-        Text(
-          text,
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.bodyMedium,
         ),
       ],
     );

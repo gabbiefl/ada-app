@@ -8,12 +8,14 @@ import 'package:provider/provider.dart';
 import 'package:ada_app/core/feedback/haptics.dart';
 import 'package:ada_app/core/routes/app_router.dart';
 import 'package:ada_app/core/state/mode_controller.dart';
+import 'package:ada_app/features/alerts/data/alert_actions.dart';
 import 'package:ada_app/features/alerts/data/platform_alert_actions.dart';
 import 'package:ada_app/features/alerts/state/alert_controller.dart';
 import 'package:ada_app/core/theme/app_theme.dart';
 import 'package:ada_app/features/contacts/data/contacts_repository.dart';
 import 'package:ada_app/features/contacts/state/contacts_controller.dart';
 import 'package:ada_app/features/map/data/geolocator_location_service.dart';
+import 'package:ada_app/features/map/data/location_service.dart';
 import 'package:ada_app/features/map/state/location_controller.dart';
 import 'package:ada_app/features/messages/data/messages_repository.dart';
 import 'package:ada_app/features/messages/state/messages_controller.dart';
@@ -23,7 +25,14 @@ import 'package:ada_app/features/messages/state/messages_controller.dart';
 class AdaApp extends StatelessWidget {
   // `super.key` repassa a `key` (identificador do widget) para a classe-mãe.
   // `const` no construtor permite criar o widget com `const AdaApp()`.
-  const AdaApp({super.key});
+  //
+  // Os dois serviços abaixo existem para os TESTES trocarem o GPS e o envio de
+  // SMS por versões falsas (nenhum teste manda mensagem ou liga de verdade). No
+  // app de verdade ficam vazios e valem os serviços reais.
+  const AdaApp({super.key, this.locationService, this.alertActions});
+
+  final LocationService? locationService;
+  final AlertActions? alertActions;
 
   // `build` descreve COMO este widget aparece: ele devolve outros widgets.
   // O Flutter chama `build` sempre que precisa desenhar (ou redesenhar) a tela.
@@ -57,15 +66,16 @@ class AdaApp extends StatelessWidget {
         // Localização atual: só busca quando a usuária pede (aba Mapa), e nunca
         // guarda a posição.
         ChangeNotifierProvider(
-          create: (_) =>
-              LocationController(service: GeolocatorLocationService()),
+          create: (_) => LocationController(
+            service: locationService ?? GeolocatorLocationService(),
+          ),
         ),
         // Alerta: junta localização, SMS e ligação. Só dispara quando o Perigo ou
         // a Atenção são ativados (a ligação a esses toques vem no passo 5).
         ChangeNotifierProvider(
           create: (_) => AlertController(
-            locationService: GeolocatorLocationService(),
-            actions: PlatformAlertActions(),
+            locationService: locationService ?? GeolocatorLocationService(),
+            actions: alertActions ?? PlatformAlertActions(),
           ),
         ),
       ],

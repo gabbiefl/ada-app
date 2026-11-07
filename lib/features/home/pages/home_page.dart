@@ -5,16 +5,24 @@
 // Por enquanto é estática: os cards dos modos e a barra de navegação entram
 // nos próximos passos da Fase 3.
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:provider/provider.dart';
 
+import 'package:ada_app/core/routes/app_router.dart';
 import 'package:ada_app/core/state/mode_controller.dart';
 import 'package:ada_app/core/state/security_mode.dart';
 import 'package:ada_app/core/theme/mode_colors.dart';
+import 'package:ada_app/features/alerts/state/alert_controller.dart';
+import 'package:ada_app/features/contacts/state/contacts_controller.dart';
 import 'package:ada_app/features/home/widgets/mode_card.dart';
 import 'package:ada_app/features/home/widgets/mode_rings.dart';
 import 'package:ada_app/features/home/widgets/status_chip.dart';
+import 'package:ada_app/features/messages/models/message_kind.dart';
+import 'package:ada_app/features/messages/state/messages_controller.dart';
 
 // StatefulWidget: agora a tela guarda algo que vive e muda, o controlador da
 // animação dos anéis. (Ver o resumo 04 de aprendizado sobre Stateless x Stateful.)
@@ -52,21 +60,6 @@ class _HomePageState extends State<HomePage>
     super.dispose();
   }
 
-  // Toque no card Atenção: pede ao controlador e, se ele recusar (estando no
-  // Perigo), explica o motivo. A tela não conhece a regra, só mostra o resultado.
-  void _activateAttention() {
-    final error = context.read<ModeController>().activate(
-      SecurityMode.attention,
-    );
-    if (error == ModeError.deactivateFirst) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Desative o Modo perigo antes de mudar para Atenção.'),
-        ),
-      );
-    }
-  }
-
   // Diálogo de confirmação em dois botões. Devolve true só se a usuária confirmar
   // (Cancelar, ou tocar fora do diálogo, devolve false/null).
   Future<bool> _confirm({
@@ -96,8 +89,53 @@ class _HomePageState extends State<HomePage>
     return confirmed == true;
   }
 
+  // Dispara o alerta e abre a tela de progresso. Chamado logo depois de o modo
+  // ser ativado. Junta os dados de outros controladores: a rede e a mensagem.
+  void _startAlert(MessageKind kind) {
+    final alert = context.read<AlertController>();
+    final contacts = context.read<ContactsController>().contacts.toList();
+    final message = context.read<MessagesController>().textOf(kind);
+
+    // Um alerta anterior (ex.: a Atenção, ao subir para o Perigo) é encerrado
+    // antes de começar o novo.
+    alert.reset();
+    // Sem await: a tela de progresso acompanha enquanto o alerta anda.
+    unawaited(alert.start(kind: kind, contacts: contacts, message: message));
+    context.push(AppRoutes.alert);
+  }
+
+  // Atenção: a rede recebe um SMS com a localização, então também confirma.
+  Future<void> _activateAttention() async {
+    final controller = context.read<ModeController>();
+    if (controller.mode == SecurityMode.attention) return; // já está ativo
+
+    // Do Perigo não se desce direto para a Atenção: explica antes de perguntar.
+    if (!controller.mode.canGoTo(SecurityMode.attention)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Desative o Modo perigo antes de mudar para Atenção.'),
+        ),
+      );
+      return;
+    }
+
+    final confirmed = await _confirm(
+      title: 'Ativar o Modo atenção?',
+      message: 'A sua rede receberá uma mensagem com a sua localização.',
+      confirmLabel: 'Ativar',
+      confirmColor: ModeColors.of(context).attentionText,
+    );
+    // Depois de um await, a tela pode já ter saído: confere antes de usar o context.
+    if (!confirmed || !mounted) return;
+
+    if (controller.activate(SecurityMode.attention) == null) {
+      _startAlert(MessageKind.attention);
+    }
+  }
+
   // Perigo dispara o fluxo de emergência, então o primeiro toque só PERGUNTA;
-  // o segundo (em "Ativar") é que ativa. Total: 2 toques (meta do RNF01).
+  // o segundo (em "Ativar") é que ativa e já dispara o alerta, sem outra
+  // confirmação. Total: 2 toques (meta do RNF01).
   Future<void> _activateDanger() async {
     // Pega o controlador ANTES do await: depois dele o context pode não valer.
     final controller = context.read<ModeController>();
@@ -105,16 +143,24 @@ class _HomePageState extends State<HomePage>
 
     final confirmed = await _confirm(
       title: 'Ativar o Modo perigo?',
-      message: 'Use apenas em caso de emergência.',
+      message:
+          'O ADA vai avisar a sua rede por SMS com a sua localização e ligar '
+          'para o contato de plantão. Use apenas em caso de emergência.',
       confirmLabel: 'Ativar',
       confirmColor: ModeColors.of(context).danger,
     );
-    if (confirmed) controller.activate(SecurityMode.danger);
+    if (!confirmed || !mounted) return;
+
+    if (controller.activate(SecurityMode.danger) == null) {
+      _startAlert(MessageKind.danger);
+    }
   }
 
   // Encerrar um alerta por engano é o pior erro deste app: também confirma.
+  // Ao desativar, o alerta em andamento é cancelado (nenhum envio novo sai).
   Future<void> _deactivate() async {
     final controller = context.read<ModeController>();
+    final alert = context.read<AlertController>();
     if (controller.mode == SecurityMode.normal) return;
 
     final confirmed = await _confirm(
@@ -122,7 +168,10 @@ class _HomePageState extends State<HomePage>
       message: 'O ADA voltará ao modo normal.',
       confirmLabel: 'Desativar',
     );
-    if (confirmed) controller.deactivate();
+    if (!confirmed) return;
+
+    controller.deactivate();
+    alert.reset();
   }
 
   @override
@@ -278,6 +327,12 @@ class _HomePageState extends State<HomePage>
                       Text(
                         'Toque no ícone para desativar.',
                         style: textTheme.labelMedium,
+                      ),
+                      const SizedBox(height: 4),
+                      // Reabre a tela de progresso do alerta em andamento.
+                      TextButton(
+                        onPressed: () => context.push(AppRoutes.alert),
+                        child: const Text('Ver alerta'),
                       ),
                     ] else
                       Text(

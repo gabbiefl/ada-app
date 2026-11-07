@@ -1,11 +1,15 @@
-// Fluxo completo dos modos no app de verdade (com rotas, providers e vibração
-// real do sistema, que no teste simplesmente não faz nada).
+// Fluxo completo dos modos no app de verdade (rotas, providers, confirmações e
+// tela de alerta). O GPS e o envio de SMS são falsos: nenhum teste manda
+// mensagem ou liga de verdade.
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:ada_app/app.dart';
 import 'package:ada_app/core/routes/app_router.dart';
+import 'package:ada_app/features/alerts/data/alert_actions.dart';
+import 'package:ada_app/features/map/data/location_service.dart';
+import 'package:ada_app/features/map/models/geo_point.dart';
 
 void main() {
   testWidgets('Fluxo: Normal -> Atenção -> Perigo -> Normal', (tester) async {
@@ -14,26 +18,45 @@ void main() {
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.reset);
 
+    final actions = FakeAlertActions();
+
     // O appRouter é global: começa sempre pela Home.
     appRouter.go(AppRoutes.home);
-    await tester.pumpWidget(const AdaApp());
-    const short = Duration(milliseconds: 300);
+    await tester.pumpWidget(
+      AdaApp(
+        locationService: FakeLocationService(
+          const LocationResult.success(
+            GeoPoint(latitude: -30.0346, longitude: -51.2177),
+          ),
+        ),
+        alertActions: actions,
+      ),
+    );
+    const short = Duration(milliseconds: 600);
     await tester.pump(short);
 
     expect(find.text('Nenhum alerta ativo no momento.'), findsOneWidget);
 
-    // Atenção: 1 toque.
+    // Atenção: card + Ativar (2 toques), e abre a tela do alerta.
     await tester.tap(find.text('MODO ATENÇÃO'));
     await tester.pump(short);
+    await tester.tap(find.text('Ativar'));
+    await tester.pump(short);
     expect(find.text('Modo atenção ativo'), findsOneWidget);
+    expect(find.text('Alerta'), findsOneWidget);
+    await tester.tap(find.byTooltip('Voltar'));
+    await tester.pump(short);
+    expect(find.text('Modo atenção ativo'), findsOneWidget); // chip da Home
 
-    // Perigo: 2 toques (card + Ativar).
+    // Perigo: 2 toques (card + Ativar), e abre a tela do alerta.
     await tester.tap(find.text('MODO PERIGO'));
     await tester.pump(short);
     await tester.tap(find.text('Ativar'));
     await tester.pump(short);
+    expect(find.text('Alerta'), findsOneWidget);
     expect(find.text('Modo perigo ativo'), findsOneWidget);
-    expect(find.text('Modo atenção ativo'), findsNothing);
+    await tester.tap(find.byTooltip('Voltar'));
+    await tester.pump(short);
 
     // Do Perigo, o card Atenção é recusado e o alerta continua.
     await tester.tap(find.text('MODO ATENÇÃO'));
@@ -50,5 +73,8 @@ void main() {
     await tester.tap(find.text('Desativar'));
     await tester.pump(short);
     expect(find.text('Nenhum alerta ativo no momento.'), findsOneWidget);
+
+    // Sem contatos cadastrados nada foi enviado nem ligado.
+    expect(actions.calls, isEmpty);
   });
 }

@@ -59,7 +59,7 @@ Ao ativar o Modo Perigo, o app **age sozinho**: busca a localização, manda a m
 | 2 ✅ | Parte nativa: `MethodChannel` em Kotlin que envia SMS direto (mensagem longa em partes) e liga direto; permissões no manifesto e `permission_handler`; plano B (compositor de SMS e discador) | G | Código nativo, permissões sensíveis, intents |
 | 3 ✅ | `AlertController`: busca a localização, monta o texto, **envia o SMS aos outros contatos e só depois liga** (a ligação toma a tela), guardando o resultado de cada um | G | Orquestrar passos em ordem |
 | 4 ✅ | Tela **Alerta**: resultado por contato, reenviar, WhatsApp manual, rede vazia, avisos | M | Tela de vários estados |
-| 5 | Ligar o **Ativar do Perigo** (e a Atenção, sem ligar) ao fluxo; botão para reabrir a tela | P | Disparar o fluxo a partir de uma ação |
+| 5 ✅ | Ligar o **Ativar do Perigo** (e a Atenção, sem ligar) ao fluxo; botão para reabrir a tela | P | Disparar o fluxo a partir de uma ação |
 | 6 | Testes de fluxo, teste no emulador, `flutter analyze`, retrospectiva, resumos e backlog | M | Fechar a fase |
 
 ## 7. Decisões técnicas
@@ -77,6 +77,9 @@ Ao ativar o Modo Perigo, o app **age sozinho**: busca a localização, manda a m
 | `AlertActions` atrás de interface, com versão falsa | Chamar Kotlin direto nos testes | Os testes **nunca** enviam SMS nem ligam de verdade |
 | **Uma vez por ativação:** o envio automático não se repete sozinho | Reenviar em laço | Evita enviar várias vezes e gastar o plano. Reenviar é um toque na tela Alerta |
 | Nada de telefone, texto ou coordenada em `print`/`debugPrint` | Logs para depurar | Privacidade (P6) |
+| **Tela de progresso com um cartão por etapa** (localização, mensagens, ligação), cada um com ícone que gira e vira ✓; os detalhes por contato ficam embaixo | Só a lista por contato | Descrição do Figma passada pela usuária (o frame **não foi lido**: conferir depois). A lista por contato continua para *tentar de novo* e para o WhatsApp manual |
+| Atenção também pede confirmação antes de enviar | Ativar com um toque | Com envio automático, um toque acidental avisaria toda a rede |
+| Modo de demonstração em Configurações, desligado ao abrir o app | Gravar a escolha | Um esquecimento nunca deixa um alerta de verdade "de mentirinha" |
 
 ## 8. Riscos e plano B
 | Risco | Impacto | Plano B |
