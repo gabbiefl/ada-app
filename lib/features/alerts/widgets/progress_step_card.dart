@@ -1,36 +1,34 @@
 // Cartão de uma etapa do alerta, com um ícone de estado: carregando (girando),
 // concluído, com ressalva ou com falha. É o "indicador de progresso" da tela.
+//
+// Como a tela Alerta tem o fundo na cor do modo (vermelho no Perigo, amarelo na
+// Atenção), o cartão não escolhe cores sozinho: recebe a cor do texto e do fundo.
+// O estado (✓, aviso, relógio, girando) aparece no ÍCONE, e não numa cor.
 
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-import 'package:ada_app/core/theme/app_colors.dart';
 import 'package:ada_app/features/alerts/state/alert_progress.dart';
 
 class ProgressStepCard extends StatelessWidget {
-  const ProgressStepCard({super.key, required this.step});
+  const ProgressStepCard({
+    super.key,
+    required this.step,
+    required this.foreground,
+    required this.background,
+  });
 
   final ProgressStep step;
 
-  Color get _color {
-    switch (step.state) {
-      case ProgressState.pending:
-        return AppColors.textSecondary;
-      case ProgressState.loading:
-        return AppColors.info;
-      case ProgressState.done:
-        return AppColors.avatarGreen;
-      case ProgressState.warning:
-        return AppColors.modeAttentionText;
-      case ProgressState.failed:
-        return AppColors.modeDangerText;
-    }
-  }
+  // Cor do texto e dos ícones.
+  final Color foreground;
+
+  // Cor de fundo do cartão (escura e translúcida, como no Figma).
+  final Color background;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final color = _color;
 
     // Semantics: o leitor de tela lê o cartão como uma frase só.
     return Semantics(
@@ -40,27 +38,33 @@ class ProgressStepCard extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: background,
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: color.withValues(alpha: 0.4)),
           ),
           child: Row(
             children: [
-              _StateIcon(state: step.state, color: color),
-              const SizedBox(width: 16),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(step.title, style: theme.textTheme.titleMedium),
+                    Text(
+                      step.title,
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        color: foreground,
+                      ),
+                    ),
                     const SizedBox(height: 2),
                     Text(
                       step.detail,
-                      style: theme.textTheme.bodySmall?.copyWith(color: color),
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: foreground.withValues(alpha: 0.85),
+                      ),
                     ),
                   ],
                 ),
               ),
+              const SizedBox(width: 16),
+              _StateIcon(state: step.state, color: foreground),
             ],
           ),
         ),
@@ -69,7 +73,7 @@ class ProgressStepCard extends StatelessWidget {
   }
 }
 
-// O ícone da esquerda: gira enquanto carrega e vira ✓ ou aviso depois.
+// O ícone da direita: gira enquanto carrega e vira ✓ ou aviso depois.
 class _StateIcon extends StatelessWidget {
   const _StateIcon({required this.state, required this.color});
 
@@ -78,19 +82,19 @@ class _StateIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const size = 26.0;
+    const size = 24.0;
 
     if (state == ProgressState.loading) {
       return SizedBox(
         width: size,
         height: size,
-        child: CircularProgressIndicator(strokeWidth: 3, color: color),
+        child: CircularProgressIndicator(strokeWidth: 2.5, color: color),
       );
     }
 
     final icon = switch (state) {
       ProgressState.pending => LucideIcons.clock,
-      ProgressState.done => LucideIcons.circleCheck,
+      ProgressState.done => LucideIcons.check,
       ProgressState.warning => LucideIcons.triangleAlert,
       _ => LucideIcons.circleX,
     };

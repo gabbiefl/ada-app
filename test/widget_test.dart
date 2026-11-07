@@ -162,8 +162,8 @@ void main() {
 
       expect(home.mode.mode, SecurityMode.attention);
       // Abriu a tela de progresso, e o alerta enviou SMS a todos, sem ligar.
-      expect(find.text('Alerta'), findsOneWidget);
-      expect(find.text('Modo atenção ativo'), findsOneWidget);
+      expect(find.byType(AlertPage), findsOneWidget);
+      expect(find.text('MODO ATENÇÃO'), findsOneWidget);
       expect(_phones(home.actions, AlertActionKind.sendSms).length, 3);
       expect(home.actions.count(AlertActionKind.call), 0);
     });
@@ -232,8 +232,8 @@ void main() {
       expect(home.mode.mode, SecurityMode.danger);
       // Sem nenhum toque a mais: abriu o progresso, mandou SMS aos outros dois
       // contatos e ligou para o primeiro.
-      expect(find.text('Alerta'), findsOneWidget);
-      expect(find.text('Modo perigo ativo'), findsOneWidget);
+      expect(find.byType(AlertPage), findsOneWidget);
+      expect(find.text('MODO PERIGO'), findsOneWidget);
       expect(_phones(home.actions, AlertActionKind.sendSms), [
         '51999990002',
         '51999990003',
@@ -387,13 +387,59 @@ void main() {
 
     await tester.tap(find.byTooltip('Voltar'));
     await tester.pump(_short);
-    expect(find.text('Alerta'), findsNothing); // de volta à Home
+    expect(find.byType(AlertPage), findsNothing); // de volta à Home
 
     await tester.tap(find.text('Ver alerta'));
     await tester.pump(_short);
 
-    expect(find.text('Alerta'), findsOneWidget);
+    expect(find.byType(AlertPage), findsOneWidget);
     // Reabrir não envia nada de novo.
     expect(home.actions.count(AlertActionKind.call), 1);
+  });
+
+  group('Cancelar alerta (na tela de progresso)', () {
+    Future<_Home> openDangerAlert(WidgetTester tester) async {
+      final home = await _pumpHome(tester);
+      await tester.tap(find.text('MODO PERIGO'));
+      await tester.pump(_short);
+      await tester.tap(find.text('Ativar'));
+      await tester.pump(_short);
+      return home;
+    }
+
+    testWidgets('pergunta antes e, confirmado, volta ao Normal e à Home', (
+      tester,
+    ) async {
+      final home = await openDangerAlert(tester);
+
+      await tester.tap(find.text('Cancelar alerta'));
+      await tester.pump(_short);
+
+      // Só o diálogo: nada mudou ainda.
+      expect(find.text('Cancelar o alerta?'), findsOneWidget);
+      expect(home.mode.mode, SecurityMode.danger);
+
+      // O botão do diálogo tem o mesmo rótulo; é o último da tela.
+      await tester.tap(find.text('Cancelar alerta').last);
+      await tester.pump(_short);
+
+      expect(home.mode.mode, SecurityMode.normal);
+      expect(home.alert.phase, AlertPhase.idle);
+      expect(find.byType(AlertPage), findsNothing); // voltou à Home
+      expect(find.text('Nenhum alerta ativo no momento.'), findsOneWidget);
+    });
+
+    testWidgets('"Continuar" mantém o alerta como está', (tester) async {
+      final home = await openDangerAlert(tester);
+
+      await tester.tap(find.text('Cancelar alerta'));
+      await tester.pump(_short);
+      await tester.tap(find.text('Continuar'));
+      await tester.pump(_short);
+
+      expect(home.mode.mode, SecurityMode.danger);
+      expect(home.alert.phase, AlertPhase.done);
+      expect(find.byType(AlertPage), findsOneWidget);
+    });
   });
 }

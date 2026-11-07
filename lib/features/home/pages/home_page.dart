@@ -16,6 +16,7 @@ import 'package:ada_app/core/routes/app_router.dart';
 import 'package:ada_app/core/state/mode_controller.dart';
 import 'package:ada_app/core/state/security_mode.dart';
 import 'package:ada_app/core/theme/mode_colors.dart';
+import 'package:ada_app/core/widgets/confirm_dialog.dart';
 import 'package:ada_app/features/alerts/state/alert_controller.dart';
 import 'package:ada_app/features/contacts/state/contacts_controller.dart';
 import 'package:ada_app/features/home/widgets/mode_card.dart';
@@ -60,34 +61,20 @@ class _HomePageState extends State<HomePage>
     super.dispose();
   }
 
-  // Diálogo de confirmação em dois botões. Devolve true só se a usuária confirmar
-  // (Cancelar, ou tocar fora do diálogo, devolve false/null).
+  // Diálogo de confirmação (compartilhado com a tela Alerta, ver
+  // core/widgets/confirm_dialog.dart).
   Future<bool> _confirm({
     required String title,
     required String message,
     required String confirmLabel,
     Color? confirmColor,
-  }) async {
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (dialogContext) => AlertDialog(
-        title: Text(title),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(dialogContext).pop(false),
-            child: const Text('Cancelar'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.of(dialogContext).pop(true),
-            style: TextButton.styleFrom(foregroundColor: confirmColor),
-            child: Text(confirmLabel),
-          ),
-        ],
-      ),
-    );
-    return confirmed == true;
-  }
+  }) => showConfirmDialog(
+    context,
+    title: title,
+    message: message,
+    confirmLabel: confirmLabel,
+    confirmColor: confirmColor,
+  );
 
   // Dispara o alerta e abre a tela de progresso. Chamado logo depois de o modo
   // ser ativado. Junta os dados de outros controladores: a rede e a mensagem.

@@ -77,7 +77,8 @@ Ao ativar o Modo Perigo, o app **age sozinho**: busca a localização, manda a m
 | `AlertActions` atrás de interface, com versão falsa | Chamar Kotlin direto nos testes | Os testes **nunca** enviam SMS nem ligam de verdade |
 | **Uma vez por ativação:** o envio automático não se repete sozinho | Reenviar em laço | Evita enviar várias vezes e gastar o plano. Reenviar é um toque na tela Alerta |
 | Nada de telefone, texto ou coordenada em `print`/`debugPrint` | Logs para depurar | Privacidade (P6) |
-| **Tela de progresso com um cartão por etapa** (localização, mensagens, ligação), cada um com ícone que gira e vira ✓; os detalhes por contato ficam embaixo | Só a lista por contato | Descrição do Figma passada pela usuária (o frame **não foi lido**: conferir depois). A lista por contato continua para *tentar de novo* e para o WhatsApp manual |
+| **Tela de progresso como no print do Figma** (recebido em 06/11): fundo na cor do modo, símbolo menor com anéis, título, cartões escuros por etapa (localização, mensagens, ligação) e botão branco **Cancelar alerta** fixo embaixo. Atenção usa fundo amarelo com texto azul-marinho (contraste) | Manter a primeira versão (fundo claro) | Fidelidade ao design. O frame foi visto só pelo print, sem chamada ao Figma |
+| **Quem foi avisado e quem falhou, em grupos** ("Avisados" e "Não foi possível avisar"), com *tentar de novo* e WhatsApp manual | Só os cartões de progresso | Pedido da usuária; o Figma não tem esse detalhe |
 | Atenção também pede confirmação antes de enviar | Ativar com um toque | Com envio automático, um toque acidental avisaria toda a rede |
 | Modo de demonstração em Configurações, desligado ao abrir o app | Gravar a escolha | Um esquecimento nunca deixa um alerta de verdade "de mentirinha" |
 

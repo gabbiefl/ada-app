@@ -8,6 +8,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:ada_app/app.dart';
 import 'package:ada_app/core/routes/app_router.dart';
 import 'package:ada_app/features/alerts/data/alert_actions.dart';
+import 'package:ada_app/features/alerts/pages/alert_page.dart';
 import 'package:ada_app/features/map/data/location_service.dart';
 import 'package:ada_app/features/map/models/geo_point.dart';
 
@@ -42,8 +43,8 @@ void main() {
     await tester.pump(short);
     await tester.tap(find.text('Ativar'));
     await tester.pump(short);
-    expect(find.text('Modo atenção ativo'), findsOneWidget);
-    expect(find.text('Alerta'), findsOneWidget);
+    expect(find.byType(AlertPage), findsOneWidget);
+    expect(find.text('MODO ATENÇÃO'), findsOneWidget);
     await tester.tap(find.byTooltip('Voltar'));
     await tester.pump(short);
     expect(find.text('Modo atenção ativo'), findsOneWidget); // chip da Home
@@ -53,8 +54,8 @@ void main() {
     await tester.pump(short);
     await tester.tap(find.text('Ativar'));
     await tester.pump(short);
-    expect(find.text('Alerta'), findsOneWidget);
-    expect(find.text('Modo perigo ativo'), findsOneWidget);
+    expect(find.byType(AlertPage), findsOneWidget);
+    expect(find.text('MODO PERIGO'), findsOneWidget);
     await tester.tap(find.byTooltip('Voltar'));
     await tester.pump(short);
 

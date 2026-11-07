@@ -84,8 +84,9 @@ void main() {
   testWidgets('Sem alerta em andamento, avisa isso', (tester) async {
     await _pumpAlert(tester, build());
 
-    expect(find.text('Alerta'), findsOneWidget);
     expect(find.text('Nenhum alerta em andamento.'), findsOneWidget);
+    // Sem alerta, não há botão de cancelar.
+    expect(find.text('Cancelar alerta'), findsNothing);
   });
 
   testWidgets('Enquanto busca a localização, mostra "preparando"', (
@@ -117,8 +118,12 @@ void main() {
   testWidgets('Perigo: lista cada contato com o que aconteceu', (tester) async {
     await danger(tester);
 
-    expect(find.text('Modo perigo ativo'), findsOneWidget);
-    // Detalhes por contato.
+    expect(find.text('MODO PERIGO'), findsOneWidget);
+    expect(find.text('Sua rede foi alertada.'), findsOneWidget);
+    expect(find.text('Cancelar alerta'), findsOneWidget);
+    // Quem foi avisado: os dois SMS e a ligação.
+    expect(find.text('Avisados (3)'), findsOneWidget);
+    expect(find.textContaining('Não foi possível avisar'), findsNothing);
     expect(find.text('Maria'), findsOneWidget);
     expect(find.text('Ana'), findsOneWidget);
     expect(find.text('Bia'), findsOneWidget);
@@ -130,7 +135,6 @@ void main() {
     expect(find.text('Ligando para Maria'), findsOneWidget);
     // "Ligação iniciada" aparece no cartão de progresso e no do contato.
     expect(find.text('Ligação iniciada'), findsNWidgets(2));
-    expect(find.text('Detalhes por contato'), findsOneWidget);
   });
 
   testWidgets('Perigo: botão Ligar em cada contato; Atenção: nenhum', (
@@ -149,7 +153,8 @@ void main() {
     );
     await _pumpAlert(tester, controller);
 
-    expect(find.text('Modo atenção ativo'), findsOneWidget);
+    expect(find.text('MODO ATENÇÃO'), findsOneWidget);
+    expect(find.text('Sua rede foi avisada.'), findsOneWidget);
     expect(find.widgetWithText(TextButton, 'Ligar'), findsNothing);
     expect(find.widgetWithText(TextButton, 'WhatsApp'), findsNWidgets(2));
     expect(find.text('SMS enviado'), findsNWidgets(2));
@@ -191,6 +196,10 @@ void main() {
 
     expect(find.text('Sem permissão para enviar SMS'), findsNWidgets(2));
     expect(find.text('Tentar de novo'), findsNWidgets(2));
+    // Quem falhou e quem foi avisado ficam em grupos separados.
+    expect(find.text('Não foi possível avisar (2)'), findsOneWidget);
+    expect(find.text('Avisados (1)'), findsOneWidget); // só a ligação
+    expect(find.text('Alguns avisos não saíram.'), findsOneWidget);
     // Nenhum SMS saiu: a etapa de mensagens aparece como falha.
     expect(find.text('Algumas mensagens falharam'), findsOneWidget);
     expect(
