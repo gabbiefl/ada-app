@@ -12,6 +12,7 @@ import 'package:ada_app/core/widgets/coming_soon_page.dart';
 import 'package:ada_app/features/alerts/pages/alert_page.dart';
 import 'package:ada_app/features/contacts/pages/contact_form_page.dart';
 import 'package:ada_app/features/contacts/pages/contacts_page.dart';
+import 'package:ada_app/features/coverage/pages/coverage_form_page.dart';
 import 'package:ada_app/features/coverage/pages/coverage_page.dart';
 import 'package:ada_app/features/home/pages/home_page.dart';
 import 'package:ada_app/features/map/pages/map_page.dart';
@@ -36,6 +37,9 @@ class AppRoutes {
   static String editMessage(MessageKind kind) =>
       '/settings/messages/edit/${kind.name}';
   static const coverage = '/settings/coverage';
+  static const newCoverage = '/settings/coverage/new';
+  // Função (e não constante): o endereço leva o id da faixa.
+  static String editCoverage(String id) => '/settings/coverage/edit/$id';
   static const history = '/settings/history';
   static const alert = '/alert';
 }
@@ -132,6 +136,20 @@ final appRouter = GoRouter(
                 GoRoute(
                   path: 'coverage',
                   builder: (context, state) => const CoveragePage(),
+                  routes: [
+                    // Sem barra inferior: abre no navegador raiz, por cima de tudo.
+                    GoRoute(
+                      path: 'new',
+                      parentNavigatorKey: _rootKey,
+                      builder: (context, state) => const CoverageFormPage(),
+                    ),
+                    GoRoute(
+                      path: 'edit/:id',
+                      parentNavigatorKey: _rootKey,
+                      builder: (context, state) =>
+                          CoverageFormPage(ruleId: state.pathParameters['id']),
+                    ),
+                  ],
                 ),
                 GoRoute(
                   path: 'history',

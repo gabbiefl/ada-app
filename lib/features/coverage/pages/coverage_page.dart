@@ -13,6 +13,7 @@ import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:provider/provider.dart';
 
+import 'package:ada_app/core/routes/app_router.dart';
 import 'package:ada_app/core/theme/app_colors.dart';
 import 'package:ada_app/core/widgets/page_header.dart';
 import 'package:ada_app/features/alerts/state/alert_controller.dart';
@@ -137,9 +138,16 @@ class _CoveragePageState extends State<CoveragePage> {
                     rule: rule,
                     contactName: names[rule.contactId]!,
                     onToggle: (value) => _toggle(rule.id, value, names),
+                    onTap: () => context.push(AppRoutes.editCoverage(rule.id)),
                   ),
                   const SizedBox(height: 12),
                 ],
+                const SizedBox(height: 4),
+                FilledButton.icon(
+                  onPressed: () => context.push(AppRoutes.newCoverage),
+                  icon: const Icon(LucideIcons.plus, size: 24),
+                  label: const Text('Adicionar faixa'),
+                ),
               ],
             ],
           ),

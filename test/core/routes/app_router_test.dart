@@ -91,6 +91,19 @@ void main() {
     await _passTime(tester);
     expect(find.textContaining('ainda não tem contatos'), findsNothing);
 
+    // As rotas do formulário existem no app de verdade (nova faixa e edição).
+    appRouter.go(AppRoutes.newCoverage);
+    await _passTime(tester);
+    expect(find.text('Nova faixa'), findsOneWidget);
+
+    appRouter.go(AppRoutes.editCoverage('fantasma'));
+    await _passTime(tester);
+    expect(find.text('Faixa não encontrada'), findsOneWidget);
+
+    // Volta a Configurações para seguir o teste.
+    appRouter.go(AppRoutes.settings);
+    await _passTime(tester);
+
     await tester.tap(find.text('Histórico de alertas'));
     await _passTime(tester);
     expect(find.text('Em breve.'), findsOneWidget);
