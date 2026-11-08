@@ -1,5 +1,9 @@
-// Caixa azul informativa da tela de cadastro: avisa que o contato será
-// notificado por WhatsApp. O texto mistura normal e negrito (Text.rich).
+// Caixa azul informativa da tela de cadastro: lembra de combinar com a pessoa
+// antes, porque em caso de alerta ela receberá SMS e ligações do ADA. O texto
+// mistura normal e negrito (Text.rich).
+//
+// O ADA ainda NÃO avisa a pessoa no momento do cadastro (a ideia de mandar um SMS
+// de boas-vindas está no backlog, F9-07), então o texto não promete isso.
 
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -30,16 +34,15 @@ class InfoBox extends StatelessWidget {
               TextSpan(
                 style: style,
                 children: const [
-                  TextSpan(text: 'O usuário receberá um '),
                   TextSpan(
-                    text: 'aviso via Whatsapp',
+                    text: 'Combine com essa pessoa antes: ',
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
                       fontVariations: [FontVariation('wght', 700)],
                     ),
                   ),
                   TextSpan(
-                    text: ' informando que foi cadastrado na sua rede de confiança.',
+                    text: 'em caso de alerta, ela receberá SMS e ligações do ADA.',
                   ),
                 ],
               ),

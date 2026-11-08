@@ -92,6 +92,8 @@ lib/
 
 Os resumos de Flutter e Dart escritos ao longo do projeto estão em [`docs/aprendizado/`](docs/aprendizado/).
 
+O que o app guarda, para onde os dados vão, como apagar tudo e os limites estão em [`docs/privacidade-e-dados.md`](docs/privacidade-e-dados.md).
+
 ## 👩‍💻 Autoria
 
 Projeto acadêmico desenvolvido por [@gabbiefl](https://github.com/gabbiefl), com foco em aprendizado de Flutter e Dart.

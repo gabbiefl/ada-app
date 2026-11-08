@@ -128,7 +128,8 @@
 | F9-03 | Acionar a rede de contatos de forma simultânea ou sequencial `[?]` (SMS automático aos outros contatos e depois a ligação ao contato de plantão) | M | ✅ |
 | F9-04 | SMS: **SMS direto** (`SEND_SMS`, decisão revista) com o app de mensagens (`sms:`) como plano B. Falta testar vários destinatários numa mensagem só `[?]` | S | 🔄 |
 | F9-05 | Confirmar o SMS direto e a ligação num **celular real** (no emulador o SMS falhou; ver o registro `AdaAlert`) | M | ⬜ |
-| F9-06 | Texto da tela de cadastro promete um aviso por WhatsApp ao contato, que não existe: ajustar o texto ou implementar (consentimento, LGPD) | S | ⬜ |
+| F9-06 | Texto da tela de cadastro prometia um aviso por WhatsApp ao contato, que não existe. **Corrigido na Fase 11** (agora pede para combinar com a pessoa e diz que ela receberá SMS e ligações do ADA) | S | ✅ |
+| F9-07 | Avisar a pessoa por **SMS** no momento do cadastro, dizendo que ela foi incluída na rede de confiança (ideia da usuária; exige decidir o texto e o consentimento) | C | ⬜ |
 
 ## Fase 10 — Regras por horário
 

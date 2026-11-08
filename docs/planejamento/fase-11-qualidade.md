@@ -9,7 +9,7 @@ Deixar o app confiável para a mostra: a usuária consegue **apagar todos os seu
 ## 2. Resultado esperado
 - Em **Configurações** existe **"Apagar meus dados"**. Com confirmação, apaga contatos, faixas de horário e mensagens editadas (as mensagens voltam ao texto padrão), desfaz qualquer alerta em andamento e volta o app ao estado de recém-instalado.
 - Um documento **[docs/privacidade-e-dados.md](../privacidade-e-dados.md)** explica, em linguagem simples: o que o app guarda, onde, o que **nunca** guarda (localização), quais permissões pede e para quê, como apagar tudo e os limites (WhatsApp e SMS ficam no histórico do celular).
-- O backup automático do Android **não leva** os dados do ADA para a nuvem.
+- A decisão sobre o **backup** do Android está explicada no documento (não foi alterado: o que iria para a nuvem é texto cifrado).
 - O texto do cadastro de contato deixa de prometer um aviso por WhatsApp que não existe (F9-06).
 - A barra inferior e os ícones têm **nome para o leitor de tela**; toques pequenos ganham área mínima de 48; os ícones claros demais ganham contraste.
 - Testes automáticos de acessibilidade nas telas principais, incluindo **texto em tamanho duplo sem estourar a tela**.
@@ -48,7 +48,7 @@ Deixar o app confiável para a mostra: a usuária consegue **apagar todos os seu
 | # | Passo | Tamanho | O que a usuária aprende |
 |---|---|---|---|
 | 1 ✅ | **Apagar meus dados**: `clear` em contatos, mensagens e faixas, desfazer alerta e modo, item em Configurações com confirmação, testes | M | Limpar estado e armazenamento juntos |
-| 2 | **Revisão de privacidade**: backup desligado, texto do cadastro (F9-06), checklist e `docs/privacidade-e-dados.md` | P | Privacidade por padrão, LGPD prática |
+| 2 ✅ | **Revisão de privacidade**: backup desligado, texto do cadastro (F9-06), checklist e `docs/privacidade-e-dados.md` | P | Privacidade por padrão, LGPD prática |
 | 3 | **Auditoria de acessibilidade automática**: testes com as guidelines do Flutter e texto em 2x nas telas principais; lista dos achados | M | Guidelines nos testes, `TextScaler` |
 | 4 | **Correções**: nomes na barra inferior e nas setas, áreas de toque pequenas, contraste dos ícones claros | M | `Semantics`, 48 dp, contraste |
 | 5 | Fechamento: `flutter analyze`, testes, retrospectiva, resumos e backlog | P | Fechar a fase |
@@ -61,7 +61,7 @@ A ordem coloca **apagar dados e privacidade primeiro**: são requisitos (RF10) e
 | "Apagar meus dados" limpa **os controladores** (que gravam o vazio no armazenamento) | Só chamar `deleteAll()` do armazenamento seguro | Se só o armazenamento fosse apagado, a tela continuaria mostrando os dados até fechar o app. Limpando pelos controladores, memória e armazenamento ficam iguais |
 | Apaga contatos, faixas e mensagens editadas; **desfaz alerta e modo** | Apagar também o Modo de demonstração | O Modo de demonstração não é gravado. Um alerta em andamento seria enviado a contatos que acabaram de ser apagados, então é desfeito |
 | Confirmação com **diálogo claro** ("Isso não pode ser desfeito") | Exigir digitar "APAGAR" | O diálogo já protege contra o toque acidental sem atrapalhar a demonstração. Digitar fica no backlog se a banca pedir mais rigor |
-| **Desligar o backup automático** (`android:allowBackup="false"`) | Deixar como está; excluir só o arquivo do armazenamento | Dados de contatos e de localização não devem ir para a nuvem do Google sem a usuária saber. Os dados do ADA moram só no aparelho |
+| **Não alterar o backup** do Android (decidido pela usuária: "se não for necessário, não precisa") | Desligar com `android:allowBackup="false"` | Conferido no pacote: os dados são gravados **cifrados**, então um backup levaria só texto cifrado, sem a chave (que fica no aparelho). O efeito prático seria o app abrir vazio em outro celular, sem quebrar. A decisão está em `docs/privacidade-e-dados.md`, com a opção de desligar se a banca pedir |
 | O texto do cadastro de contato passa a dizer o que **de fato** acontece (SMS e ligação em caso de alerta) | Implementar o aviso por WhatsApp | Implementar é maior que o prazo. Corrigir o texto elimina a promessa falsa agora |
 | Auditoria com **as guidelines do próprio Flutter** nos testes | Revisão só visual; ferramentas externas | Roda junto dos testes, avisa se alguém piorar a acessibilidade no futuro e não precisa de pacote novo |
 | Ícones claros demais ficam **mais escuros, sem mudar o desenho** | Manter o cinza do Figma | O cinza `#D9D9D9` sobre branco tem contraste muito baixo (cerca de 1,4 para 1). O ajuste é só de tom |
@@ -82,7 +82,7 @@ A ordem coloca **apagar dados e privacidade primeiro**: são requisitos (RF10) e
 ## 9. Critérios de pronto
 - [ ] "Apagar meus dados" apaga contatos, faixas e mensagens editadas, desfaz o alerta e o modo, e as telas refletem isso
 - [ ] Depois de apagar e reabrir o app, nada volta (armazenamento vazio)
-- [ ] O app tem o backup automático desligado
+- [x] A decisão sobre o backup está documentada (sem alterar o manifesto)
 - [ ] O texto do cadastro de contato não promete mais o aviso por WhatsApp
 - [ ] `docs/privacidade-e-dados.md` existe e está de acordo com o que o app faz
 - [ ] Nenhum telefone, texto ou coordenada em `print`/`debugPrint`
