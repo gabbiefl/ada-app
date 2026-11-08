@@ -1,6 +1,7 @@
-// Tela "Configurações": menu que leva a Horário de cobertura, Histórico de
-// alertas e Mensagens personalizadas, com a chave do Modo de demonstração e o
-// "Apagar meus dados".
+// Tela "Configurações": menu que leva a Horário de cobertura e Mensagens
+// personalizadas, com a chave do Modo de demonstração e o "Apagar meus dados".
+// Não há histórico de alertas, de propósito: o ADA não guarda que um alerta foi
+// enviado (ver docs/privacidade-e-dados.md).
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -81,14 +82,6 @@ class SettingsPage extends StatelessWidget {
                 title: 'Horário de cobertura',
                 description:
                     'Priorize para quem ligar de acordo com o horário.',
-              ),
-              const SizedBox(height: 11),
-              SettingsTile(
-                onTap: () => context.push(AppRoutes.history),
-                icon: LucideIcons.clock,
-                title: 'Histórico de alertas',
-                description:
-                    'Eventos anteriores, com data, horário e localização.',
               ),
               const SizedBox(height: 11),
               SettingsTile(

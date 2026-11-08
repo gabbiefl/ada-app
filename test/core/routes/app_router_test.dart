@@ -70,7 +70,7 @@ void main() {
     expect(find.text('Rede de contatos'), findsOneWidget);
   });
 
-  testWidgets('Horário abre a tela de cobertura e Histórico a provisória', (
+  testWidgets('Horário abre a tela de cobertura e as rotas do formulário', (
     tester,
   ) async {
     // O appRouter é um só para o app inteiro e guarda o lugar onde parou no
@@ -100,13 +100,6 @@ void main() {
     await _passTime(tester);
     expect(find.text('Faixa não encontrada'), findsOneWidget);
 
-    // Volta a Configurações para seguir o teste.
-    appRouter.go(AppRoutes.settings);
-    await _passTime(tester);
-
-    await tester.tap(find.text('Histórico de alertas'));
-    await _passTime(tester);
-    expect(find.text('Em breve.'), findsOneWidget);
   });
 
   testWidgets('A seta de Mensagens volta para Configurações', (tester) async {

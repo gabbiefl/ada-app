@@ -63,7 +63,7 @@
 | F3-05 | Tela de mensagens pré-definidas (e edição da mensagem) | S | ✅ |
 | F3-06 | Tela de configurações (menu) | S | ✅ |
 | F3-07 | Tela de horário de cobertura (ler no Figma antes) | M | ✅ |
-| F3-08 | Tela de histórico de alertas (ler no Figma antes) | S | ⬜ |
+| F3-08 | Tela de histórico de alertas. **Removida da interface (08/11):** o ADA não guarda que um alerta foi enviado, por privacidade. Só voltaria como opção protegida por senha | S | ❌ descartado |
 
 ### Telas que ainda faltam (a Fase 3 foi fechada sem elas)
 | ID | Item | Prio | Status |
@@ -156,6 +156,8 @@
 | F11-09 | Avaliar o peso do texto dos parágrafos (hoje 300, fino) com o design | C | ⬜ |
 
 ## Fase 12 — Build e apresentação
+
+> Plano: [fase-12-entrega.md](planejamento/fase-12-entrega.md) (aguardando aprovação).
 
 | ID | Item | Prio | Status |
 |---|---|---|---|

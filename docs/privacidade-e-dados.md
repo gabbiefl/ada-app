@@ -18,7 +18,7 @@ O armazenamento seguro cifra os dados antes de gravar (segundo a documentação 
 
 ## O que o ADA **não** guarda
 - **A localização.** Ela é buscada quando a usuária toca no botão da aba Mapa ou quando um alerta é disparado, fica **só na memória** enquanto é usada, e é esquecida. Não há histórico de lugares.
-- **O histórico de alertas** nem o texto que foi enviado.
+- **O histórico de alertas** nem o texto que foi enviado. Por isso o app **não tem** tela de histórico: quem visse o celular descobriria que a usuária pediu ajuda.
 - Conta, senha, e-mail, foto ou qualquer identificação da usuária.
 - Nada de **análise de uso, anúncios ou rastreadores**.
 

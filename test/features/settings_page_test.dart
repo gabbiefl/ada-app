@@ -118,7 +118,8 @@ void main() {
 
     expect(find.text('Configurações'), findsOneWidget);
     expect(find.text('Horário de cobertura'), findsOneWidget);
-    expect(find.text('Histórico de alertas'), findsOneWidget);
+    // Não existe histórico de alertas: o ADA não guarda que um alerta foi enviado.
+    expect(find.text('Histórico de alertas'), findsNothing);
     expect(find.text('Mensagens personalizadas'), findsOneWidget);
     expect(find.text('Modo de demonstração'), findsOneWidget);
     expect(find.text('Apagar meus dados'), findsOneWidget);

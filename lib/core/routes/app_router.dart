@@ -40,7 +40,6 @@ class AppRoutes {
   static const newCoverage = '/settings/coverage/new';
   // Função (e não constante): o endereço leva o id da faixa.
   static String editCoverage(String id) => '/settings/coverage/edit/$id';
-  static const history = '/settings/history';
   static const alert = '/alert';
 }
 
@@ -150,11 +149,6 @@ final appRouter = GoRouter(
                           CoverageFormPage(ruleId: state.pathParameters['id']),
                     ),
                   ],
-                ),
-                GoRoute(
-                  path: 'history',
-                  builder: (context, state) =>
-                      const ComingSoonPage(title: 'Histórico de alertas'),
                 ),
               ],
             ),
