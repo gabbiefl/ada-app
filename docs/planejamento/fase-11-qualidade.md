@@ -1,6 +1,6 @@
 # Fase 11 — Qualidade, privacidade e acessibilidade (versão enxuta)
 
-> **Status:** 🔄 em execução (plano aprovado)
+> **Status:** ✅ concluída no código (pendente: ver as telas e o texto grande no emulador)
 > **Itens do backlog:** F11-02, F11-03, F11-04, F11-05 (e F9-06). O F11-01 já está atendido (ver seção 4).
 
 ## 1. Objetivo
@@ -51,7 +51,7 @@ Deixar o app confiável para a mostra: a usuária consegue **apagar todos os seu
 | 2 ✅ | **Revisão de privacidade**: backup desligado, texto do cadastro (F9-06), checklist e `docs/privacidade-e-dados.md` | P | Privacidade por padrão, LGPD prática |
 | 3 ✅ | **Auditoria de acessibilidade automática**: testes com as guidelines do Flutter e texto em 2x nas telas principais; lista dos achados | M | Guidelines nos testes, `TextScaler` |
 | 4 ✅ | **Correções**: nomes na barra inferior e nas setas, áreas de toque pequenas, contraste dos ícones claros | M | `Semantics`, 48 dp, contraste |
-| 5 | Fechamento: `flutter analyze`, testes, retrospectiva, resumos e backlog | P | Fechar a fase |
+| 5 ✅ | Fechamento: `flutter analyze`, testes, retrospectiva, resumos e backlog | P | Fechar a fase |
 
 A ordem coloca **apagar dados e privacidade primeiro**: são requisitos (RF10) e ficam melhor para defender na banca. A acessibilidade vem depois, e o passo 4 é o que se corta se o prazo apertar.
 
@@ -99,18 +99,19 @@ A auditoria roda em [test/accessibility/](../../test/accessibility/): `accessibi
 | Mexer em cores quebrar o visual do Figma | Design alterado | Mudar só o tom dos ícones claros, e a usuária confere no emulador |
 
 ## 9. Critérios de pronto
-- [ ] "Apagar meus dados" apaga contatos, faixas e mensagens editadas, desfaz o alerta e o modo, e as telas refletem isso
-- [ ] Depois de apagar e reabrir o app, nada volta (armazenamento vazio)
+- [x] "Apagar meus dados" apaga contatos, faixas e mensagens editadas, desfaz o alerta e o modo, e as telas refletem isso
+- [x] Depois de apagar e reabrir o app, nada volta (armazenamento vazio)
 - [x] A decisão sobre o backup está documentada (sem alterar o manifesto)
-- [ ] O texto do cadastro de contato não promete mais o aviso por WhatsApp
-- [ ] `docs/privacidade-e-dados.md` existe e está de acordo com o que o app faz
-- [ ] Nenhum telefone, texto ou coordenada em `print`/`debugPrint`
-- [ ] Testes de acessibilidade (alvo de toque, nome e contraste) passando nas telas principais
-- [ ] As telas principais aguentam texto em 2x sem estourar
-- [ ] A barra inferior e as setas têm nome para o leitor de tela
-- [ ] `flutter analyze` sem avisos e testes passando
-- [ ] Testado no emulador
-- [ ] Backlog atualizado e commit feito
+- [x] O texto do cadastro de contato não promete mais o aviso por WhatsApp
+- [x] `docs/privacidade-e-dados.md` existe e está de acordo com o que o app faz
+- [x] Nenhum telefone, texto ou coordenada em `print`/`debugPrint`
+- [x] Testes de acessibilidade (alvo de toque, nome e contraste) passando nas telas principais
+- [x] As telas principais aguentam texto em 2x sem estourar
+- [x] A barra inferior e as setas têm nome para o leitor de tela
+- [x] `flutter analyze` sem avisos e testes passando (516)
+- [ ] **Testado no emulador:** ver "Apagar meus dados", o texto grande e a barra com nomes (o emulador estava fechado)
+- [x] Backlog atualizado
+- [ ] Commit do fechamento (por você)
 
 ## 10. Como testar
 `flutter run -d emulator-5554`: cadastrar contatos, uma faixa de horário e editar uma mensagem → Configurações → **Apagar meus dados** → conferir que Rede, Cobertura e Mensagens ficaram vazias/padrão → fechar e reabrir o app. Em Configurações do Android, ligar o **texto grande** e percorrer as telas. `flutter analyze` e `flutter test`.
@@ -125,13 +126,23 @@ A auditoria roda em [test/accessibility/](../../test/accessibility/): `accessibi
 
 ---
 
-## Retrospectiva (preencher ao concluir)
+## Retrospectiva
 
 **O que aprendi:**
-- <...>
+- (preencha com as suas palavras)
 
 **O que mudou em relação ao plano:**
-- <...>
+- **Backup do Android:** o plano previa desligar. Pela decisão da usuária ("se não for necessário, não precisa") e depois de conferir que os dados são gravados cifrados, **não foi alterado**. A decisão e a opção de desligar estão em `docs/privacidade-e-dados.md`.
+- **Faixas de contato removido:** o plano previa apagar ao abrir a tela. Na Fase 10 isso virou um ouvinte no `app.dart`, para uma leitura que falha nunca apagar faixas por engano.
+- **Contraste:** a guideline do Flutter (por captura de tela) acusava falhas onde a cor, calculada, passa (o texto do ADA é fino, peso 300). Trocada pelo **cálculo exato do WCAG**, par de cores por par de cores. Isso achou 2 problemas reais (ícones claros e azul das caixas).
+- A auditoria achou **7 problemas reais**, todos corrigidos (nomes na barra inferior, símbolo da Home, setas sem nome, toques pequenos, texto grande, ícones claros e azul informativo). Um oitavo, a **chave do Modo de demonstração sem nome**, só apareceu depois das primeiras correções.
+- **Testes e fonte:** os testes de widget desenham o texto com uma fonte de quadrados (Ahem), o que cria estouros inexistentes. Os testes de medida agora carregam a Nunito (`test/support/app_font.dart`).
+- F11-03 (erros e estados vazios): conferido, sem trabalho novo. Já existem: rede vazia, sem contatos (Cobertura e Alerta), sem localização, sem permissão, GPS desligado, alerta com falha por contato, faixa sem contato e dados que não carregam.
 
 **Dívidas técnicas e novos itens para o backlog:**
-- <...>
+- **Ver no emulador** o "Apagar meus dados", a barra com nomes e o texto em tamanho grande (nos testes passam, mas ainda não foram vistos no aparelho).
+- **F11-06:** avisar a usuária quando uma gravação falha (hoje o app segue com os dados em memória, em silêncio).
+- **F11-07:** testar com o **leitor de tela de verdade** (TalkBack) e com pessoas; os testes automáticos não substituem isso.
+- **F11-08:** a borda dos campos de texto usa o cinza claro (contraste 1,4); o WCAG pede 3 para o contorno de campos. Não foi mexido para não alterar o desenho do Figma.
+- **F11-09:** avaliar o peso do texto dos parágrafos (hoje 300, fino) com o design.
+- A pessoa cadastrada ainda não é avisada por SMS (F9-07).

@@ -13,11 +13,11 @@
 
 ## Fase atual
 
-**Fase 10 — Horário de cobertura** concluída no código (falta ver a tela rodando no emulador e escrever os resumos das Fases 9 e 10). A **Fase 9** também falta confirmar o SMS direto e a ligação num aparelho real. As Fases 4 a 8 estão concluídas. A Fase 3 segue com telas pendentes (ver F3-07 a F3-14). Falta você escrever o "O que aprendi" das Fases 1 a 10. O emulador Android já roda o ADA (F1-04 ✅) e o `applicationId` foi aplicado (F1-05 ✅).
+**Fase 11 — Qualidade, privacidade e acessibilidade** concluída no código (falta ver as Fases 10 e 11 no emulador e escrever os resumos das Fases 9, 10 e 11). A **Fase 9** também falta confirmar o SMS direto e a ligação num aparelho real. As Fases 4 a 8 estão concluídas. A Fase 3 segue com telas pendentes (ver F3-07 a F3-14). Falta você escrever o "O que aprendi" das Fases 1 a 11. O emulador Android já roda o ADA (F1-04 ✅) e o `applicationId` foi aplicado (F1-05 ✅).
 
 ---
 
-> Próxima: **Fase 12 — Build e apresentação** (APK de release, roteiro da demonstração e README final) e, se der tempo, a **Fase 11 enxuta** (apagar todos os dados, acessibilidade e estados de erro). A mostra é em 12/11.
+> Próxima: **Fase 12 — Build e apresentação** (APK de release, roteiro da demonstração, README final). A mostra é em 12/11.
 
 ## Fase 0 — Entendimento e viabilidade
 
@@ -145,11 +145,15 @@
 
 | ID | Item | Prio | Status |
 |---|---|---|---|
-| F11-01 | Testes unitários e de widget dos fluxos principais | S | ⬜ |
-| F11-02 | Acessibilidade (contraste, alvos de toque, Semantics) | S | ⬜ |
-| F11-03 | Tratamento de erros e estados vazios | S | ⬜ |
-| F11-04 | Revisão de privacidade e armazenamento dos dados | S | ⬜ |
-| F11-05 | Apagar todos os dados da usuária (RF10: contatos, mensagens e o que mais houver), com confirmação | S | ⬜ |
+| F11-01 | Testes unitários e de widget dos fluxos principais | S | ✅ |
+| F11-02 | Acessibilidade (contraste, alvos de toque, Semantics) | S | ✅ |
+| F11-03 | Tratamento de erros e estados vazios | S | ✅ |
+| F11-04 | Revisão de privacidade e armazenamento dos dados | S | ✅ |
+| F11-05 | Apagar todos os dados da usuária (RF10: contatos, mensagens e o que mais houver), com confirmação | S | ✅ |
+| F11-06 | Avisar a usuária quando uma gravação (contatos, mensagens ou faixas) falha, em vez de seguir em silêncio | C | ⬜ |
+| F11-07 | Testar a acessibilidade com o leitor de tela de verdade (TalkBack) e com pessoas | S | ⬜ |
+| F11-08 | Contraste da borda dos campos de texto (cinza claro, 1,4; o WCAG pede 3). Mexe no desenho do Figma | C | ⬜ |
+| F11-09 | Avaliar o peso do texto dos parágrafos (hoje 300, fino) com o design | C | ⬜ |
 
 ## Fase 12 — Build e apresentação
 
