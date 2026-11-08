@@ -69,7 +69,7 @@
 | ID | Item | Prio | Status |
 |---|---|---|---|
 | F3-14 | Ler as variações dos estados Atenção e Perigo ativos no Figma e ligar os toques dos cards da Home. Toques ligados na Fase 7 (Atenção derivada da tela de Perigo); falta **conferir o visual com o Figma** | M | 🔄 |
-| F3-09 | Splash e 3 telas de onboarding (já existem no Figma; ler antes) | M | ⬜ |
+| F3-09 | Splash e 3 telas de onboarding (Figma). **Feitos na Fase 12A** (falta conferir o onboarding no emulador contra o Figma) | M | ✅ |
 | F3-10 | Tela de permissões (localização, notificações; já existe no Figma) | M | ⬜ |
 | F3-11 | Tela de mapa/localização (aba "Mapa"). Acompanhamento em tempo real é incerto (F0-02, F8-04): ideia da usuária de usar **checkpoints** da posição. Decidido em 06/11/2026: Fase 8 mostra só a localização atual (placeholder); mapa visual em F8-05 e tempo real em F8-04. Figma da aba ainda não lido | M | 🔄 |
 | F3-12 | Rede cheia (5/5): estado sem espaços vazios e aviso de limite (derivar do design existente) | M | ✅ |

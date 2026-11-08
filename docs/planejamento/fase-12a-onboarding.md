@@ -1,6 +1,6 @@
 # Fase 12A — Abertura e onboarding (antes do APK final)
 
-> **Status:** 📝 plano aguardando aprovação (a splash já está pronta; falta o onboarding)
+> **Status:** ✅ concluída no código (pendente: conferir as 3 telas do onboarding no emulador contra o Figma)
 > **Itens do backlog:** F3-09 (splash e onboarding). A tela de permissões (F3-10) e o login/cadastro (F3-13) ficam para depois, conforme decisão da usuária.
 
 ## 1. Objetivo
@@ -43,10 +43,10 @@ Outras observações:
 | # | Passo | Tamanho | Aprendizado |
 |---|---|---|---|
 | 1 ✅ | Splash (azul-marinho, logo branca, barra) e abertura nativa do Android | P | `AnimationController`, recursos do Android |
-| 2 | **Estrutura do onboarding**: `PageView` com as 3 páginas, indicador, Continuar/Pular/Começar, rota `/onboarding` | M | `PageView`, `PageController` |
-| 3 | **Conteúdo e visual das 3 telas** (anéis, rede com avatares, ilustração exportada) | M | Composição, `CustomPaint`/`Stack` |
-| 4 | **Lembrar que já viu** e ligar splash → onboarding → Home; "Apagar meus dados" reinicia | P | Preferência local, rota inicial condicional |
-| 5 | Testes (fluxo, Pular, só na primeira vez), acessibilidade, fechamento e backlog | P | Testar fluxo de primeira vez |
+| 2 ✅ | **Estrutura do onboarding**: `PageView` com as 3 páginas, indicador, Continuar/Pular/Começar, rota `/onboarding` | M | `PageView`, `PageController` |
+| 3 ✅ | **Conteúdo e visual das 3 telas** (anéis, rede com avatares, ilustração exportada) | M | Composição, `CustomPaint`/`Stack` |
+| 4 ✅ | **Lembrar que já viu** e ligar splash → onboarding → Home; "Apagar meus dados" reinicia | P | Preferência local, rota inicial condicional |
+| 5 ✅ | Testes (fluxo, Pular, só na primeira vez), acessibilidade, fechamento e backlog | P | Testar fluxo de primeira vez |
 
 ## 7. Decisões técnicas
 | Decisão | Alternativas | Motivo |
@@ -67,12 +67,12 @@ Outras observações:
 | Testes existentes assumirem que o app abre na Home | Testes quebrados | Já tratados na splash (testes vão à Home com `appRouter.go`) |
 
 ## 9. Critérios de pronto
-- [x] Splash com logo, barra e abertura nativa sem recorte (conferida pela usuária no emulador, exceto a abertura nativa)
-- [ ] As 3 telas fiéis ao Figma, com os textos combinados
-- [ ] Continuar, Pular e deslizar funcionam; o indicador mostra a página atual
-- [ ] Só aparece na primeira abertura; "Apagar meus dados" o faz voltar
-- [ ] Nome para o leitor de tela, alvos de 48 e texto grande sem estourar (auditoria automática estendida às novas telas)
-- [ ] `flutter analyze` limpo e testes passando; **compilado para Android** antes de avisar que está pronto
+- [x] Splash com logo, barra e abertura nativa do Android sem recorte (conferidas pela usuária no emulador)
+- [x] As 3 telas feitas a partir do Figma, com os textos combinados (falta conferir o visual no emulador)
+- [x] Continuar, Pular e deslizar funcionam; o indicador mostra a página atual
+- [x] Só aparece na primeira abertura; "Apagar meus dados" o faz voltar
+- [x] Nome para o leitor de tela, alvos de 48 e texto grande sem estourar (auditoria automática estendida às novas telas)
+- [x] `flutter analyze` limpo e testes passando; **compilado para Android** antes de avisar que está pronto
 - [ ] Testado no emulador
 - [ ] Backlog atualizado; commits feitos por você
 
@@ -95,4 +95,8 @@ Outras observações:
 - (preencha com as suas palavras)
 
 **O que mudou em relação ao plano:**
-- (a preencher no fechamento)
+- Texto da tela 3 trocado (o do Figma prometia compartilhar "e parar a qualquer momento", o que o app não faz) e ponto final na tela 1.
+- "Pular" nas telas 1 e 2, com cor que passa o contraste. Acrescentei as bolinhas de página (não estão no Figma).
+- A abertura **nativa** do Android 12 apareceu recortada (o sistema recorta o ícone em círculo): foi trocada por uma imagem com margem e fundo azul-marinho.
+- Erro de compilação só no Android (cor escrita direto no arquivo da abertura) que os testes não pegam: **compilar para Android antes de avisar que está pronto**.
+- "Apagar meus dados" também reinicia o onboarding, sem falhar se esse reinício der erro.
