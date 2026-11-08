@@ -55,7 +55,7 @@ Deixar a usuária definir **quem o ADA liga em cada faixa de horário** e fazer 
 | 1 ✅ | `CoverageRule` e as funções puras (contato pela hora, cruzamentos, buracos, ícone do período), com testes nas bordas | M | Regra pura, horas como minutos, interseção de intervalos |
 | 2 ✅ | `CoverageController` e repositório seguro: adicionar, editar, ligar/desligar, remover, validar (início = fim, cruzamento), gravar, carregar (`ready`), com testes | M | Reuso do padrão dos contatos |
 | 3 ✅ | `CoverageCallTargetPolicy` com **relógio injetável**; ligar ao alerta e à espera de carregamento da Home | P | Injeção de dependência, trocar a regra sem mexer no resto |
-| 4 | Tela **Horário de cobertura**: cartão das 24 horas, lista com ícone e chave, "quem seria ligado agora", estados vazios; rota no lugar de "Em breve" | G | Tela de vários estados, barra proporcional |
+| 4 ✅ | Tela **Horário de cobertura**: cartão das 24 horas, lista com ícone e chave, "quem seria ligado agora", estados vazios; rota no lugar de "Em breve" | G | Tela de vários estados, barra proporcional |
 | 5 | Formulário de **nova faixa e edição**: contato, início, fim, validação, remover com confirmação | M | `showTimePicker`, formulário com seletor |
 | 6 | Teste de fluxo (o Perigo liga para quem a hora manda), emulador, `flutter analyze`, retrospectiva, resumos e backlog | P | Fechar a fase |
 
@@ -72,7 +72,7 @@ Deixar a usuária definir **quem o ADA liga em cada faixa de horário** e fazer 
 | O mesmo contato pode ter **mais de uma faixa** (ex.: 8:00 às 13:00 e 20:00 às 22:00) | Uma faixa por contato | Mais flexível, sem custo extra |
 | Fora de todas as faixas ligadas, liga para **o primeiro da lista**, e a barra mostra o buraco | Escolher um padrão; não ligar | É o comportamento de hoje, então nada quebra. A barra deixa claro quando há buraco. Escolher o padrão fica no backlog |
 | Ícone do período pelo **início da faixa**: sol das 6h às 17h, pôr do sol das 18h às 22h, lua das 23h às 5h | Escolher o ícone na mão | Reproduz o Figma (8h e 13h sol, 18h pôr do sol, 23h e 4h lua), sem mais um campo no formulário |
-| Faixa de um contato **removido** é ignorada (e apagada ao abrir a tela) | Apagar na hora, em outro controlador | Mantém os controladores independentes; a regra nunca liga para um contato que não existe |
+| Faixa de um contato **removido** é ignorada na escolha e escondida na lista, e **apagada pelo app quando a rede muda** (um ouvinte em `app.dart`) | Apagar ao abrir a tela de cobertura | Apagar ao abrir a tela poderia **perder todas as faixas** se a leitura dos contatos falhasse (rede vazia por erro, e não por escolha). O ouvinte só reage a uma mudança de verdade: leitura que falha não avisa ninguém. Mantém os controladores independentes |
 | Armazenamento seguro, mesmo padrão dos contatos | `shared_preferences` (pacote novo) | Nenhum pacote novo. As faixas guardam só o id do contato e as horas, sem telefone |
 | Relógio **injetável** (`DateTime Function()`) | `DateTime.now()` dentro da regra | Os testes escolhem a hora. Sem isso, não dá para testar "às 23h" |
 | O contato é escolhido **uma vez**, no começo do alerta | Reavaliar durante o alerta | Evita ligar para uma pessoa diferente da mostrada na tela se a hora virar |

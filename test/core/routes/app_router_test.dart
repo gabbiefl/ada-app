@@ -70,7 +70,9 @@ void main() {
     expect(find.text('Rede de contatos'), findsOneWidget);
   });
 
-  testWidgets('Horário e Histórico abrem a tela provisória', (tester) async {
+  testWidgets('Horário abre a tela de cobertura e Histórico a provisória', (
+    tester,
+  ) async {
     // O appRouter é um só para o app inteiro e guarda o lugar onde parou no
     // teste anterior. `go` o leva direto a Configurações (a vantagem de rotas
     // por caminho: ir a qualquer tela sem tocar na barra).
@@ -80,12 +82,14 @@ void main() {
 
     await tester.tap(find.text('Horário de cobertura'));
     await _passTime(tester);
-    expect(find.text('Em breve.'), findsOneWidget);
+    // A tela de verdade. Sem contatos cadastrados ela explica isso, e esse texto
+    // só existe nela (o título e o subtítulo também aparecem no menu).
+    expect(find.textContaining('ainda não tem contatos'), findsOneWidget);
 
-    // A seta de voltar é a que fecha a tela provisória.
+    // A seta de voltar é a que fecha a tela.
     appRouter.pop();
     await _passTime(tester);
-    expect(find.text('Em breve.'), findsNothing);
+    expect(find.textContaining('ainda não tem contatos'), findsNothing);
 
     await tester.tap(find.text('Histórico de alertas'));
     await _passTime(tester);

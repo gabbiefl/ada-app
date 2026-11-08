@@ -100,10 +100,17 @@ class AdaApp extends StatelessWidget {
           lazy: false,
           create: (context) {
             final contacts = context.read<ContactsController>();
-            return CoverageController(
+            final coverage = CoverageController(
               repository: coverageRepository ?? SecureCoverageRepository(),
               contactExists: (id) => contacts.byId(id) != null,
             )..load();
+            // Quando a rede muda (um contato é removido), apaga as faixas dele.
+            // Só reage a uma mudança de verdade: uma leitura que falha não avisa
+            // ninguém, então nunca apaga faixas por engano.
+            contacts.addListener(
+              () => coverage.pruneFor(contacts.contacts.map((c) => c.id)),
+            );
+            return coverage;
           },
         ),
         // Alerta: junta localização, SMS e ligação. Dispara quando o Perigo ou a

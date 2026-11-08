@@ -188,9 +188,11 @@ class CoverageController extends ChangeNotifier {
     return null;
   }
 
-  // Apaga as faixas de contatos que não existem mais (a tela chama ao abrir).
+  // Apaga as faixas de contatos que não existem mais (o app chama sempre que a
+  // rede muda; ver app.dart).
   // Só avisa e grava se algo foi apagado. Devolve quantas foram.
   int pruneFor(Iterable<String> contactIds) {
+    if (_disposed) return 0; // pode ser chamado por um ouvinte já descartado
     final valid = contactIds.toSet();
     final before = _rules.length;
     _rules.removeWhere((r) => !valid.contains(r.contactId));

@@ -12,6 +12,7 @@ import 'package:ada_app/core/widgets/coming_soon_page.dart';
 import 'package:ada_app/features/alerts/pages/alert_page.dart';
 import 'package:ada_app/features/contacts/pages/contact_form_page.dart';
 import 'package:ada_app/features/contacts/pages/contacts_page.dart';
+import 'package:ada_app/features/coverage/pages/coverage_page.dart';
 import 'package:ada_app/features/home/pages/home_page.dart';
 import 'package:ada_app/features/map/pages/map_page.dart';
 import 'package:ada_app/features/messages/models/message_kind.dart';
@@ -130,8 +131,7 @@ final appRouter = GoRouter(
                 ),
                 GoRoute(
                   path: 'coverage',
-                  builder: (context, state) =>
-                      const ComingSoonPage(title: 'Horário de cobertura'),
+                  builder: (context, state) => const CoveragePage(),
                 ),
                 GoRoute(
                   path: 'history',
