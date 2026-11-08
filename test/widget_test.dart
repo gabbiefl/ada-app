@@ -158,6 +158,8 @@ void main() {
   // `testWidgets` cria um teste que recebe um `tester`, o "controle remoto"
   // para montar widgets, tocar na tela e consultar o que está visível.
   testWidgets('A tela inicial mostra a saudação', (tester) async {
+    // O app abre na splash; `go` leva direto à Home (o roteador é um só).
+    appRouter.go(AppRoutes.home);
     // Monta o app e espera o primeiro quadro ser desenhado.
     await tester.pumpWidget(const AdaApp());
 

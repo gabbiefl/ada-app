@@ -20,11 +20,13 @@ import 'package:ada_app/features/messages/models/message_kind.dart';
 import 'package:ada_app/features/messages/pages/message_edit_page.dart';
 import 'package:ada_app/features/messages/pages/messages_page.dart';
 import 'package:ada_app/features/settings/pages/settings_page.dart';
+import 'package:ada_app/features/splash/pages/splash_page.dart';
 
 // Os caminhos ficam em um lugar só, para não repetir texto pelo código.
 class AppRoutes {
   AppRoutes._();
 
+  static const splash = '/splash';
   static const home = '/home';
   static const contacts = '/contacts';
   static const newContact = '/contacts/new';
@@ -48,8 +50,13 @@ final _rootKey = GlobalKey<NavigatorState>();
 
 final appRouter = GoRouter(
   navigatorKey: _rootKey,
-  initialLocation: AppRoutes.home,
+  initialLocation: AppRoutes.splash,
   routes: [
+    // Abertura: fora da moldura (sem barra inferior). Ao terminar, vai à Home.
+    GoRoute(
+      path: AppRoutes.splash,
+      builder: (context, state) => const SplashPage(),
+    ),
     // StatefulShellRoute: a "moldura" com a barra inferior. Cada aba (branch)
     // guarda a sua própria pilha de telas e o seu estado ao trocar de aba.
     StatefulShellRoute.indexedStack(

@@ -4,6 +4,7 @@
 // (os anéis pulsando): ele esperaria para sempre. `pump` com duração avança o
 // relógio do teste por um tempo fixo, o suficiente para a transição de tela.
 
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:provider/provider.dart';
@@ -18,7 +19,25 @@ Future<void> _passTime(WidgetTester tester) =>
     tester.pump(const Duration(milliseconds: 600));
 
 void main() {
+  testWidgets('A splash abre primeiro e, ao terminar, leva à Home', (
+    tester,
+  ) async {
+    appRouter.go(AppRoutes.splash);
+    await tester.pumpWidget(const AdaApp());
+    await _passTime(tester);
+    // Sem barra inferior e sem a Home: só a abertura.
+    expect(find.byType(LinearProgressIndicator), findsOneWidget);
+    expect(find.text('Olá, Gabriela'), findsNothing);
+
+    // Passa o tempo da barra (2,2 s) e a Home aparece.
+    await tester.pump(const Duration(seconds: 3));
+    await _passTime(tester);
+    expect(find.text('Olá, Gabriela'), findsOneWidget);
+    expect(find.byType(LinearProgressIndicator), findsNothing);
+  });
+
   testWidgets('A barra inferior leva às abas', (tester) async {
+    appRouter.go(AppRoutes.home);
     await tester.pumpWidget(const AdaApp());
     await _passTime(tester);
     expect(find.text('Olá, Gabriela'), findsOneWidget);
@@ -35,6 +54,7 @@ void main() {
   testWidgets('Configurações abre Mensagens e a edição, e dá para voltar', (
     tester,
   ) async {
+    appRouter.go(AppRoutes.home);
     await tester.pumpWidget(const AdaApp());
     await _passTime(tester);
 
@@ -56,6 +76,7 @@ void main() {
   testWidgets('Adicionar contato abre o cadastro e Cancelar volta', (
     tester,
   ) async {
+    appRouter.go(AppRoutes.home);
     await tester.pumpWidget(const AdaApp());
     await _passTime(tester);
 

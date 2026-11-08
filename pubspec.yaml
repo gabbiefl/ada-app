@@ -88,6 +88,7 @@ flutter:
   # para poderem pulsar.
   assets:
     - assets/images/logo_horizontal_azul.png
+    - assets/images/logo_ada_branca.png
     - assets/images/simbolo_ada.png
     - assets/images/simbolo_atencao.png
     - assets/images/simbolo_perigo.png

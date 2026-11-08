@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Modify this file to customize your launch splash screen -->
+<!-- Fundo azul-marinho do ADA: o mesmo da tela de abertura (splash), sem piscar branco -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@android:color/white" />
+    <item android:drawable="#172033" />
 
     <!-- You can insert your own image assets here -->
     <!-- <item>
