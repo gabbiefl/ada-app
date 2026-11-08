@@ -50,23 +50,23 @@ Deixar o app confiável para a mostra: a usuária consegue **apagar todos os seu
 | 1 ✅ | **Apagar meus dados**: `clear` em contatos, mensagens e faixas, desfazer alerta e modo, item em Configurações com confirmação, testes | M | Limpar estado e armazenamento juntos |
 | 2 ✅ | **Revisão de privacidade**: backup desligado, texto do cadastro (F9-06), checklist e `docs/privacidade-e-dados.md` | P | Privacidade por padrão, LGPD prática |
 | 3 ✅ | **Auditoria de acessibilidade automática**: testes com as guidelines do Flutter e texto em 2x nas telas principais; lista dos achados | M | Guidelines nos testes, `TextScaler` |
-| 4 | **Correções**: nomes na barra inferior e nas setas, áreas de toque pequenas, contraste dos ícones claros | M | `Semantics`, 48 dp, contraste |
+| 4 ✅ | **Correções**: nomes na barra inferior e nas setas, áreas de toque pequenas, contraste dos ícones claros | M | `Semantics`, 48 dp, contraste |
 | 5 | Fechamento: `flutter analyze`, testes, retrospectiva, resumos e backlog | P | Fechar a fase |
 
 A ordem coloca **apagar dados e privacidade primeiro**: são requisitos (RF10) e ficam melhor para defender na banca. A acessibilidade vem depois, e o passo 4 é o que se corta se o prazo apertar.
 
 ## 6.1 Achados da auditoria (passo 3)
-A auditoria roda em [test/accessibility/](../../test/accessibility/): `accessibility_test.dart` (alvo de toque, nome e texto em 2x, em 12 telas, num celular de 393 px) e `contrast_test.dart` (contraste exato dos pares de cores). Cada achado está registrado nos testes como "problema conhecido" (o teste é pulado até a correção) e será corrigido no passo 4.
+A auditoria roda em [test/accessibility/](../../test/accessibility/): `accessibility_test.dart` (alvo de toque, nome e texto em 2x, em 12 telas, num celular de 393 px) e `contrast_test.dart` (contraste exato dos pares de cores). Cada achado foi registrado nos testes como "problema conhecido" (o teste era pulado) e **todos foram corrigidos no passo 4**: a lista está vazia e nenhum teste da auditoria é pulado.
 
-| ID | Achado | Onde | Correção prevista |
+| ID | Achado | Onde | Correção |
 |---|---|---|---|
-| AC-1 | A **barra inferior** só tem ícones: o leitor de tela não diz "Início", "Rede", "Mapa" nem "Ajustes" | Todas as telas com a barra (7) | `Semantics` com o nome e o estado de cada item |
-| AC-2 | O **símbolo central** da Home é tocável (gesto) mesmo no modo Normal, sem nome e sem ação | Home | Só tocável quando há alerta; no Normal, sem gesto |
-| AC-3 | A **seta de voltar** não tem nome (falta o `tooltip`) | Mensagens e Editar mensagem | `tooltip: 'Voltar'` |
-| AC-4 | Textos tocáveis menores que 48 x 48 | "Editar" (Mensagens) e "Resetar para padrão" | Área mínima de toque de 48 |
-| AC-5 | Com **texto em 2x** a tela estoura | Cartões dos modos (Início), cartões de contato e "Adicionar contato" (Rede), título "Novo contato" | Texto que quebra linha (`Expanded`/`Flexible`), alturas que crescem, título e contador em `Wrap` |
-| AC-6 | **Ícones claros** (`#D9D9D9`) sobre o fundo: contraste **1,35 e 1,41** (mínimo 3) | Setas de voltar, "+", setinhas dos menus | Um tom mais escuro só para ícones, sem mudar o desenho |
-| AC-7 | **Azul das caixas informativas** sobre o tom azul de 14%: **4,25** (mínimo 4,5) | Mapa e cadastro de contato | Azul um pouco mais escuro |
+| AC-1 | A **barra inferior** só tem ícones: o leitor de tela não diz "Início", "Rede", "Mapa" nem "Ajustes" | Todas as telas com a barra (7) | ✅ Cada item tem nome ("Início", "Rede", "Mapa", "Configurações") e o estado de selecionado |
+| AC-2 | O **símbolo central** da Home é tocável (gesto) mesmo no modo Normal, sem nome e sem ação | Home | ✅ O símbolo só é tocável quando há alerta ativo |
+| AC-3 | A **seta de voltar** não tem nome (falta o `tooltip`) | Mensagens e Editar mensagem | ✅ `tooltip: 'Voltar'` nas duas setas |
+| AC-4 | Textos tocáveis menores que 48 x 48 | "Editar" (Mensagens) e "Resetar para padrão" | ✅ Área de toque de 48 x 48; o "Editar" diz qual mensagem edita ("Editar Modo perigo") |
+| AC-5 | Com **texto em 2x** a tela estoura | Cartões dos modos (Início), cartões de contato e "Adicionar contato" (Rede), título "Novo contato" | ✅ Os cartões e o título passaram a quebrar linha e a crescer, em vez de estourar |
+| AC-6 | **Ícones claros** (`#D9D9D9`) sobre o fundo: contraste **1,35 e 1,41** (mínimo 3) | Setas de voltar, "+", setinhas dos menus | ✅ Novo `AppColors.iconMuted` (`#7C8389`, contraste 3,5 a 3,8) nos ícones; o cinza claro ficou só para bordas |
+| AC-7 | **Azul das caixas informativas** sobre o tom azul de 14%: **4,25** (mínimo 4,5) | Mapa e cadastro de contato | ✅ `AppColors.info` de `#2F6BB8` para `#2A62AB` (contraste 4,8) |
 
 **Verificado e aprovado:** os outros 18 pares de cores (texto cinza, vermelho, marrom, branco sobre o vermelho do Perigo, azul-marinho sobre o amarelo da Atenção etc.) passam o contraste do WCAG AA. Os alvos de toque dos demais botões, cartões e chaves passam. A tela **Mapa**, **Configurações**, **Cobertura** e as de **Alerta** aguentam o texto em 2x (a de Alerta só ficou mascarada pelo estouro da Home, de onde é aberta).
 

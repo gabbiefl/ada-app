@@ -52,13 +52,7 @@ class _Pair {
 }
 
 // Achados conhecidos e ainda não corrigidos: nome do par -> motivo.
-const _knownIssues = <String, String>{
-  'azul informativo sobre a caixa azul (14%, sobre o fundo)': 'AC-7: contraste 4,25 (mínimo 4,5) nas caixas azuis do Mapa e do cadastro',
-  'ícones claros (setas, +) sobre o fundo':
-      'AC-6: o cinza #D9D9D9 dá contraste 1,35 (mínimo 3) em setas e "+"',
-  'ícones claros (setas, +) sobre cartão branco':
-      'AC-6: o cinza #D9D9D9 dá contraste 1,41 (mínimo 3) em setinhas de menu',
-};
+const _knownIssues = <String, String>{};
 
 final _pairs = <_Pair>[
   // Texto sobre o fundo e sobre cartões brancos.
@@ -147,14 +141,14 @@ final _pairs = <_Pair>[
 
   // Ícones (mínimo 3, e não 4,5): carregam informação, como "voltar" e "+".
   _Pair(
-    'ícones claros (setas, +) sobre o fundo',
-    AppColors.placeholder,
+    'ícones (setas, x, setinhas) sobre o fundo',
+    AppColors.iconMuted,
     AppColors.background,
     min: 3,
   ),
   _Pair(
-    'ícones claros (setas, +) sobre cartão branco',
-    AppColors.placeholder,
+    'ícones (setas, x, setinhas) sobre cartão branco',
+    AppColors.iconMuted,
     Colors.white,
     min: 3,
   ),

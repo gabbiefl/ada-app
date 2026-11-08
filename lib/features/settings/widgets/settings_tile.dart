@@ -72,7 +72,7 @@ class SettingsTile extends StatelessWidget {
                 child: Icon(
                   LucideIcons.arrowRight,
                   size: 21,
-                  color: AppColors.placeholder,
+                  color: AppColors.iconMuted,
                 ),
               ),
             ],

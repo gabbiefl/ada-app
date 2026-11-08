@@ -109,7 +109,7 @@ class _CoveragePageState extends State<CoveragePage> {
                 trailing: IconButton(
                   onPressed: () => context.pop(),
                   icon: const Icon(LucideIcons.arrowLeft),
-                  color: AppColors.placeholder,
+                  color: AppColors.iconMuted,
                   tooltip: 'Voltar',
                 ),
               ),

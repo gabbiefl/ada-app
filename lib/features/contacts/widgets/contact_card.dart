@@ -44,9 +44,11 @@ class ContactCard extends StatelessWidget {
   }
 
   Widget _buildCard(ThemeData theme) {
+    // minHeight (e não height): no tamanho normal o card tem 88, como no Figma; com a
+    // fonte do sistema aumentada ele cresce em vez de estourar a altura.
     return Container(
-      height: 88,
-      padding: const EdgeInsets.symmetric(horizontal: 21),
+      constraints: const BoxConstraints(minHeight: 88),
+      padding: const EdgeInsets.symmetric(horizontal: 21, vertical: 12),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
@@ -94,7 +96,7 @@ class ContactCard extends StatelessWidget {
                 child: Icon(
                   LucideIcons.x,
                   size: 12,
-                  color: AppColors.placeholder,
+                  color: AppColors.iconMuted,
                 ),
               ),
             ),

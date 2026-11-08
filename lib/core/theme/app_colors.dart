@@ -27,8 +27,16 @@ class AppColors {
   static const Color avatarGreen = Color(0xFF2FA36B);
   static const Color placeholder = Color(0xFFD9D9D9);
 
-  // Aviso informativo (caixa azul da tela de cadastro)
-  static const Color info = Color(0xFF2F6BB8);
+  // Ícones que carregam informação (setas de voltar, "x", setinhas de menu). O
+  // placeholder acima é claro demais para isso (contraste 1,4); este dá cerca de 3,7
+  // sobre o fundo e sobre o branco (mínimo do WCAG para ícones: 3). O placeholder
+  // fica só para bordas e decoração.
+  static const Color iconMuted = Color(0xFF7C8389);
+
+  // Aviso informativo (caixas azuis). Um pouco mais escuro que o do Figma
+  // (#2F6BB8) para o texto passar o contraste 4,5 sobre o próprio tom azul (4,25
+  // antes; 4,8 agora).
+  static const Color info = Color(0xFF2A62AB);
 
   // Modos de segurança (usados no passo 6, em um ThemeExtension)
   static const Color modeNormal = Color(0xFF172033); // azul-marinho

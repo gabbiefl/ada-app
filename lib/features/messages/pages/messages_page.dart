@@ -48,7 +48,9 @@ class MessagesPage extends StatelessWidget {
                 trailing: IconButton(
                   onPressed: () => context.pop(),
                   icon: const Icon(LucideIcons.arrowLeft),
-                  color: AppColors.placeholder,
+                  color: AppColors.iconMuted,
+                  // tooltip: o nome da seta para o leitor de tela.
+                  tooltip: 'Voltar',
                 ),
               ),
               const SizedBox(height: 32),

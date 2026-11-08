@@ -58,10 +58,15 @@ class DemoModeTile extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 8),
-          Switch(
-            value: alert.demoMode,
-            onChanged: (value) =>
-                context.read<AlertController>().demoMode = value,
+          // Semantics: dá o nome à chave. Sem ele, o leitor de tela diria só
+          // "chave", sem dizer para que serve.
+          Semantics(
+            label: 'Modo de demonstração',
+            child: Switch(
+              value: alert.demoMode,
+              onChanged: (value) =>
+                  context.read<AlertController>().demoMode = value,
+            ),
           ),
         ],
       ),

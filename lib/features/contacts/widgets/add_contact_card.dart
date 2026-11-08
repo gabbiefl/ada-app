@@ -2,6 +2,9 @@
 //
 // O Flutter não tem borda tracejada pronta, então desenhamos com CustomPainter:
 // um "pincel" próprio que recebe a tela de desenho (canvas) e traça o contorno.
+//
+// Acessibilidade: a altura é MÍNIMA (88) e o texto fica num Expanded, então com a
+// fonte do sistema aumentada o texto quebra de linha e o card cresce.
 
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -25,10 +28,10 @@ class AddContactCard extends StatelessWidget {
           color: AppColors.placeholder,
           radius: 20,
         ),
-        child: SizedBox(
-          height: 88,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(minHeight: 88),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 21),
+            padding: const EdgeInsets.symmetric(horizontal: 21, vertical: 12),
             child: Row(
               children: [
                 Container(
@@ -45,10 +48,13 @@ class AddContactCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 19),
-                Text(
-                  'Adicionar contato',
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
+                // Expanded: o texto quebra de linha se não couber.
+                Expanded(
+                  child: Text(
+                    'Adicionar contato',
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
                   ),
                 ),
               ],

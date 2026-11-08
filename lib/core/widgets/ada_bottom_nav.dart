@@ -21,6 +21,10 @@ class AdaBottomNav extends StatelessWidget {
     LucideIcons.settings,
   ];
 
+  // O nome de cada item, na mesma ordem. A barra só tem ícones, então o leitor de
+  // tela precisa deste texto para dizer o que cada um é.
+  static const _labels = ['Início', 'Rede', 'Mapa', 'Configurações'];
+
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
@@ -41,6 +45,7 @@ class AdaBottomNav extends StatelessWidget {
               for (var i = 0; i < _icons.length; i++)
                 _NavItem(
                   icon: _icons[i],
+                  label: _labels[i],
                   active: i == currentIndex,
                   onTap: () => onTap?.call(i),
                 ),
@@ -55,11 +60,13 @@ class AdaBottomNav extends StatelessWidget {
 class _NavItem extends StatelessWidget {
   const _NavItem({
     required this.icon,
+    required this.label,
     required this.active,
     required this.onTap,
   });
 
   final IconData icon;
+  final String label;
   final bool active;
   final VoidCallback onTap;
 
@@ -67,21 +74,27 @@ class _NavItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
 
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(15),
-      child: Container(
-        width: 56,
-        height: 50,
-        decoration: BoxDecoration(
-          // Item ativo: fundo rosa a 15% (cor primária do tema).
-          color: active ? colors.tertiary.withValues(alpha: 0.15) : null,
-          borderRadius: BorderRadius.circular(15),
-        ),
-        child: Icon(
-          icon,
-          size: 24,
-          color: active ? colors.tertiary : colors.onSurfaceVariant,
+    // Semantics: dá o nome ao item e diz se é o selecionado ("Início, selecionado").
+    return Semantics(
+      button: true,
+      selected: active,
+      label: label,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(15),
+        child: Container(
+          width: 56,
+          height: 50,
+          decoration: BoxDecoration(
+            // Item ativo: fundo rosa a 15% (cor primária do tema).
+            color: active ? colors.tertiary.withValues(alpha: 0.15) : null,
+            borderRadius: BorderRadius.circular(15),
+          ),
+          child: Icon(
+            icon,
+            size: 24,
+            color: active ? colors.tertiary : colors.onSurfaceVariant,
+          ),
         ),
       ),
     );

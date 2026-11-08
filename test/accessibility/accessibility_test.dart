@@ -18,7 +18,6 @@
 // o teste passa a valer. Assim a suíte fica verde e a dívida fica visível.
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:ada_app/app.dart';
@@ -33,36 +32,17 @@ import 'package:ada_app/features/map/models/geo_point.dart';
 import 'package:ada_app/features/messages/data/messages_repository.dart';
 import 'package:ada_app/features/messages/models/message_kind.dart';
 
+import '../support/app_font.dart';
+
 const _short = Duration(milliseconds: 600);
 
 // As quatro verificações.
 enum Check { tapTarget, label, bigText }
 
 // Achados conhecidos e ainda não corrigidos: "tela|verificação" -> motivo.
-// (Esta lista é preenchida pela auditoria e esvaziada pelas correções.)
-const _knownIssues = <String, String>{
-  // AC-1: a barra inferior só tem ícones, sem nome para o leitor de tela.
-  'Início|label': 'AC-1 (barra inferior) e AC-2 (símbolo central)',
-  'Rede|label': 'AC-1: a barra inferior não tem nome',
-  'Mapa|label': 'AC-1: a barra inferior não tem nome',
-  'Configurações|label': 'AC-1: a barra inferior não tem nome',
-  'Mensagens|label': 'AC-1 (barra inferior) e AC-3 (seta de voltar)',
-  'Editar mensagem|label': 'AC-1 (barra inferior) e AC-3 (seta de voltar)',
-  'Horário de cobertura|label': 'AC-1: a barra inferior não tem nome',
-  // AC-4: textos tocáveis pequenos demais.
-  'Mensagens|tapTarget': 'AC-4: o link "Editar" tem só o tamanho do texto',
-  'Editar mensagem|tapTarget':
-      'AC-4: "Resetar para padrão" tem só o tamanho do texto',
-  // AC-5: com texto em 2x, estas telas estouram.
-  'Início|bigText': 'AC-5: os cartões dos modos estouram a largura',
-  'Rede|bigText': 'AC-5: os cartões de contato estouram (altura fixa)',
-  'Novo contato|bigText':
-      'AC-5: o título "Novo contato" e o "1/5" não cabem na linha',
-  'Alerta (Perigo)|bigText':
-      'AC-5: aqui o estouro vem da Home, de onde a tela é aberta',
-  'Alerta (Atenção)|bigText':
-      'AC-5: aqui o estouro vem da Home, de onde a tela é aberta',
-};
+// (Esta lista é preenchida pela auditoria e esvaziada pelas correções. Está vazia:
+// todos os achados da Fase 11 foram corrigidos.)
+const _knownIssues = <String, String>{};
 
 // Uma tela da auditoria: um nome e como chegar nela.
 class _Screen {
@@ -112,7 +92,12 @@ Future<void> _pumpApp(WidgetTester tester, String route) async {
 // Abre a tela do alerta ativando o Perigo (ou a Atenção) pela Home, como a usuária.
 Future<void> _openAlert(WidgetTester tester, {required bool danger}) async {
   await _pumpApp(tester, AppRoutes.home);
-  await tester.tap(find.text(danger ? 'MODO PERIGO' : 'MODO ATENÇÃO'));
+  final card = find.text(danger ? 'MODO PERIGO' : 'MODO ATENÇÃO');
+  // Com texto grande, o cartão pode ficar abaixo da área visível: a usuária rola a
+  // tela até ele, e o teste também.
+  await tester.ensureVisible(card);
+  await tester.pump(_short);
+  await tester.tap(card);
   await tester.pump(_short);
   await tester.tap(find.text('Ativar'));
   await tester.pump(_short);
@@ -142,17 +127,9 @@ String _label(Check check) => switch (check) {
   Check.bigText => 'texto em tamanho duplo',
 };
 
-// Por padrão, os testes de widget desenham o texto com a fonte "Ahem", em que cada
-// letra é um quadrado largo. Isso INFLA os textos e criaria overflows que não
-// existem no celular. Para medir o texto de verdade, carregamos a fonte do app.
-Future<void> _loadAppFont() async {
-  final loader = FontLoader('Nunito')
-    ..addFont(rootBundle.load('assets/fonts/Nunito-VariableFont_wght.ttf'));
-  await loader.load();
-}
-
 void main() {
-  setUpAll(_loadAppFont);
+  // A fonte de verdade (ver test/support/app_font.dart).
+  setUpAll(loadAppFont);
 
   for (final screen in _screens) {
     group('Acessibilidade: ${screen.name}', () {

@@ -55,13 +55,31 @@ class MessageCard extends StatelessWidget {
               ],
             ),
           ),
-          InkWell(
-            onTap: onEdit,
-            child: Text(
-              'Editar',
-              style: theme.textTheme.labelMedium?.copyWith(
-                fontWeight: FontWeight.w600,
-                fontVariations: const [FontVariation('wght', 600)],
+          // Área de toque de 48 x 48 (o texto sozinho é pequeno demais). O nome
+          // inclui o título, porque há três links "Editar" na mesma tela.
+          Semantics(
+            button: true,
+            label: 'Editar $title',
+            child: InkWell(
+              onTap: onEdit,
+              child: ExcludeSemantics(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(
+                    minWidth: 48,
+                    minHeight: 48,
+                  ),
+                  // O texto continua no canto de cima, onde estava no Figma.
+                  child: Align(
+                    alignment: Alignment.topRight,
+                    child: Text(
+                      'Editar',
+                      style: theme.textTheme.labelMedium?.copyWith(
+                        fontWeight: FontWeight.w600,
+                        fontVariations: const [FontVariation('wght', 600)],
+                      ),
+                    ),
+                  ),
+                ),
               ),
             ),
           ),

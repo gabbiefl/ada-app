@@ -83,7 +83,8 @@ class _MessageEditPageState extends State<MessageEditPage> {
                       trailing: IconButton(
                         onPressed: () => context.pop(),
                         icon: const Icon(LucideIcons.arrowLeft),
-                        color: AppColors.placeholder,
+                        color: AppColors.iconMuted,
+                        tooltip: 'Voltar',
                       ),
                     ),
                     const SizedBox(height: 24),
@@ -154,25 +155,30 @@ class _MessageEditPageState extends State<MessageEditPage> {
                           _controller.text = widget.kind.defaultText;
                           _error = null;
                         }),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              LucideIcons.rotateCcw,
-                              size: 16,
-                              color: theme.colorScheme.onSurfaceVariant,
-                            ),
-                            const SizedBox(width: 4),
-                            Text(
-                              'Resetar para padrão',
-                              style: textTheme.labelMedium?.copyWith(
-                                fontWeight: FontWeight.w600,
-                                fontVariations: const [
-                                  FontVariation('wght', 600),
-                                ],
+                        // Altura mínima de 48: o texto sozinho é pequeno demais para
+                        // tocar. O Row fica centralizado dentro dela.
+                        child: ConstrainedBox(
+                          constraints: const BoxConstraints(minHeight: 48),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                LucideIcons.rotateCcw,
+                                size: 16,
+                                color: theme.colorScheme.onSurfaceVariant,
                               ),
-                            ),
-                          ],
+                              const SizedBox(width: 4),
+                              Text(
+                                'Resetar para padrão',
+                                style: textTheme.labelMedium?.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  fontVariations: const [
+                                    FontVariation('wght', 600),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),

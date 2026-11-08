@@ -312,7 +312,11 @@ class _HomePageState extends State<HomePage>
                               ? 'Desativar alerta'
                               : null,
                           child: GestureDetector(
-                            onTap: _deactivate,
+                            // Sem alerta ativo não há o que desativar: sem gesto, o
+                            // leitor de tela não anuncia um botão sem ação.
+                            onTap: mode == SecurityMode.normal
+                                ? null
+                                : _deactivate,
                             child: Container(
                               width: 134,
                               height: 134,

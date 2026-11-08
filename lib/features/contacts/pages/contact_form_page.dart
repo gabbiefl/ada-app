@@ -140,10 +140,15 @@ class _ContactFormPageState extends State<ContactFormPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            _isEditing ? 'Editar contato' : 'Novo contato',
-                            style: textTheme.headlineSmall,
+                          // Expanded: com texto grande, o título quebra de linha em
+                          // vez de empurrar o contador para fora da tela.
+                          Expanded(
+                            child: Text(
+                              _isEditing ? 'Editar contato' : 'Novo contato',
+                              style: textTheme.headlineSmall,
+                            ),
                           ),
+                          const SizedBox(width: 12),
                           Text(
                             '$position/${ContactsController.maxContacts}',
                             style: textTheme.titleMedium,
