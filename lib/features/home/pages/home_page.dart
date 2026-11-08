@@ -225,7 +225,7 @@ class _HomePageState extends State<HomePage>
       body: SafeArea(
         child: Column(
           children: [
-            // Cabeçalho: logo à esquerda, sino à direita.
+            // Cabeçalho: só a logo. O sino do Figma foi removido
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 35),
               child: SizedBox(
@@ -236,28 +236,6 @@ class _HomePageState extends State<HomePage>
                     Image.asset(
                       'assets/images/logo_horizontal_azul.png',
                       height: 42,
-                    ),
-                    // Stack: o sino com uma bolinha de aviso por cima, no canto.
-                    Stack(
-                      clipBehavior: Clip.none,
-                      children: [
-                        Icon(
-                          LucideIcons.bell,
-                          color: theme.colorScheme.onSurface,
-                        ),
-                        Positioned(
-                          top: 0,
-                          right: 0,
-                          child: Container(
-                            width: 8,
-                            height: 8,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: theme.colorScheme.tertiary,
-                            ),
-                          ),
-                        ),
-                      ],
                     ),
                   ],
                 ),
