@@ -40,7 +40,8 @@ A proposta é oferecer uma forma **rápida e simples de pedir ajuda em situaçõ
 | 6 | Mensagens de emergência: texto padrão, edição, validação (até 200 letras) e armazenamento seguro | ✅ |
 | 7 | Modos Atenção e Perigo: ativar, confirmar o Perigo, desativar com segurança e vibração | ✅ |
 | 8 | Localização: permissões, localização atual na aba Mapa e link de mapa para o alerta | ✅ |
-| 9 em diante | Envio dos alertas, horários e entrega final | 🔜 Fase 9 a seguir |
+| 9 | Alerta de verdade: SMS automático à rede, ligação ao contato de plantão, WhatsApp com mensagem pronta e tela de progresso | ✅ (SMS direto a confirmar em aparelho real) |
+| 10 em diante | Horário de cobertura, qualidade e entrega final | 🔜 Fase 10 a seguir |
 
 O plano de cada fase está em [`docs/planejamento/`](docs/planejamento/) e a lista de itens em [`docs/BACKLOG.md`](docs/BACKLOG.md).
 
@@ -49,7 +50,7 @@ O plano de cada fase está em [`docs/planejamento/`](docs/planejamento/) e a lis
 - **Flutter** e **Dart**, com Material Design 3
 - **Android** como plataforma principal
 - **Figma** para o design das telas, lido pelo Claude Code via MCP
-- **go_router** (navegação), **provider** (estado), **flutter_secure_storage** (contatos e mensagens guardados com criptografia) e **geolocator** (localização)
+- **go_router** (navegação), **provider** (estado), **flutter_secure_storage** (contatos e mensagens guardados com criptografia), **geolocator** (localização), **permission_handler** (permissões) e **url_launcher** (WhatsApp, SMS e discador)
 - **Nunito** como fonte e **Lucide** como família de ícones (pacote `lucide_icons_flutter`)
 
 ## ▶️ Como rodar

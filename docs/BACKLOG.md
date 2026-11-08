@@ -13,11 +13,11 @@
 
 ## Fase atual
 
-**Fase 8 — Localização** concluída no código (falta testar os erros no emulador e escrever os resumos). As Fases 4 a 7 estão concluídas. A Fase 3 segue com telas pendentes (ver F3-07 a F3-14). Falta você escrever o "O que aprendi" das Fases 1 a 8. O emulador Android já roda o ADA (F1-04 ✅) e o `applicationId` foi aplicado (F1-05 ✅).
+**Fase 9 — Comunicação** concluída no código (falta confirmar o SMS direto e a ligação num aparelho real, e escrever os resumos). As Fases 4 a 8 estão concluídas. A Fase 3 segue com telas pendentes (ver F3-07 a F3-14). Falta você escrever o "O que aprendi" das Fases 1 a 9. O emulador Android já roda o ADA (F1-04 ✅) e o `applicationId` foi aplicado (F1-05 ✅).
 
 ---
 
-> Próxima: **Fase 9 — Comunicação** (criar o plano antes; usa `url_launcher`, que pede a sua confirmação; decidir WhatsApp x SMS e acionamento simultâneo x sequencial).
+> Próxima: **Fase 10 — Horário de cobertura** (criar o plano antes: define quem ligar por faixa de horário, trocando a regra provisória "primeiro da lista"). A mostra é em 12/11.
 
 ## Fase 0 — Entendimento e viabilidade
 
@@ -123,10 +123,12 @@
 
 | ID | Item | Prio | Status |
 |---|---|---|---|
-| F9-01 | Chamada telefônica rápida | M | ⬜ |
-| F9-02 | Envio da mensagem ao WhatsApp `[?]` | M | ⬜ |
-| F9-03 | Acionar a rede de contatos de forma simultânea ou sequencial `[?]` | M | ⬜ |
-| F9-04 | Alternativa por SMS via `sms:` (`url_launcher`), sem SMS direto; testar vários destinatários `[?]` | S | ⬜ |
+| F9-01 | Chamada telefônica rápida (ligação direta com `CALL_PHONE`; discador como plano B) | M | ✅ |
+| F9-02 | Envio da mensagem ao WhatsApp `[?]` (abre a conversa com o texto pronto, `wa.me`; a usuária toca em enviar, pois o envio automático é inviável) | M | ✅ |
+| F9-03 | Acionar a rede de contatos de forma simultânea ou sequencial `[?]` (SMS automático aos outros contatos e depois a ligação ao contato de plantão) | M | ✅ |
+| F9-04 | SMS: **SMS direto** (`SEND_SMS`, decisão revista) com o app de mensagens (`sms:`) como plano B. Falta testar vários destinatários numa mensagem só `[?]` | S | 🔄 |
+| F9-05 | Confirmar o SMS direto e a ligação num **celular real** (no emulador o SMS falhou; ver o registro `AdaAlert`) | M | ⬜ |
+| F9-06 | Texto da tela de cadastro promete um aviso por WhatsApp ao contato, que não existe: ajustar o texto ou implementar (consentimento, LGPD) | S | ⬜ |
 
 ## Fase 10 — Regras por horário
 
@@ -144,6 +146,7 @@
 | F11-02 | Acessibilidade (contraste, alvos de toque, Semantics) | S | ⬜ |
 | F11-03 | Tratamento de erros e estados vazios | S | ⬜ |
 | F11-04 | Revisão de privacidade e armazenamento dos dados | S | ⬜ |
+| F11-05 | Apagar todos os dados da usuária (RF10: contatos, mensagens e o que mais houver), com confirmação | S | ⬜ |
 
 ## Fase 12 — Build e apresentação
 

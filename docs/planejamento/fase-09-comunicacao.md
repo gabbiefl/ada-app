@@ -1,6 +1,6 @@
 # Fase 9 — Comunicação: chamada, mensagem e WhatsApp
 
-> **Status:** 🔄 em execução (plano aprovado)
+> **Status:** ✅ concluída no código (pendente: confirmar o SMS direto e a ligação em aparelho real; ver Dívidas)
 > **Itens do backlog:** F9-01, F9-02, F9-03, F9-04
 
 ## 1. Objetivo
@@ -60,7 +60,7 @@ Ao ativar o Modo Perigo, o app **age sozinho**: busca a localização, manda a m
 | 3 ✅ | `AlertController`: busca a localização, monta o texto, **envia o SMS aos outros contatos e só depois liga** (a ligação toma a tela), guardando o resultado de cada um | G | Orquestrar passos em ordem |
 | 4 ✅ | Tela **Alerta**: resultado por contato, reenviar, WhatsApp manual, rede vazia, avisos | M | Tela de vários estados |
 | 5 ✅ | Ligar o **Ativar do Perigo** (e a Atenção, sem ligar) ao fluxo; botão para reabrir a tela | P | Disparar o fluxo a partir de uma ação |
-| 6 | Testes de fluxo, teste no emulador, `flutter analyze`, retrospectiva, resumos e backlog | M | Fechar a fase |
+| 6 ✅ | Testes de fluxo, teste no emulador, `flutter analyze`, retrospectiva, resumos e backlog | M | Fechar a fase |
 
 ## 7. Decisões técnicas
 | Decisão | Alternativas consideradas | Motivo |
@@ -96,16 +96,18 @@ Ao ativar o Modo Perigo, o app **age sozinho**: busca a localização, manda a m
 | Figma da tela Alerta não lido | Visual diferente | Montar com o tema existente e conferir depois |
 
 ## 9. Critérios de pronto
-- [ ] Confirmado o Perigo, sem outro toque: localização, SMS aos outros contatos e ligação ao contato de plantão
-- [ ] Sem permissão de SMS ou de ligação, o plano B abre o compositor ou o discador
-- [ ] Sem localização, sem contatos ou com falha, o app explica e não fecha
-- [ ] A tela Alerta mostra o resultado por contato e permite reenviar e abrir o WhatsApp
-- [ ] O envio automático acontece uma vez por ativação
-- [ ] Nenhum telefone, texto ou coordenada em `print`/`debugPrint`
-- [ ] Testes passando com a versão falsa (nenhum teste envia ou liga de verdade)
-- [ ] `flutter analyze` sem avisos
-- [ ] Testado no emulador (entre dois emuladores) ou no celular, só com números de teste
-- [ ] Backlog atualizado e commit feito
+- [x] Confirmado o Perigo, sem outro toque: localização, SMS aos outros contatos e ligação ao contato de plantão
+- [x] Sem permissão de SMS ou de ligação, o plano B abre o compositor ou o discador (coberto por testes)
+- [x] Sem localização, sem contatos ou com falha, o app explica e não fecha
+- [x] A tela Alerta mostra o resultado por contato e permite reenviar e abrir o WhatsApp
+- [x] O envio automático acontece uma vez por ativação
+- [x] Nenhum telefone, texto ou coordenada em `print`/`debugPrint`
+- [x] Testes passando com a versão falsa (nenhum teste envia ou liga de verdade)
+- [x] `flutter analyze` sem avisos
+- [x] Testado no emulador: fluxo completo, tela de progresso e ligação
+- [ ] **SMS direto confirmado** no emulador ou num celular real (no emulador apareceu a falha genérica "Não foi possível enviar o SMS"; a causa ainda não foi descoberta)
+- [x] Backlog atualizado
+- [ ] Commit do fechamento (por você)
 
 ## 10. Como testar
 Cadastrar **apenas números de teste**. `flutter run -d emulator-5554`, conceder as permissões e ativar o Perigo. Conferir o SMS no outro emulador (porta 5556) ou no seu celular, e a ligação. Repetir negando as permissões (plano B), sem localização e sem contatos. `flutter analyze` e `flutter test`.
@@ -120,13 +122,27 @@ Cadastrar **apenas números de teste**. `flutter run -d emulator-5554`, conceder
 
 ---
 
-## Retrospectiva (preencher ao concluir)
+## Retrospectiva
 
 **O que aprendi:**
-- <...>
+- (preencha com as suas palavras)
 
 **O que mudou em relação ao plano:**
-- <...>
+- **Decisão revista da Fase 0:** o SMS direto (`SEND_SMS`) e a ligação direta (`CALL_PHONE`) **entraram**, a pedido da usuária, porque o APK da mostra é instalado direto. O WhatsApp continua manual (um toque), pois o envio automático é inviável.
+- A tela de progresso passou a **seguir o print do Figma** (fundo na cor do modo, símbolo menor, cartões escuros por etapa e botão "Cancelar alerta"), com **grupos "Avisados" e "Não foi possível avisar"** por pedido da usuária.
+- A **Atenção ganhou confirmação**, porque agora o envio é automático e um toque acidental avisaria a rede inteira.
+- **Modo de demonstração** em Configurações (sugestão do plano): ensaia o alerta sem mandar SMS nem ligar. Desligado ao abrir o app, de propósito.
+- Os SMS saem **antes** da ligação (ela toma a tela), e **desativar o modo cancela** os envios que faltam.
+- `permission_handler` ficou na **versão 12.0.1**: a 13 exige compilar contra o Android 37, que o plugin de build atual não suporta.
+- **Defeito encontrado nos testes manuais:** o alerta disparado direto da Home via a rede vazia, porque os controladores eram criados só quando uma tela os lia e carregavam de forma assíncrona. Corrigido com `lazy: false`, com o alerta esperando o carregamento (`ready`) e com um **prazo de 2 s**, para o alerta nunca ficar preso numa leitura que trava.
+- Fora do plano: **ícone adaptativo do app**, registro do **tipo** do erro de SMS e ligação (sem dados pessoais) e o diálogo de confirmação compartilhado.
+- O travamento do emulador ("isn't responding") veio de **pouca memória no computador**, e não do app.
 
 **Dívidas técnicas e novos itens para o backlog:**
-- <...>
+- **F9-05:** confirmar o SMS direto e a ligação num **celular real**; no emulador o SMS falhou com a mensagem genérica. Ligar o emulador e procurar a linha `AdaAlert: Falha ao enviar SMS: <tipo>` no `adb logcat`.
+- **F9-06:** o texto da tela de cadastro de contato promete um **aviso por WhatsApp ao contato cadastrado**, que não existe. Ajustar o texto ou implementar (é questão de consentimento, LGPD).
+- O contato de plantão é **o primeiro da lista** até a Fase 10.
+- Conferir a tela Alerta e a da Atenção com o Figma; o menu do canto direito do Figma não foi implementado.
+- `SEND_SMS` é restrito pela Play Store: serve para o APK da mostra, e não para publicar.
+- Voltar ao `permission_handler` 13 quando o plugin de build aceitar o Android 37.
+- O envio por `sms:` com vários destinatários (F9-04) não foi testado.
