@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Logo do ADA (A branco com coração) para a abertura do Android 12 ou mais novo.
+     O Android recorta o ícone num círculo de 192dp; 130dp de largura cabe inteiro. -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:width="130dp"
+        android:height="126dp"
+        android:gravity="center">
+        <bitmap
+            android:gravity="fill"
+            android:src="@drawable/splash_logo" />
+    </item>
+</layer-list>
