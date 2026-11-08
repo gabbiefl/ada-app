@@ -1,17 +1,64 @@
 // Tela "Configurações": menu que leva a Horário de cobertura, Histórico de
-// alertas e Mensagens personalizadas. Por enquanto é estática: os itens ainda
-// não abrem as outras telas (a navegação entra na Fase 4).
+// alertas e Mensagens personalizadas, com a chave do Modo de demonstração e o
+// "Apagar meus dados".
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:provider/provider.dart';
 
 import 'package:ada_app/core/routes/app_router.dart';
+import 'package:ada_app/core/state/mode_controller.dart';
+import 'package:ada_app/core/theme/app_colors.dart';
+import 'package:ada_app/core/widgets/confirm_dialog.dart';
+import 'package:ada_app/features/alerts/state/alert_controller.dart';
+import 'package:ada_app/features/contacts/state/contacts_controller.dart';
+import 'package:ada_app/features/coverage/state/coverage_controller.dart';
+import 'package:ada_app/features/map/state/location_controller.dart';
+import 'package:ada_app/features/messages/state/messages_controller.dart';
+import 'package:ada_app/features/settings/utils/erase_all_data.dart';
 import 'package:ada_app/features/settings/widgets/demo_mode_tile.dart';
 import 'package:ada_app/features/settings/widgets/settings_tile.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
+
+  // "Apagar meus dados": pergunta com um texto claro e, confirmado, apaga tudo e
+  // avisa. Pega os controladores ANTES do await: depois dele o context pode não
+  // valer mais.
+  Future<void> _eraseData(BuildContext context) async {
+    final mode = context.read<ModeController>();
+    final alert = context.read<AlertController>();
+    final contacts = context.read<ContactsController>();
+    final messages = context.read<MessagesController>();
+    final coverage = context.read<CoverageController>();
+    final location = context.read<LocationController>();
+    final messenger = ScaffoldMessenger.of(context);
+
+    final confirmed = await showConfirmDialog(
+      context,
+      title: 'Apagar todos os dados?',
+      message:
+          'Isso apaga os seus contatos, as faixas de horário e as mensagens que '
+          'você editou (elas voltam ao texto padrão), e desfaz qualquer alerta '
+          'em andamento. Não dá para desfazer.',
+      confirmLabel: 'Apagar tudo',
+      confirmColor: Theme.of(context).colorScheme.error,
+    );
+    if (!confirmed) return;
+
+    await eraseAllData(
+      mode: mode,
+      alert: alert,
+      contacts: contacts,
+      messages: messages,
+      coverage: coverage,
+      location: location,
+    );
+    messenger.showSnackBar(
+      const SnackBar(content: Text('Seus dados foram apagados.')),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +99,16 @@ class SettingsPage extends StatelessWidget {
               ),
               const SizedBox(height: 11),
               const DemoModeTile(),
+              const SizedBox(height: 11),
+              SettingsTile(
+                onTap: () => _eraseData(context),
+                icon: LucideIcons.trash2,
+                accent: AppColors.modeDanger,
+                title: 'Apagar meus dados',
+                description:
+                    'Remove contatos, faixas de horário e mensagens editadas '
+                    'deste celular.',
+              ),
             ],
           ),
         ),

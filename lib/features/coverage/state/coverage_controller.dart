@@ -188,6 +188,15 @@ class CoverageController extends ChangeNotifier {
     return null;
   }
 
+  // Apaga TODAS as faixas (RF10, "Apagar meus dados"), da tela e do armazenamento.
+  // Completa quando a gravação do vazio termina. Grava mesmo que a lista já esteja
+  // vazia (a leitura pode ter falhado ao abrir o app).
+  Future<void> clear() {
+    _rules.clear();
+    _changed();
+    return _pendingSave;
+  }
+
   // Apaga as faixas de contatos que não existem mais (o app chama sempre que a
   // rede muda; ver app.dart).
   // Só avisa e grava se algo foi apagado. Devolve quantas foram.

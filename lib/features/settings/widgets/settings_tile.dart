@@ -13,6 +13,7 @@ class SettingsTile extends StatelessWidget {
     required this.title,
     required this.description,
     this.onTap,
+    this.accent,
   });
 
   final IconData icon;
@@ -20,10 +21,14 @@ class SettingsTile extends StatelessWidget {
   final String description;
   final VoidCallback? onTap;
 
+  // Cor do ícone e do círculo (padrão: o rosa da marca). O item que apaga dados
+  // usa vermelho, para a usuária perceber que é uma ação delicada.
+  final Color? accent;
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final accent = theme.colorScheme.tertiary; // rosa da marca
+    final accent = this.accent ?? theme.colorScheme.tertiary; // rosa da marca
 
     return Material(
       color: Colors.white,

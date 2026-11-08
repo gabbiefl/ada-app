@@ -129,6 +129,17 @@ class ContactsController extends ChangeNotifier {
     return null;
   }
 
+  // Apaga TODOS os contatos (RF10, "Apagar meus dados"): da tela e do
+  // armazenamento. Completa quando a gravação do vazio termina.
+  //
+  // Grava mesmo que a lista já esteja vazia: se a leitura falhou ao abrir o app,
+  // a lista está vazia em memória, mas pode haver contatos guardados no aparelho.
+  Future<void> clear() {
+    _contacts.clear();
+    _changed();
+    return _pendingSave;
+  }
+
   ContactsError? remove(String id) {
     final before = _contacts.length;
     _contacts.removeWhere((c) => c.id == id);

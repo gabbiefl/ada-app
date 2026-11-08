@@ -111,6 +111,15 @@ class MessagesController extends ChangeNotifier {
     return null;
   }
 
+  // Volta TODAS as mensagens ao texto padrão (RF10, "Apagar meus dados"), na tela
+  // e no armazenamento. Completa quando a gravação termina. Grava mesmo que não
+  // haja edições em memória (a leitura pode ter falhado ao abrir o app).
+  Future<void> resetAll() {
+    _custom.clear();
+    _changed();
+    return _pendingSave;
+  }
+
   // Volta ao texto padrão, apagando a edição.
   void reset(MessageKind kind) {
     if (_custom.remove(kind) != null) _changed();

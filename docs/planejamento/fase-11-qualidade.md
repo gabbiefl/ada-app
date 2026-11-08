@@ -1,6 +1,6 @@
 # Fase 11 — Qualidade, privacidade e acessibilidade (versão enxuta)
 
-> **Status:** 📝 em planejamento (aguardando aprovação)
+> **Status:** 🔄 em execução (plano aprovado)
 > **Itens do backlog:** F11-02, F11-03, F11-04, F11-05 (e F9-06). O F11-01 já está atendido (ver seção 4).
 
 ## 1. Objetivo
@@ -47,7 +47,7 @@ Deixar o app confiável para a mostra: a usuária consegue **apagar todos os seu
 ## 6. Passos
 | # | Passo | Tamanho | O que a usuária aprende |
 |---|---|---|---|
-| 1 | **Apagar meus dados**: `clear` em contatos, mensagens e faixas, desfazer alerta e modo, item em Configurações com confirmação, testes | M | Limpar estado e armazenamento juntos |
+| 1 ✅ | **Apagar meus dados**: `clear` em contatos, mensagens e faixas, desfazer alerta e modo, item em Configurações com confirmação, testes | M | Limpar estado e armazenamento juntos |
 | 2 | **Revisão de privacidade**: backup desligado, texto do cadastro (F9-06), checklist e `docs/privacidade-e-dados.md` | P | Privacidade por padrão, LGPD prática |
 | 3 | **Auditoria de acessibilidade automática**: testes com as guidelines do Flutter e texto em 2x nas telas principais; lista dos achados | M | Guidelines nos testes, `TextScaler` |
 | 4 | **Correções**: nomes na barra inferior e nas setas, áreas de toque pequenas, contraste dos ícones claros | M | `Semantics`, 48 dp, contraste |
