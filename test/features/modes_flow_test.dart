@@ -10,6 +10,7 @@ import 'package:ada_app/core/routes/app_router.dart';
 import 'package:ada_app/features/alerts/data/alert_actions.dart';
 import 'package:ada_app/features/alerts/pages/alert_page.dart';
 import 'package:ada_app/features/contacts/data/contacts_repository.dart';
+import 'package:ada_app/features/coverage/data/coverage_repository.dart';
 import 'package:ada_app/features/map/data/location_service.dart';
 import 'package:ada_app/features/map/models/geo_point.dart';
 import 'package:ada_app/features/messages/data/messages_repository.dart';
@@ -36,6 +37,7 @@ void main() {
         // Armazenamento falso: o real não responde no ambiente de teste.
         contactsRepository: InMemoryContactsRepository(),
         messagesRepository: InMemoryMessagesRepository(),
+        coverageRepository: InMemoryCoverageRepository(),
       ),
     );
     const short = Duration(milliseconds: 600);

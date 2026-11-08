@@ -54,7 +54,7 @@ Deixar a usuária definir **quem o ADA liga em cada faixa de horário** e fazer 
 |---|---|---|---|
 | 1 ✅ | `CoverageRule` e as funções puras (contato pela hora, cruzamentos, buracos, ícone do período), com testes nas bordas | M | Regra pura, horas como minutos, interseção de intervalos |
 | 2 ✅ | `CoverageController` e repositório seguro: adicionar, editar, ligar/desligar, remover, validar (início = fim, cruzamento), gravar, carregar (`ready`), com testes | M | Reuso do padrão dos contatos |
-| 3 | `CoverageCallTargetPolicy` com **relógio injetável**; ligar ao alerta e à espera de carregamento da Home | P | Injeção de dependência, trocar a regra sem mexer no resto |
+| 3 ✅ | `CoverageCallTargetPolicy` com **relógio injetável**; ligar ao alerta e à espera de carregamento da Home | P | Injeção de dependência, trocar a regra sem mexer no resto |
 | 4 | Tela **Horário de cobertura**: cartão das 24 horas, lista com ícone e chave, "quem seria ligado agora", estados vazios; rota no lugar de "Em breve" | G | Tela de vários estados, barra proporcional |
 | 5 | Formulário de **nova faixa e edição**: contato, início, fim, validação, remover com confirmação | M | `showTimePicker`, formulário com seletor |
 | 6 | Teste de fluxo (o Perigo liga para quem a hora manda), emulador, `flutter analyze`, retrospectiva, resumos e backlog | P | Fechar a fase |

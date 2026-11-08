@@ -23,6 +23,10 @@ import 'package:ada_app/features/alerts/state/alert_controller.dart';
 import 'package:ada_app/features/contacts/data/contacts_repository.dart';
 import 'package:ada_app/features/contacts/models/contact.dart';
 import 'package:ada_app/features/contacts/state/contacts_controller.dart';
+import 'package:ada_app/features/coverage/data/coverage_repository.dart';
+import 'package:ada_app/features/coverage/models/coverage_rule.dart';
+import 'package:ada_app/features/coverage/state/coverage_call_target_policy.dart';
+import 'package:ada_app/features/coverage/state/coverage_controller.dart';
 import 'package:ada_app/features/home/pages/home_page.dart';
 import 'package:ada_app/features/map/data/location_service.dart';
 import 'package:ada_app/features/map/models/geo_point.dart';
@@ -56,11 +60,14 @@ Future<_Home> _pumpHome(
   int contacts = 3,
   ContactsController? network,
   MessagesController? messages,
+  CoverageController? coverage,
+  DateTime Function()? now, // o "relógio" do teste (padrão: a hora real)
 }) async {
   _tallScreen(tester);
 
   final actions = FakeAlertActions();
   final mode = ModeController();
+  final coverageController = coverage ?? CoverageController();
   final alert = AlertController(
     locationService: FakeLocationService(
       const LocationResult.success(
@@ -68,6 +75,11 @@ Future<_Home> _pumpHome(
       ),
     ),
     actions: actions,
+    // Quem o Perigo liga vem do horário de cobertura (sem faixas: o primeiro).
+    callTarget: CoverageCallTargetPolicy(
+      coverage: coverageController,
+      now: now,
+    ),
   );
   final contactsController = network ?? ContactsController();
   if (network == null) {
@@ -81,6 +93,7 @@ Future<_Home> _pumpHome(
     alert,
     contactsController,
     messagesController,
+    coverageController,
   ]) {
     addTearDown(controller.dispose);
   }
@@ -101,6 +114,7 @@ Future<_Home> _pumpHome(
         ChangeNotifierProvider.value(value: alert),
         ChangeNotifierProvider.value(value: contactsController),
         ChangeNotifierProvider.value(value: messagesController),
+        ChangeNotifierProvider.value(value: coverageController),
       ],
       child: MaterialApp.router(theme: AppTheme.light, routerConfig: router),
     ),
@@ -120,6 +134,19 @@ class _SlowContactsRepository implements ContactsRepository {
 
   @override
   Future<void> save(List<Contact> contacts) async {}
+}
+
+// Repositório de faixas que só entrega quando o teste mandar.
+class _SlowCoverageRepository implements CoverageRepository {
+  final _completer = Completer<List<CoverageRule>>();
+
+  void finish(List<CoverageRule> rules) => _completer.complete(rules);
+
+  @override
+  Future<List<CoverageRule>> load() => _completer.future;
+
+  @override
+  Future<void> save(List<CoverageRule> rules) async {}
 }
 
 List<String> _phones(FakeAlertActions actions, AlertActionKind kind) => [
@@ -541,6 +568,117 @@ void main() {
         (c) => c.kind == AlertActionKind.sendSms,
       );
       expect(sms.text, startsWith('Texto que eu mesma escrevi.'));
+    });
+  });
+
+  group('Horário de cobertura: quem o Perigo liga', () {
+    // Uma rede de 3 contatos ("Contato 1", "Contato 2", "Contato 3") e uma faixa
+    // das 8:00 às 13:00 para o SEGUNDO.
+    ContactsController network3() {
+      final network = ContactsController();
+      for (var i = 1; i <= 3; i++) {
+        network.add(name: 'Contato $i', phone: '5199999000$i');
+      }
+      return network;
+    }
+
+    CoverageController morningForSecond(ContactsController network) {
+      final coverage = CoverageController();
+      coverage.add(
+        contactId: network.contacts[1].id,
+        start: 8 * 60,
+        end: 13 * 60,
+      );
+      return coverage;
+    }
+
+    Future<void> activateDanger(WidgetTester tester) async {
+      await tester.tap(find.text('MODO PERIGO'));
+      await tester.pump(_short);
+      await tester.tap(find.text('Ativar'));
+      await tester.pump(_short);
+    }
+
+    testWidgets('dentro da faixa, liga para o contato dela', (tester) async {
+      final network = network3();
+      final home = await _pumpHome(
+        tester,
+        network: network,
+        coverage: morningForSecond(network),
+        now: () => DateTime(2026, 11, 7, 10, 0),
+      );
+
+      await activateDanger(tester);
+
+      expect(_phones(home.actions, AlertActionKind.call), ['51999990002']);
+      // Os outros dois recebem o SMS.
+      expect(_phones(home.actions, AlertActionKind.sendSms), [
+        '51999990001',
+        '51999990003',
+      ]);
+      expect(find.text('Ligando para Contato 2'), findsOneWidget);
+    });
+
+    testWidgets('fora da faixa, liga para o primeiro da lista', (tester) async {
+      final network = network3();
+      final home = await _pumpHome(
+        tester,
+        network: network,
+        coverage: morningForSecond(network),
+        now: () => DateTime(2026, 11, 7, 20, 0),
+      );
+
+      await activateDanger(tester);
+
+      expect(_phones(home.actions, AlertActionKind.call), ['51999990001']);
+    });
+
+    testWidgets('na hora exata em que a faixa acaba, já vale a regra de fora', (
+      tester,
+    ) async {
+      final network = network3();
+      final home = await _pumpHome(
+        tester,
+        network: network,
+        coverage: morningForSecond(network),
+        now: () => DateTime(2026, 11, 7, 13, 0), // o fim não conta
+      );
+
+      await activateDanger(tester);
+
+      expect(_phones(home.actions, AlertActionKind.call), ['51999990001']);
+    });
+
+    testWidgets('as faixas ainda carregando: o alerta espera e usa a regra', (
+      tester,
+    ) async {
+      final network = network3();
+      final repository = _SlowCoverageRepository();
+      final coverage = CoverageController(repository: repository)..load();
+      final home = await _pumpHome(
+        tester,
+        network: network,
+        coverage: coverage,
+        now: () => DateTime(2026, 11, 7, 10, 0),
+      );
+
+      await activateDanger(tester);
+      // Ainda lendo as faixas: o alerta aguarda e nada saiu.
+      expect(find.byType(AlertPage), findsNothing);
+      expect(home.actions.calls, isEmpty);
+
+      repository.finish([
+        CoverageRule(
+          id: '1',
+          contactId: network.contacts[1].id,
+          start: 8 * 60,
+          end: 13 * 60,
+        ),
+      ]);
+      await tester.pump(_short);
+
+      // Carregou: liga para o contato da faixa, e não para o primeiro da lista.
+      expect(_phones(home.actions, AlertActionKind.call), ['51999990002']);
     });
   });
 }

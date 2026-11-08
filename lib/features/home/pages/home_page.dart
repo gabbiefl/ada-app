@@ -19,6 +19,7 @@ import 'package:ada_app/core/theme/mode_colors.dart';
 import 'package:ada_app/core/widgets/confirm_dialog.dart';
 import 'package:ada_app/features/alerts/state/alert_controller.dart';
 import 'package:ada_app/features/contacts/state/contacts_controller.dart';
+import 'package:ada_app/features/coverage/state/coverage_controller.dart';
 import 'package:ada_app/features/home/widgets/mode_card.dart';
 import 'package:ada_app/features/home/widgets/mode_rings.dart';
 import 'package:ada_app/features/home/widgets/status_chip.dart';
@@ -85,14 +86,17 @@ class _HomePageState extends State<HomePage>
     final alert = context.read<AlertController>();
     final network = context.read<ContactsController>();
     final messages = context.read<MessagesController>();
+    final coverage = context.read<CoverageController>();
 
-    // Espera a rede e as mensagens guardadas terminarem de carregar: ler antes
-    // disso daria uma lista vazia ou o texto padrão no lugar do editado. Quando
-    // já carregaram (o normal), não espera nada.
+    // Espera a rede, as mensagens e as faixas de cobertura guardadas terminarem
+    // de carregar: ler antes disso daria uma lista vazia, o texto padrão no lugar
+    // do editado ou o contato errado para ligar. Quando já carregaram (o normal),
+    // não espera nada.
     // Com prazo: se a leitura travar, o alerta NÃO pode ficar esperando para
     // sempre. Passado o limite, sai com o que já estiver carregado.
     try {
-      await Future.wait([network.ready, messages.ready]).timeout(_loadTimeout);
+      await Future.wait([network.ready, messages.ready, coverage.ready])
+          .timeout(_loadTimeout);
     } on TimeoutException {
       // segue com o que houver
     }

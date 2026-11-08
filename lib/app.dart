@@ -14,6 +14,9 @@ import 'package:ada_app/features/alerts/state/alert_controller.dart';
 import 'package:ada_app/core/theme/app_theme.dart';
 import 'package:ada_app/features/contacts/data/contacts_repository.dart';
 import 'package:ada_app/features/contacts/state/contacts_controller.dart';
+import 'package:ada_app/features/coverage/data/coverage_repository.dart';
+import 'package:ada_app/features/coverage/state/coverage_call_target_policy.dart';
+import 'package:ada_app/features/coverage/state/coverage_controller.dart';
 import 'package:ada_app/features/map/data/geolocator_location_service.dart';
 import 'package:ada_app/features/map/data/location_service.dart';
 import 'package:ada_app/features/map/state/location_controller.dart';
@@ -35,12 +38,18 @@ class AdaApp extends StatelessWidget {
     this.alertActions,
     this.contactsRepository,
     this.messagesRepository,
+    this.coverageRepository,
+    this.clock,
   });
 
   final LocationService? locationService;
   final AlertActions? alertActions;
   final ContactsRepository? contactsRepository;
   final MessagesRepository? messagesRepository;
+  final CoverageRepository? coverageRepository;
+
+  // O "relógio" do app: devolve a hora de agora. Nos testes, uma hora fixa.
+  final DateTime Function()? clock;
 
   // `build` descreve COMO este widget aparece: ele devolve outros widgets.
   // O Flutter chama `build` sempre que precisa desenhar (ou redesenhar) a tela.
@@ -83,12 +92,30 @@ class AdaApp extends StatelessWidget {
             service: locationService ?? GeolocatorLocationService(),
           ),
         ),
-        // Alerta: junta localização, SMS e ligação. Só dispara quando o Perigo ou
-        // a Atenção são ativados (a ligação a esses toques vem no passo 5).
+        // Horário de cobertura: quem o Perigo liga em cada hora. Carrega ao abrir
+        // o app, como os contatos. O `create` recebe o `context`: com ele pegamos o
+        // ContactsController (que já existe, porque está acima nesta lista) para o
+        // controlador perguntar "este contato ainda existe?".
         ChangeNotifierProvider(
-          create: (_) => AlertController(
+          lazy: false,
+          create: (context) {
+            final contacts = context.read<ContactsController>();
+            return CoverageController(
+              repository: coverageRepository ?? SecureCoverageRepository(),
+              contactExists: (id) => contacts.byId(id) != null,
+            )..load();
+          },
+        ),
+        // Alerta: junta localização, SMS e ligação. Dispara quando o Perigo ou a
+        // Atenção são ativados. Quem ele liga no Perigo vem do horário de cobertura.
+        ChangeNotifierProvider(
+          create: (context) => AlertController(
             locationService: locationService ?? GeolocatorLocationService(),
             actions: alertActions ?? PlatformAlertActions(),
+            callTarget: CoverageCallTargetPolicy(
+              coverage: context.read<CoverageController>(),
+              now: clock,
+            ),
           ),
         ),
       ],
