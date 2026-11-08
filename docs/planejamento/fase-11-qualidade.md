@@ -49,11 +49,30 @@ Deixar o app confiável para a mostra: a usuária consegue **apagar todos os seu
 |---|---|---|---|
 | 1 ✅ | **Apagar meus dados**: `clear` em contatos, mensagens e faixas, desfazer alerta e modo, item em Configurações com confirmação, testes | M | Limpar estado e armazenamento juntos |
 | 2 ✅ | **Revisão de privacidade**: backup desligado, texto do cadastro (F9-06), checklist e `docs/privacidade-e-dados.md` | P | Privacidade por padrão, LGPD prática |
-| 3 | **Auditoria de acessibilidade automática**: testes com as guidelines do Flutter e texto em 2x nas telas principais; lista dos achados | M | Guidelines nos testes, `TextScaler` |
+| 3 ✅ | **Auditoria de acessibilidade automática**: testes com as guidelines do Flutter e texto em 2x nas telas principais; lista dos achados | M | Guidelines nos testes, `TextScaler` |
 | 4 | **Correções**: nomes na barra inferior e nas setas, áreas de toque pequenas, contraste dos ícones claros | M | `Semantics`, 48 dp, contraste |
 | 5 | Fechamento: `flutter analyze`, testes, retrospectiva, resumos e backlog | P | Fechar a fase |
 
 A ordem coloca **apagar dados e privacidade primeiro**: são requisitos (RF10) e ficam melhor para defender na banca. A acessibilidade vem depois, e o passo 4 é o que se corta se o prazo apertar.
+
+## 6.1 Achados da auditoria (passo 3)
+A auditoria roda em [test/accessibility/](../../test/accessibility/): `accessibility_test.dart` (alvo de toque, nome e texto em 2x, em 12 telas, num celular de 393 px) e `contrast_test.dart` (contraste exato dos pares de cores). Cada achado está registrado nos testes como "problema conhecido" (o teste é pulado até a correção) e será corrigido no passo 4.
+
+| ID | Achado | Onde | Correção prevista |
+|---|---|---|---|
+| AC-1 | A **barra inferior** só tem ícones: o leitor de tela não diz "Início", "Rede", "Mapa" nem "Ajustes" | Todas as telas com a barra (7) | `Semantics` com o nome e o estado de cada item |
+| AC-2 | O **símbolo central** da Home é tocável (gesto) mesmo no modo Normal, sem nome e sem ação | Home | Só tocável quando há alerta; no Normal, sem gesto |
+| AC-3 | A **seta de voltar** não tem nome (falta o `tooltip`) | Mensagens e Editar mensagem | `tooltip: 'Voltar'` |
+| AC-4 | Textos tocáveis menores que 48 x 48 | "Editar" (Mensagens) e "Resetar para padrão" | Área mínima de toque de 48 |
+| AC-5 | Com **texto em 2x** a tela estoura | Cartões dos modos (Início), cartões de contato e "Adicionar contato" (Rede), título "Novo contato" | Texto que quebra linha (`Expanded`/`Flexible`), alturas que crescem, título e contador em `Wrap` |
+| AC-6 | **Ícones claros** (`#D9D9D9`) sobre o fundo: contraste **1,35 e 1,41** (mínimo 3) | Setas de voltar, "+", setinhas dos menus | Um tom mais escuro só para ícones, sem mudar o desenho |
+| AC-7 | **Azul das caixas informativas** sobre o tom azul de 14%: **4,25** (mínimo 4,5) | Mapa e cadastro de contato | Azul um pouco mais escuro |
+
+**Verificado e aprovado:** os outros 18 pares de cores (texto cinza, vermelho, marrom, branco sobre o vermelho do Perigo, azul-marinho sobre o amarelo da Atenção etc.) passam o contraste do WCAG AA. Os alvos de toque dos demais botões, cartões e chaves passam. A tela **Mapa**, **Configurações**, **Cobertura** e as de **Alerta** aguentam o texto em 2x (a de Alerta só ficou mascarada pelo estouro da Home, de onde é aberta).
+
+**Observação para a usuária (não é um achado):** o texto do ADA usa a fonte **fina** (peso 300) nos parágrafos. A cor passa o contraste, mas traços finos cansam mais a leitura. É uma escolha do design do Figma; fica a critério de vocês.
+
+**A guideline de contraste do Flutter foi trocada pelo cálculo exato:** ela mede por captura de tela e acusava 1,9 para uma cor que calculada tem 4,6, por causa do texto fino. Os testes de fonte usam a `Nunito` de verdade (sem isso o Flutter desenha com uma fonte de quadrados e cria estouros que não existem).
 
 ## 7. Decisões técnicas
 | Decisão | Alternativas consideradas | Motivo |
