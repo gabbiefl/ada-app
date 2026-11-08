@@ -41,7 +41,8 @@ A proposta é oferecer uma forma **rápida e simples de pedir ajuda em situaçõ
 | 7 | Modos Atenção e Perigo: ativar, confirmar o Perigo, desativar com segurança e vibração | ✅ |
 | 8 | Localização: permissões, localização atual na aba Mapa e link de mapa para o alerta | ✅ |
 | 9 | Alerta de verdade: SMS automático à rede, ligação ao contato de plantão, WhatsApp com mensagem pronta e tela de progresso | ✅ (SMS direto a confirmar em aparelho real) |
-| 10 em diante | Horário de cobertura, qualidade e entrega final | 🔜 Fase 10 a seguir |
+| 10 | Horário de cobertura: faixas de horário por contato, com a barra das 24 horas; o Perigo liga para quem a hora manda | ✅ |
+| 11 e 12 | Qualidade e acessibilidade; APK, roteiro e entrega final | 🔜 Fase 12 a seguir |
 
 O plano de cada fase está em [`docs/planejamento/`](docs/planejamento/) e a lista de itens em [`docs/BACKLOG.md`](docs/BACKLOG.md).
 

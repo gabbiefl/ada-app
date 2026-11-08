@@ -13,11 +13,11 @@
 
 ## Fase atual
 
-**Fase 9 — Comunicação** concluída no código (falta confirmar o SMS direto e a ligação num aparelho real, e escrever os resumos). As Fases 4 a 8 estão concluídas. A Fase 3 segue com telas pendentes (ver F3-07 a F3-14). Falta você escrever o "O que aprendi" das Fases 1 a 9. O emulador Android já roda o ADA (F1-04 ✅) e o `applicationId` foi aplicado (F1-05 ✅).
+**Fase 10 — Horário de cobertura** concluída no código (falta ver a tela rodando no emulador e escrever os resumos das Fases 9 e 10). A **Fase 9** também falta confirmar o SMS direto e a ligação num aparelho real. As Fases 4 a 8 estão concluídas. A Fase 3 segue com telas pendentes (ver F3-07 a F3-14). Falta você escrever o "O que aprendi" das Fases 1 a 10. O emulador Android já roda o ADA (F1-04 ✅) e o `applicationId` foi aplicado (F1-05 ✅).
 
 ---
 
-> Próxima: **Fase 10 — Horário de cobertura** (criar o plano antes: define quem ligar por faixa de horário, trocando a regra provisória "primeiro da lista"). A mostra é em 12/11.
+> Próxima: **Fase 12 — Build e apresentação** (APK de release, roteiro da demonstração e README final) e, se der tempo, a **Fase 11 enxuta** (apagar todos os dados, acessibilidade e estados de erro). A mostra é em 12/11.
 
 ## Fase 0 — Entendimento e viabilidade
 
@@ -62,7 +62,7 @@
 | F3-04 | Tela de cadastro/edição de contato | M | ✅ |
 | F3-05 | Tela de mensagens pré-definidas (e edição da mensagem) | S | ✅ |
 | F3-06 | Tela de configurações (menu) | S | ✅ |
-| F3-07 | Tela de horário de cobertura (ler no Figma antes) | M | ⬜ |
+| F3-07 | Tela de horário de cobertura (ler no Figma antes) | M | ✅ |
 | F3-08 | Tela de histórico de alertas (ler no Figma antes) | S | ⬜ |
 
 ### Telas que ainda faltam (a Fase 3 foi fechada sem elas)
@@ -134,9 +134,11 @@
 
 | ID | Item | Prio | Status |
 |---|---|---|---|
-| F10-01 | Configurar quem ligar por faixa de horário (promovido ao MVP: lógica simples em Dart) | M | ⬜ |
-| F10-02 | Lógica de seleção do contato conforme o horário | M | ⬜ |
-| F10-03 | Testes unitários da regra | M | ⬜ |
+| F10-01 | Configurar quem ligar por faixa de horário (promovido ao MVP: lógica simples em Dart) | M | ✅ |
+| F10-02 | Lógica de seleção do contato conforme o horário | M | ✅ |
+| F10-03 | Testes unitários da regra | M | ✅ |
+| F10-04 | Dias da semana por faixa (ex.: fim de semana diferente) | C | ⬜ |
+| F10-05 | Escolher o contato padrão fora das faixas (hoje: o primeiro da lista) | C | ⬜ |
 
 ## Fase 11 — Qualidade, privacidade e acessibilidade
 

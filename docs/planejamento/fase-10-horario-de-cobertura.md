@@ -1,6 +1,6 @@
 # Fase 10 — Horário de cobertura
 
-> **Status:** 🔄 em execução (plano aprovado)
+> **Status:** ✅ concluída no código (pendente: ver a tela e o seletor de horas rodando no emulador)
 > **Itens do backlog:** F10-01, F10-02, F10-03, F3-07
 
 ## 1. Objetivo
@@ -57,7 +57,7 @@ Deixar a usuária definir **quem o ADA liga em cada faixa de horário** e fazer 
 | 3 ✅ | `CoverageCallTargetPolicy` com **relógio injetável**; ligar ao alerta e à espera de carregamento da Home | P | Injeção de dependência, trocar a regra sem mexer no resto |
 | 4 ✅ | Tela **Horário de cobertura**: cartão das 24 horas, lista com ícone e chave, "quem seria ligado agora", estados vazios; rota no lugar de "Em breve" | G | Tela de vários estados, barra proporcional |
 | 5 ✅ | Formulário de **nova faixa e edição**: contato, início, fim, validação, remover com confirmação | M | `showTimePicker`, formulário com seletor |
-| 6 | Teste de fluxo (o Perigo liga para quem a hora manda), emulador, `flutter analyze`, retrospectiva, resumos e backlog | P | Fechar a fase |
+| 6 ✅ | Teste de fluxo (o Perigo liga para quem a hora manda), emulador, `flutter analyze`, retrospectiva, resumos e backlog | P | Fechar a fase |
 
 ## 7. Decisões técnicas
 | Decisão | Alternativas consideradas | Motivo |
@@ -90,17 +90,18 @@ Deixar a usuária definir **quem o ADA liga em cada faixa de horário** e fazer 
 | Barra proporcional estreita demais para faixas curtas | Trecho invisível | Largura mínima do trecho e a lista logo abaixo mostrando todas as faixas |
 
 ## 9. Critérios de pronto
-- [ ] A regra escolhe o contato certo, incluindo faixas que atravessam a meia-noite e as bordas
-- [ ] Faixas desligadas não valem, e faixas que se cruzam são recusadas com explicação
-- [ ] Sem faixa ligada que cubra a hora, liga para o primeiro da lista
-- [ ] A usuária adiciona, edita, liga, desliga e remove faixas, e elas ficam salvas ao reabrir o app
-- [ ] A tela mostra o cartão "Cobertura das 24 horas" (com os buracos, quando houver), os ícones do período e "quem seria ligado agora"
-- [ ] O Perigo liga para o contato da faixa da hora atual (conferido por teste com relógio falso)
-- [ ] Faixa de contato removido é ignorada e não quebra nada
-- [ ] Início igual ao fim e rede vazia são tratados com explicação
-- [ ] `flutter analyze` sem avisos e testes passando
-- [ ] Testado no emulador
-- [ ] Backlog atualizado e commit feito
+- [x] A regra escolhe o contato certo, incluindo faixas que atravessam a meia-noite e as bordas
+- [x] Faixas desligadas não valem, e faixas que se cruzam são recusadas com explicação
+- [x] Sem faixa ligada que cubra a hora, liga para o primeiro da lista
+- [x] A usuária adiciona, edita, liga, desliga e remove faixas, e elas ficam salvas ao reabrir o app (coberto por testes)
+- [x] A tela mostra o cartão "Cobertura das 24 horas" (com os buracos, quando houver), os ícones do período e "quem seria ligado agora"
+- [x] O Perigo liga para o contato da faixa da hora atual (conferido por teste com relógio falso)
+- [x] Faixa de contato removido é ignorada e não quebra nada
+- [x] Início igual ao fim e rede vazia são tratados com explicação
+- [x] `flutter analyze` sem avisos e testes passando
+- [ ] **Testado no emulador**: ver a tela, o seletor de horas de verdade e a frase "Agora, o ADA ligaria para…" (o emulador estava desligado)
+- [x] Backlog atualizado
+- [ ] Commit do fechamento (por você)
 
 ## 10. Como testar
 `flutter run -d emulator-5554`: cadastrar 2 contatos de teste → Configurações → Horário de cobertura → criar uma faixa que cubra a hora atual para o **segundo** contato → conferir o cartão das 24 horas, o ícone e a frase "Agora, o ADA ligaria para…" → com o **Modo de demonstração ligado**, ativar o Perigo e ver "Ligando para <segundo contato>" → desligar a faixa pela chave e conferir que volta ao primeiro → tentar criar uma faixa que cruza com outra e ver a recusa. `flutter analyze` e `flutter test`.
@@ -115,13 +116,22 @@ Deixar a usuária definir **quem o ADA liga em cada faixa de horário** e fazer 
 
 ---
 
-## Retrospectiva (preencher ao concluir)
+## Retrospectiva
 
 **O que aprendi:**
-- <...>
+- (preencha com as suas palavras)
 
 **O que mudou em relação ao plano:**
-- <...>
+- O print do Figma mostrou só a visualização (lista com chave, ícone do período e a barra das 24 horas). O que o design não tinha e a usuária pediu entrou: **criar, editar e remover faixas, vinculando cada uma a um contato**.
+- **Faixas ligadas não podem se cruzar** (o plano anterior deixava sobrepor, e a primeira da lista vencia). Cada hora tem uma pessoa, como a barra do Figma mostra, e a tela diz com qual faixa cruza.
+- **Contato removido:** as faixas dele são apagadas **pelo app quando a rede muda** (um ouvinte em `app.dart`), e não ao abrir a tela. Apagar ao abrir poderia perder todas as faixas se a leitura dos contatos falhasse.
+- **Seletor de horas "trocável":** o formulário recebe a função que abre o seletor, para os testes escolherem o horário sem operar o relógio.
+- O `CoverageController` recebeu a função `contactExists`, para não depender da rede de contatos (e o alerta passou a esperar também as faixas carregarem, com o prazo de 2 s).
+- Corrigi **erros meus nos testes** (um texto que também existia no menu de Configurações e o toque no rótulo em vez do campo).
 
 **Dívidas técnicas e novos itens para o backlog:**
-- <...>
+- **Ver no emulador:** a tela, o seletor de horas (relógio) e a frase "Agora…". Conferir também o visual contra o Figma.
+- **F10-04:** dias da semana por faixa (ex.: fim de semana diferente).
+- **F10-05:** escolher o contato padrão fora das faixas (hoje é o primeiro da lista).
+- Reordenar faixas não é necessário (não há sobreposição), mas a lista segue a ordem de criação, e não a do relógio. Avaliar ordenar por horário.
+- O horário usa a hora do celular. Se o relógio do aparelho estiver errado, o contato ligado também estará.
