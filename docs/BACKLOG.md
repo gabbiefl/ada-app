@@ -117,7 +117,7 @@
 | F8-02 | Obter a localização atual | M | ✅ |
 | F8-03 | Compartilhar a localização na mensagem (link de mapa) | M | ✅ |
 | F8-05 | **Mapa visual** na aba Mapa (o protótipo do Figma tem um **mapa interativo**: é a versão fiel ao design; entra se sobrar tempo; sugestão: `flutter_map` + OpenStreetMap, sem chave de API; pede confirmação do pacote). Na Fase 8 a aba mostra só a localização atual | C | ⬜ |
-| F8-04 | Link de acompanhamento ao vivo (Firebase + página web), Nível 2 do MVP, depois da Fase 9 `[plano B]` | S | ⬜ |
+| F8-04 | Link de acompanhamento ao vivo (Firebase + página web), Nível 2 do MVP, depois da Fase 9 `[plano B]`. **Decisão registrada (08/11/2026):** o tempo real exige um **servidor**. Isso traz a permissão de internet, a localização guardada fora do celular e a LGPD de verdade. **Projeto pós-mostra, com plano próprio.** Não migrar o armazenamento local. Regras mínimas: consentimento, prazo (ex.: 1 h), botão de parar e nada guardado depois. **Alternativa sem servidor a avaliar antes:** checkpoints (SMS com um novo link da posição a cada N minutos durante o alerta) | S | ⬜ |
 
 ## Fase 9 — Comunicação
 
