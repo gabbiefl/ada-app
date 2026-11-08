@@ -22,6 +22,7 @@ import 'package:ada_app/features/map/data/location_service.dart';
 import 'package:ada_app/features/map/state/location_controller.dart';
 import 'package:ada_app/features/messages/data/messages_repository.dart';
 import 'package:ada_app/features/messages/state/messages_controller.dart';
+import 'package:ada_app/features/onboarding/data/onboarding_repository.dart';
 
 // StatelessWidget: um widget que NÃO guarda dados que mudam.
 // A configuração do app é fixa, então não precisamos de StatefulWidget.
@@ -39,6 +40,7 @@ class AdaApp extends StatelessWidget {
     this.contactsRepository,
     this.messagesRepository,
     this.coverageRepository,
+    this.onboardingRepository,
     this.clock,
   });
 
@@ -47,6 +49,7 @@ class AdaApp extends StatelessWidget {
   final ContactsRepository? contactsRepository;
   final MessagesRepository? messagesRepository;
   final CoverageRepository? coverageRepository;
+  final OnboardingRepository? onboardingRepository;
 
   // O "relógio" do app: devolve a hora de agora. Nos testes, uma hora fixa.
   final DateTime Function()? clock;
@@ -63,6 +66,12 @@ class AdaApp extends StatelessWidget {
     // provider chama dispose() do controlador quando o app fecha.
     return MultiProvider(
       providers: [
+        // Se a usuária já viu o onboarding. Não é um ChangeNotifier: só é lido pela
+        // splash (para decidir a próxima tela), pelo onboarding (que grava que viu)
+        // e por "Apagar meus dados" (que desfaz isso).
+        Provider<OnboardingRepository>(
+          create: (_) => onboardingRepository ?? SecureOnboardingRepository(),
+        ),
         ChangeNotifierProvider(
           create: (_) => ModeController(haptics: const SystemHaptics()),
         ),

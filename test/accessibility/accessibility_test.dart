@@ -31,6 +31,7 @@ import 'package:ada_app/features/map/data/location_service.dart';
 import 'package:ada_app/features/map/models/geo_point.dart';
 import 'package:ada_app/features/messages/data/messages_repository.dart';
 import 'package:ada_app/features/messages/models/message_kind.dart';
+import 'package:ada_app/features/onboarding/data/onboarding_repository.dart';
 
 import '../support/app_font.dart';
 
@@ -83,6 +84,7 @@ Future<void> _pumpApp(WidgetTester tester, String route) async {
       contactsRepository: InMemoryContactsRepository(_contacts),
       messagesRepository: InMemoryMessagesRepository(),
       coverageRepository: InMemoryCoverageRepository(_rules),
+      onboardingRepository: InMemoryOnboardingRepository(true),
       clock: () => DateTime(2026, 11, 8, 10, 0),
     ),
   );
@@ -103,7 +105,21 @@ Future<void> _openAlert(WidgetTester tester, {required bool danger}) async {
   await tester.pump(_short);
 }
 
+// Abre o onboarding e avança [pages] telas com "Continuar".
+Future<void> _openOnboarding(WidgetTester tester, int pages) async {
+  await _pumpApp(tester, AppRoutes.onboarding);
+  for (var i = 0; i < pages; i++) {
+    await tester.ensureVisible(find.text('Continuar'));
+    await tester.tap(find.text('Continuar'));
+    await tester.pump(_short);
+    await tester.pump(_short);
+  }
+}
+
 final _screens = <_Screen>[
+  _Screen('Onboarding 1', (t) => _openOnboarding(t, 0)),
+  _Screen('Onboarding 2', (t) => _openOnboarding(t, 1)),
+  _Screen('Onboarding 3', (t) => _openOnboarding(t, 2)),
   _Screen('Início', (t) => _pumpApp(t, AppRoutes.home)),
   _Screen('Rede', (t) => _pumpApp(t, AppRoutes.contacts)),
   _Screen('Novo contato', (t) => _pumpApp(t, AppRoutes.newContact)),

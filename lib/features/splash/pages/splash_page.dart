@@ -3,14 +3,16 @@
 //
 // A barra é uma animação: um AnimationController vai de 0 a 1 no tempo dado, e o
 // AnimatedBuilder redesenha a barra a cada "quadro". Ao terminar, ele avisa
-// (status completed) e a tela navega. O controlador é descartado no dispose, então
+// (status completed) e a tela navega: ao onboarding na primeira vez, à Home depois. O controlador é descartado no dispose, então
 // sair da tela antes do fim não deixa nada pendente.
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 import 'package:ada_app/core/routes/app_router.dart';
 import 'package:ada_app/core/theme/app_colors.dart';
+import 'package:ada_app/features/onboarding/data/onboarding_repository.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({
@@ -21,7 +23,7 @@ class SplashPage extends StatefulWidget {
 
   final Duration duration;
 
-  // O que fazer quando a barra enche. Se null, vai para a Home. Existe para os
+  // O que fazer quando a barra enche. Se null, vai ao onboarding ou à Home. Existe para os
   // testes poderem conferir o fim sem depender do roteador.
   final VoidCallback? onFinished;
 
@@ -43,10 +45,22 @@ class _SplashPageState extends State<SplashPage>
         if (onFinished != null) {
           onFinished();
         } else {
-          context.go(AppRoutes.home);
+          _goNext();
         }
       })
       ..forward();
+  }
+
+  // Primeira vez: onboarding. Depois: Home. Se não der para ler (falha no
+  // armazenamento), vai para a Home: a apresentação nunca pode travar o app.
+  Future<void> _goNext() async {
+    final repository = context.read<OnboardingRepository>();
+    var seen = true;
+    try {
+      seen = await repository.hasSeen();
+    } catch (_) {}
+    if (!mounted) return;
+    context.go(seen ? AppRoutes.home : AppRoutes.onboarding);
   }
 
   @override

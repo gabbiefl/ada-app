@@ -14,6 +14,7 @@ import 'package:ada_app/core/routes/app_router.dart';
 import 'package:ada_app/core/state/mode_controller.dart';
 import 'package:ada_app/core/state/security_mode.dart';
 import 'package:ada_app/features/home/pages/home_page.dart';
+import 'package:ada_app/features/onboarding/data/onboarding_repository.dart';
 
 Future<void> _passTime(WidgetTester tester) =>
     tester.pump(const Duration(milliseconds: 600));
@@ -23,7 +24,10 @@ void main() {
     tester,
   ) async {
     appRouter.go(AppRoutes.splash);
-    await tester.pumpWidget(const AdaApp());
+    // Já viu o onboarding: depois da splash vem a Home.
+    await tester.pumpWidget(
+      AdaApp(onboardingRepository: InMemoryOnboardingRepository(true)),
+    );
     await _passTime(tester);
     // Sem barra inferior e sem a Home: só a abertura.
     expect(find.byType(LinearProgressIndicator), findsOneWidget);

@@ -17,6 +17,7 @@ import 'package:ada_app/features/contacts/state/contacts_controller.dart';
 import 'package:ada_app/features/coverage/state/coverage_controller.dart';
 import 'package:ada_app/features/map/state/location_controller.dart';
 import 'package:ada_app/features/messages/state/messages_controller.dart';
+import 'package:ada_app/features/onboarding/data/onboarding_repository.dart';
 import 'package:ada_app/features/settings/utils/erase_all_data.dart';
 import 'package:ada_app/features/settings/widgets/demo_mode_tile.dart';
 import 'package:ada_app/features/settings/widgets/settings_tile.dart';
@@ -34,6 +35,7 @@ class SettingsPage extends StatelessWidget {
     final messages = context.read<MessagesController>();
     final coverage = context.read<CoverageController>();
     final location = context.read<LocationController>();
+    final onboarding = context.read<OnboardingRepository>();
     final messenger = ScaffoldMessenger.of(context);
 
     final confirmed = await showConfirmDialog(
@@ -55,6 +57,7 @@ class SettingsPage extends StatelessWidget {
       messages: messages,
       coverage: coverage,
       location: location,
+      onboarding: onboarding,
     );
     messenger.showSnackBar(
       const SnackBar(content: Text('Seus dados foram apagados.')),

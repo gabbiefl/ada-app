@@ -15,6 +15,7 @@ import 'package:ada_app/features/coverage/models/coverage_rule.dart';
 import 'package:ada_app/features/map/data/location_service.dart';
 import 'package:ada_app/features/map/models/geo_point.dart';
 import 'package:ada_app/features/messages/data/messages_repository.dart';
+import 'package:ada_app/features/onboarding/data/onboarding_repository.dart';
 import 'package:ada_app/features/messages/models/message_kind.dart';
 
 const _short = Duration(milliseconds: 600);
@@ -48,6 +49,7 @@ void main() {
         contactsRepository: contactsRepo,
         messagesRepository: messagesRepo,
         coverageRepository: coverageRepo,
+        onboardingRepository: InMemoryOnboardingRepository(true),
       ),
     );
     await tester.pump(_short);

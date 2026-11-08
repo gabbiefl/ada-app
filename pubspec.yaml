@@ -89,6 +89,7 @@ flutter:
   assets:
     - assets/images/logo_horizontal_azul.png
     - assets/images/logo_ada_branca.png
+    - assets/images/onboarding_controle.png
     - assets/images/simbolo_ada.png
     - assets/images/simbolo_atencao.png
     - assets/images/simbolo_perigo.png

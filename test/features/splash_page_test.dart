@@ -10,9 +10,7 @@ Widget _app(Widget home) => MaterialApp(theme: AppTheme.light, home: home);
 void main() {
   testWidgets('A splash mostra a logo e uma barra que enche', (tester) async {
     await tester.pumpWidget(
-      _app(
-        SplashPage(duration: const Duration(seconds: 1), onFinished: () {}),
-      ),
+      _app(SplashPage(duration: const Duration(seconds: 1), onFinished: () {})),
     );
 
     expect(find.byType(Image), findsOneWidget);
