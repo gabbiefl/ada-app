@@ -1,6 +1,6 @@
 # Fase 12C — Cadastro local (como podemos te chamar?)
 
-> **Status:** 📝 plano aguardando aprovação
+> **Status:** ✅ concluída no código (pendente: ver no emulador)
 > **Itens do backlog:** F3-13 (login/cadastro). Decisão: **sem conta e sem servidor**, só um cadastro local do nome.
 
 ## 1. Objetivo
@@ -45,11 +45,11 @@ Splash ─► (nunca viu o onboarding?) ─► Onboarding ─► Nome ─► Hom
 ## 7. Passos
 | # | Passo | Tamanho |
 |---|---|---|
-| 1 | Repositório e controlador do perfil (nome), com testes | P |
-| 2 | Tela "Como podemos te chamar?" e a rota | M |
-| 3 | Ligar o fluxo (splash → onboarding → nome → Home) e a saudação na Home | M |
-| 4 | Editar o nome em Configurações e apagar em "Apagar meus dados" | P |
-| 5 | Testes dos fluxos e da acessibilidade, privacidade, backlog e compilar para Android | M |
+| 1 ✅ | Repositório e controlador do perfil (nome), com testes | P |
+| 2 ✅ | Tela "Como podemos te chamar?" e a rota | M |
+| 3 ✅ | Ligar o fluxo (splash → onboarding → nome → Home) e a saudação na Home | M |
+| 4 ✅ | Editar o nome em Configurações e apagar em "Apagar meus dados" | P |
+| 5 ✅ | Testes dos fluxos e da acessibilidade, privacidade, backlog e compilar para Android | M |
 
 **Impacto nos testes:** vários testes procuram o texto "Olá, Gabriela". Eles passarão a injetar um perfil de teste (como já fazemos com os repositórios) e a procurar o nome combinado.
 
@@ -62,13 +62,13 @@ Splash ─► (nunca viu o onboarding?) ─► Onboarding ─► Nome ─► Hom
 | Nome aparecendo para quem olha o celular | É a Home do próprio app; o nome é opcional e dá para apagar |
 
 ## 9. Critérios de pronto
-- [ ] Tela do nome após o onboarding, com Continuar e Pular
-- [ ] Home com "Olá, nome" (ou "Olá!" sem nome)
-- [ ] Editar o nome em Configurações
-- [ ] "Apagar meus dados" apaga o nome e a pergunta volta
-- [ ] Falha de leitura ou gravação não trava o app
-- [ ] Auditoria de acessibilidade das telas novas, `flutter analyze` limpo, testes passando e compilado para Android
-- [ ] Privacidade, backlog e README atualizados
+- [x] Tela do nome após o onboarding, com Continuar e Pular
+- [x] Home com "Olá, nome" (ou "Olá!" sem nome)
+- [x] Editar o nome em Configurações
+- [x] "Apagar meus dados" apaga o nome e a pergunta volta
+- [x] Falha de leitura ou gravação não trava o app
+- [x] Auditoria de acessibilidade das telas novas, `flutter analyze` limpo, testes passando e compilado para Android
+- [x] Privacidade, backlog e README atualizados
 - [ ] Visto no emulador; commits pela usuária
 
 ## 10. Perguntas em aberto (com o que assumi)
@@ -83,3 +83,8 @@ Splash ─► (nunca viu o onboarding?) ─► Onboarding ─► Nome ─► Hom
 
 **O que aprendi:**
 - (preencha com as suas palavras)
+
+**O que mudou em relação ao plano:**
+- Seguiu como assumido: primeiro nome opcional, "Olá!" sem nome, tela derivada do cadastro de contato (sem desenho no Figma).
+- Para uma falha de leitura não prender a usuária na tela do nome, a leitura que falha conta como "já perguntei".
+- Vários testes procuravam "Olá, Gabriela" (texto fixo no código). Passaram a injetar um perfil de teste.

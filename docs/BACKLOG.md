@@ -73,7 +73,7 @@
 | F3-10 | Tela de permissões (localização, notificações; já existe no Figma) | M | ⬜ |
 | F3-11 | Tela de mapa/localização (aba "Mapa"). Acompanhamento em tempo real é incerto (F0-02, F8-04): ideia da usuária de usar **checkpoints** da posição. Decidido em 06/11/2026: Fase 8 mostra só a localização atual (placeholder); mapa visual em F8-05 e tempo real em F8-04. Figma da aba ainda não lido | M | 🔄 |
 | F3-12 | Rede cheia (5/5): estado sem espaços vazios e aviso de limite (derivar do design existente) | M | ✅ |
-| F3-13 | Login/cadastro da usuária: **não foi desenhado no Figma**. Decidir antes se o MVP precisa de conta (o app guarda tudo no aparelho) | S | ⬜ |
+| F3-13 | Login/cadastro da usuária. **Decisão (09/11/2026): sem conta e sem servidor** (os dados ficam só no celular). Feito um **cadastro local do nome** (opcional), na Fase 12C. Conta de verdade só se vier o acompanhamento em tempo real (F8-04); PIN local fica como ideia futura | S | ✅ (versão local) |
 
 ## Fase 4 — Navegação e estado
 
