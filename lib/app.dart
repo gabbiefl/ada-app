@@ -23,6 +23,8 @@ import 'package:ada_app/features/map/state/location_controller.dart';
 import 'package:ada_app/features/messages/data/messages_repository.dart';
 import 'package:ada_app/features/messages/state/messages_controller.dart';
 import 'package:ada_app/features/onboarding/data/onboarding_repository.dart';
+import 'package:ada_app/features/profile/data/profile_repository.dart';
+import 'package:ada_app/features/profile/state/profile_controller.dart';
 
 // StatelessWidget: um widget que NÃO guarda dados que mudam.
 // A configuração do app é fixa, então não precisamos de StatefulWidget.
@@ -41,6 +43,7 @@ class AdaApp extends StatelessWidget {
     this.messagesRepository,
     this.coverageRepository,
     this.onboardingRepository,
+    this.profileRepository,
     this.clock,
   });
 
@@ -50,6 +53,7 @@ class AdaApp extends StatelessWidget {
   final MessagesRepository? messagesRepository;
   final CoverageRepository? coverageRepository;
   final OnboardingRepository? onboardingRepository;
+  final ProfileRepository? profileRepository;
 
   // O "relógio" do app: devolve a hora de agora. Nos testes, uma hora fixa.
   final DateTime Function()? clock;
@@ -71,6 +75,14 @@ class AdaApp extends StatelessWidget {
         // e por "Apagar meus dados" (que desfaz isso).
         Provider<OnboardingRepository>(
           create: (_) => onboardingRepository ?? SecureOnboardingRepository(),
+        ),
+        // O nome da usuária (opcional) e a saudação da Home. Carrega ao abrir o app:
+        // a splash espera por ele para decidir se pergunta o nome.
+        ChangeNotifierProvider(
+          lazy: false,
+          create: (_) => ProfileController(
+            repository: profileRepository ?? SecureProfileRepository(),
+          )..load(),
         ),
         // As ações de SMS e ligação. Ficam num provider próprio para o alerta e
         // os atalhos de segurança pública (190 e 180) usarem a MESMA instância.

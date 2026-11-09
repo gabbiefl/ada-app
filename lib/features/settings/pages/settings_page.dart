@@ -1,4 +1,4 @@
-// Tela "Configurações": menu que leva a Horário de cobertura e Mensagens
+// Tela "Configurações": menu que leva a Meu nome, Horário de cobertura e Mensagens
 // personalizadas, com a chave do Modo de demonstração e o "Apagar meus dados".
 // Não há histórico de alertas, de propósito: o ADA não guarda que um alerta foi
 // enviado (ver docs/privacidade-e-dados.md).
@@ -18,6 +18,7 @@ import 'package:ada_app/features/coverage/state/coverage_controller.dart';
 import 'package:ada_app/features/map/state/location_controller.dart';
 import 'package:ada_app/features/messages/state/messages_controller.dart';
 import 'package:ada_app/features/onboarding/data/onboarding_repository.dart';
+import 'package:ada_app/features/profile/state/profile_controller.dart';
 import 'package:ada_app/features/settings/utils/erase_all_data.dart';
 import 'package:ada_app/features/settings/widgets/demo_mode_tile.dart';
 import 'package:ada_app/features/settings/widgets/settings_tile.dart';
@@ -36,6 +37,7 @@ class SettingsPage extends StatelessWidget {
     final coverage = context.read<CoverageController>();
     final location = context.read<LocationController>();
     final onboarding = context.read<OnboardingRepository>();
+    final profile = context.read<ProfileController>();
     final messenger = ScaffoldMessenger.of(context);
 
     final confirmed = await showConfirmDialog(
@@ -58,6 +60,7 @@ class SettingsPage extends StatelessWidget {
       coverage: coverage,
       location: location,
       onboarding: onboarding,
+      profile: profile,
     );
     messenger.showSnackBar(
       const SnackBar(content: Text('Seus dados foram apagados.')),
@@ -67,6 +70,7 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final profile = context.watch<ProfileController>();
 
     return Scaffold(
       body: SafeArea(
@@ -79,6 +83,15 @@ class SettingsPage extends StatelessWidget {
               // Esta frase vem do Figma, mas parece cópia da tela Rede. Confirmar.
               Text('Ajuste o app do seu jeito.', style: textTheme.bodyLarge),
               const SizedBox(height: 48),
+              SettingsTile(
+                onTap: () => context.push(AppRoutes.editProfile),
+                icon: LucideIcons.user,
+                title: 'Meu nome',
+                description: profile.hasName
+                    ? profile.name
+                    : 'Como o ADA te cumprimenta. Opcional.',
+              ),
+              const SizedBox(height: 11),
               SettingsTile(
                 onTap: () => context.push(AppRoutes.coverage),
                 icon: LucideIcons.moonStar,

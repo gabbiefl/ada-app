@@ -17,6 +17,7 @@ import 'package:ada_app/features/map/models/geo_point.dart';
 import 'package:ada_app/features/messages/data/messages_repository.dart';
 import 'package:ada_app/features/onboarding/data/onboarding_repository.dart';
 import 'package:ada_app/features/onboarding/pages/onboarding_page.dart';
+import 'package:ada_app/features/profile/data/profile_repository.dart';
 
 import '../support/app_font.dart';
 
@@ -46,8 +47,9 @@ Widget _page(OnboardingRepository repository, {VoidCallback? onFinished}) {
 
 Future<void> _pumpApp(
   WidgetTester tester,
-  OnboardingRepository repository,
-) async {
+  OnboardingRepository repository, {
+  ProfileRepository? profile,
+}) async {
   tester.view.physicalSize = const Size(1080, 2400);
   tester.view.devicePixelRatio = 2.75;
   addTearDown(tester.view.reset);
@@ -65,6 +67,8 @@ Future<void> _pumpApp(
       messagesRepository: InMemoryMessagesRepository(),
       coverageRepository: InMemoryCoverageRepository(),
       onboardingRepository: repository,
+      // Por padrão a usuária já informou o nome ("Ana"): a Home a cumprimenta.
+      profileRepository: profile ?? InMemoryProfileRepository('Ana'),
     ),
   );
   await tester.pump(_short);
@@ -180,30 +184,40 @@ void main() {
   });
 
   group('fluxo no app', () {
-    testWidgets('primeira vez: splash, onboarding e Home; depois só a Home', (
-      tester,
-    ) async {
-      final repository = InMemoryOnboardingRepository();
-      await _pumpApp(tester, repository);
+    testWidgets(
+      'primeira vez: splash, onboarding, nome e Home; depois só a Home',
+      (tester) async {
+        final repository = InMemoryOnboardingRepository();
+        final profile = InMemoryProfileRepository();
+        await _pumpApp(tester, repository, profile: profile);
 
-      // A splash termina e, como nunca viu, abre o onboarding.
-      await tester.pump(const Duration(seconds: 3));
-      await tester.pump(_short);
-      expect(find.text('Sua segurança em um toque.'), findsOneWidget);
+        // A splash termina e, como nunca viu, abre o onboarding.
+        await tester.pump(const Duration(seconds: 3));
+        await tester.pump(_short);
+        expect(find.text('Sua segurança em um toque.'), findsOneWidget);
 
-      await tester.tap(find.text('Pular'));
-      await tester.pump(_short);
-      await tester.pump(_short);
-      expect(find.text('Olá, Gabriela'), findsOneWidget);
-      expect(await repository.hasSeen(), isTrue);
+        await tester.tap(find.text('Pular'));
+        await tester.pump(_short);
+        await tester.pump(_short);
+        expect(await repository.hasSeen(), isTrue);
 
-      // Reabrir o app: a splash vai direto à Home.
-      await _pumpApp(tester, repository);
-      await tester.pump(const Duration(seconds: 3));
-      await tester.pump(_short);
-      expect(find.text('Sua segurança em um toque.'), findsNothing);
-      expect(find.text('Olá, Gabriela'), findsOneWidget);
-    });
+        // Depois do onboarding, o ADA pergunta o nome. Ela pula: sem nome.
+        expect(find.text('Como podemos te chamar?'), findsOneWidget);
+        await tester.tap(find.text('Pular'));
+        await tester.pump(_short);
+        await tester.pump(_short);
+        expect(find.text('Olá!'), findsOneWidget);
+        expect(await profile.loadName(), '');
+
+        // Reabrir o app: a splash vai direto à Home (e não pergunta de novo).
+        await _pumpApp(tester, repository, profile: profile);
+        await tester.pump(const Duration(seconds: 3));
+        await tester.pump(_short);
+        expect(find.text('Sua segurança em um toque.'), findsNothing);
+        expect(find.text('Como podemos te chamar?'), findsNothing);
+        expect(find.text('Olá!'), findsOneWidget);
+      },
+    );
 
     testWidgets('se não conseguir ler, a splash vai para a Home', (
       tester,
@@ -213,7 +227,7 @@ void main() {
       await tester.pump(const Duration(seconds: 3));
       await tester.pump(_short);
 
-      expect(find.text('Olá, Gabriela'), findsOneWidget);
+      expect(find.text('Olá, Ana'), findsOneWidget);
     });
 
     testWidgets('"Apagar meus dados" faz o onboarding voltar', (tester) async {
@@ -221,7 +235,7 @@ void main() {
       await _pumpApp(tester, repository);
       await tester.pump(const Duration(seconds: 3));
       await tester.pump(_short);
-      expect(find.text('Olá, Gabriela'), findsOneWidget);
+      expect(find.text('Olá, Ana'), findsOneWidget);
 
       appRouter.go(AppRoutes.settings);
       await tester.pump(_short);

@@ -26,6 +26,7 @@ import 'package:ada_app/features/home/widgets/mode_rings.dart';
 import 'package:ada_app/features/home/widgets/status_chip.dart';
 import 'package:ada_app/features/messages/models/message_kind.dart';
 import 'package:ada_app/features/messages/state/messages_controller.dart';
+import 'package:ada_app/features/profile/state/profile_controller.dart';
 
 // StatefulWidget: agora a tela guarda algo que vive e muda, o controlador da
 // animação dos anéis. (Ver o resumo 04 de aprendizado sobre Stateless x Stateful.)
@@ -197,6 +198,8 @@ class _HomePageState extends State<HomePage>
     // context.watch: "assina" o controlador. Quando o modo muda e ele chama
     // notifyListeners(), este build roda de novo e a tela se atualiza.
     final mode = context.watch<ModeController>().mode;
+    // A saudação: "Olá, Ana" ou, sem nome, "Olá!".
+    final greeting = context.watch<ProfileController>().greeting;
 
     // Estado derivado: tudo o que a tela mostra sai do modo atual, sem guardar
     // nada a mais. No Normal o círculo é azul-marinho; nos alertas, branco com o
@@ -256,7 +259,7 @@ class _HomePageState extends State<HomePage>
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Olá, Gabriela', style: textTheme.headlineSmall),
+                          Text(greeting, style: textTheme.headlineSmall),
                           Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [

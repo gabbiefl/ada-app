@@ -15,6 +15,7 @@ import 'package:ada_app/core/state/mode_controller.dart';
 import 'package:ada_app/core/state/security_mode.dart';
 import 'package:ada_app/features/home/pages/home_page.dart';
 import 'package:ada_app/features/onboarding/data/onboarding_repository.dart';
+import 'package:ada_app/features/profile/data/profile_repository.dart';
 
 Future<void> _passTime(WidgetTester tester) =>
     tester.pump(const Duration(milliseconds: 600));
@@ -26,17 +27,20 @@ void main() {
     appRouter.go(AppRoutes.splash);
     // Já viu o onboarding: depois da splash vem a Home.
     await tester.pumpWidget(
-      AdaApp(onboardingRepository: InMemoryOnboardingRepository(true)),
+      AdaApp(
+        onboardingRepository: InMemoryOnboardingRepository(true),
+        profileRepository: InMemoryProfileRepository('Ana'),
+      ),
     );
     await _passTime(tester);
     // Sem barra inferior e sem a Home: só a abertura.
     expect(find.byType(LinearProgressIndicator), findsOneWidget);
-    expect(find.text('Olá, Gabriela'), findsNothing);
+    expect(find.text('Olá, Ana'), findsNothing);
 
     // Passa o tempo da barra (2,2 s) e a Home aparece.
     await tester.pump(const Duration(seconds: 3));
     await _passTime(tester);
-    expect(find.text('Olá, Gabriela'), findsOneWidget);
+    expect(find.text('Olá, Ana'), findsOneWidget);
     expect(find.byType(LinearProgressIndicator), findsNothing);
   });
 
@@ -44,7 +48,7 @@ void main() {
     appRouter.go(AppRoutes.home);
     await tester.pumpWidget(const AdaApp());
     await _passTime(tester);
-    expect(find.text('Olá, Gabriela'), findsOneWidget);
+    expect(find.text('Olá!'), findsOneWidget);
 
     await tester.tap(find.byIcon(LucideIcons.users));
     await _passTime(tester);
@@ -124,7 +128,6 @@ void main() {
     appRouter.go(AppRoutes.editCoverage('fantasma'));
     await _passTime(tester);
     expect(find.text('Faixa não encontrada'), findsOneWidget);
-
   });
 
   testWidgets('A seta de Mensagens volta para Configurações', (tester) async {

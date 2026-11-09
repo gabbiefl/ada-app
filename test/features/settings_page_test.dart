@@ -21,6 +21,7 @@ import 'package:ada_app/features/map/models/geo_point.dart';
 import 'package:ada_app/features/map/state/location_controller.dart';
 import 'package:ada_app/features/messages/data/messages_repository.dart';
 import 'package:ada_app/features/onboarding/data/onboarding_repository.dart';
+import 'package:ada_app/features/profile/state/profile_controller.dart';
 import 'package:ada_app/features/messages/models/message_kind.dart';
 import 'package:ada_app/features/messages/state/messages_controller.dart';
 import 'package:ada_app/features/settings/pages/settings_page.dart';
@@ -106,6 +107,7 @@ Future<_Setup> _pump(WidgetTester tester) async {
         ChangeNotifierProvider.value(value: setup.messages),
         ChangeNotifierProvider.value(value: setup.coverage),
         ChangeNotifierProvider.value(value: location),
+        ChangeNotifierProvider(create: (_) => ProfileController()),
         Provider<OnboardingRepository>.value(
           value: InMemoryOnboardingRepository(true),
         ),
