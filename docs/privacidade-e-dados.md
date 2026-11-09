@@ -38,6 +38,7 @@ O ADA **não declara permissão de internet** no manifesto de produção (ela s�
 O ADA **não envia nada a um servidor próprio**. O que sai do celular é só o que a usuária aciona:
 - **SMS** para os contatos: o texto da mensagem e o **link do mapa com a localização** daquele momento. Segue pela operadora, como qualquer SMS.
 - **Ligação** para o contato de plantão.
+- **Ligação para o 190 ou o 180** (seção "Segurança pública" da Home), só quando a usuária toca e confirma. Liga apenas para o serviço tocado: **não avisa a rede e não envia localização**. Os números são fixos no app, e nada é guardado.
 - **WhatsApp**, só se a usuária tocar no botão: o app abre a conversa com o texto pronto, e o envio é feito por ela, dentro do WhatsApp, que tem as regras próprias dele.
 
 ## Como apagar os dados

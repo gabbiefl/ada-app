@@ -163,7 +163,8 @@
 |---|---|---|---|
 | F12-01 | Gerar o APK de release | M | ⬜ |
 | F12-02 | README do projeto (versão inicial criada na Fase 0; finalizar com instruções de execução e capturas de tela) | S | 🔄 |
-| F12-03 | Roteiro de demonstração para a mostra | M | ⬜ |
+| F12-03 | Roteiro de demonstração para a mostra (fica por último, quando a usuária pedir) | M | ⬜ |
+| F12-04 | Seção "Segurança pública" na Home: ligar direto para o 190 (Polícia Militar) e o 180 (Central de Atendimento à Mulher), com confirmação, sem acionar a rede. Plano B: discador. **Feito em 09/11.** Falta ver no emulador e testar a ligação direta em celular real | M | ✅ |
 
 ---
 
