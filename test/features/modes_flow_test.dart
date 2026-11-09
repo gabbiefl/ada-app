@@ -16,6 +16,43 @@ import 'package:ada_app/features/map/models/geo_point.dart';
 import 'package:ada_app/features/messages/data/messages_repository.dart';
 
 void main() {
+  testWidgets('Home: ligar para o 190 só liga para ele, sem ativar modo nem '
+      'avisar a rede', (tester) async {
+    tester.view.physicalSize = const Size(800, 2400);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+
+    final actions = FakeAlertActions();
+    appRouter.go(AppRoutes.home);
+    await tester.pumpWidget(
+      AdaApp(
+        locationService: FakeLocationService(
+          const LocationResult.success(
+            GeoPoint(latitude: -30.0346, longitude: -51.2177),
+          ),
+        ),
+        alertActions: actions,
+        contactsRepository: InMemoryContactsRepository(),
+        messagesRepository: InMemoryMessagesRepository(),
+        coverageRepository: InMemoryCoverageRepository(),
+      ),
+    );
+    const short = Duration(milliseconds: 600);
+    await tester.pump(short);
+
+    await tester.ensureVisible(find.textContaining('Ligue 190'));
+    await tester.tap(find.textContaining('Ligue 190'));
+    await tester.pump(short);
+    await tester.tap(find.text('Ligar'));
+    await tester.pump(short);
+
+    // Ligou só para o 190: nada de SMS, e o modo segue Normal, na Home.
+    expect(actions.calls.single.phone, '190');
+    expect(actions.count(AlertActionKind.sendSms), 0);
+    expect(find.text('Nenhum alerta ativo no momento.'), findsOneWidget);
+    expect(find.byType(AlertPage), findsNothing);
+  });
+
   testWidgets('Fluxo: Normal -> Atenção -> Perigo -> Normal', (tester) async {
     // Tela alta: os dois cards cabem sem rolar.
     tester.view.physicalSize = const Size(800, 1600);

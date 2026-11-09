@@ -26,6 +26,25 @@ void main() {
     });
   });
 
+  group('números de serviço (190, 180)', () {
+    test('não levam código do país nem o +', () {
+      expect(internationalPhone('190'), '190');
+      expect(internationalPhone('180'), '180');
+      expect(internationalDigits('190'), '190');
+    });
+
+    test('o discador abre com o número puro', () {
+      expect(dialerUri('190').toString(), 'tel:190');
+      expect(dialerUri('180').toString(), 'tel:180');
+    });
+
+    test('telefones comuns seguem com o +55', () {
+      expect(internationalPhone('51999990001'), '+5551999990001');
+      expect(isServiceNumber('190'), isTrue);
+      expect(isServiceNumber('51999990001'), isFalse);
+    });
+  });
+
   group('WhatsApp', () {
     test('monta o link wa.me com o número e o texto codificado', () {
       final uri = whatsAppUri('51999990001', 'Preciso de ajuda.');

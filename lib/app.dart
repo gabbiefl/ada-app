@@ -72,6 +72,11 @@ class AdaApp extends StatelessWidget {
         Provider<OnboardingRepository>(
           create: (_) => onboardingRepository ?? SecureOnboardingRepository(),
         ),
+        // As ações de SMS e ligação. Ficam num provider próprio para o alerta e
+        // os atalhos de segurança pública (190 e 180) usarem a MESMA instância.
+        Provider<AlertActions>(
+          create: (_) => alertActions ?? PlatformAlertActions(),
+        ),
         ChangeNotifierProvider(
           create: (_) => ModeController(haptics: const SystemHaptics()),
         ),
@@ -127,7 +132,7 @@ class AdaApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => AlertController(
             locationService: locationService ?? GeolocatorLocationService(),
-            actions: alertActions ?? PlatformAlertActions(),
+            actions: context.read<AlertActions>(),
             callTarget: CoverageCallTargetPolicy(
               coverage: context.read<CoverageController>(),
               now: clock,

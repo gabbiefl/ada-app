@@ -20,6 +20,7 @@ import 'package:ada_app/core/widgets/confirm_dialog.dart';
 import 'package:ada_app/features/alerts/state/alert_controller.dart';
 import 'package:ada_app/features/contacts/state/contacts_controller.dart';
 import 'package:ada_app/features/coverage/state/coverage_controller.dart';
+import 'package:ada_app/features/emergency/widgets/emergency_section.dart';
 import 'package:ada_app/features/home/widgets/mode_card.dart';
 import 'package:ada_app/features/home/widgets/mode_rings.dart';
 import 'package:ada_app/features/home/widgets/status_chip.dart';
@@ -350,6 +351,12 @@ class _HomePageState extends State<HomePage>
                       color: modeColors.attention,
                       textColor: modeColors.attentionText,
                       onTap: _activateAttention,
+                    ),
+                    const SizedBox(height: 32),
+                    // Ligar direto para o 190 ou o 180 (não aciona a rede).
+                    const Align(
+                      alignment: Alignment.centerLeft,
+                      child: EmergencySection(),
                     ),
                     const SizedBox(height: 24),
                   ],
