@@ -24,7 +24,7 @@ O armazenamento seguro cifra os dados antes de gravar (segundo a documentação 
 - Nada de **análise de uso, anúncios ou rastreadores**.
 
 ## Permissões que o app pede, e por quê
-Todas são pedidas **na hora de uso**, com uma explicação antes do aviso do Android.
+Na **primeira abertura**, uma tela explica as três e pede de uma vez (a usuária pode escolher "Agora não"). Se alguma for negada, o app **continua pedindo na hora de uso**, e funciona com um plano B para cada uma (o alerta sai sem o link do mapa; o SMS e a ligação passam pelos apps de mensagens e do discador). O ADA **não pede acesso à agenda de contatos**: ele não a lê.
 
 | Permissão | Para quê |
 |---|---|

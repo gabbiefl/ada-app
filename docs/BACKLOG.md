@@ -70,7 +70,7 @@
 |---|---|---|---|
 | F3-14 | Ler as variações dos estados Atenção e Perigo ativos no Figma e ligar os toques dos cards da Home. Toques ligados na Fase 7 (Atenção derivada da tela de Perigo); falta **conferir o visual com o Figma** | M | 🔄 |
 | F3-09 | Splash e 3 telas de onboarding (Figma). **Feitos na Fase 12A** (falta conferir o onboarding no emulador contra o Figma) | M | ✅ |
-| F3-10 | Tela de permissões (localização, notificações; já existe no Figma) | M | ⬜ |
+| F3-10 | Telas de permissões: **pedido, concedidas e negadas** (Fase 12D). O Figma lista Localização, Contatos e Telefone; o app usa **Localização, SMS e Telefone** (a agenda não é lida), então Contatos foi trocado por SMS. A tela de negadas foi criada a partir das duas do Figma. Falta ver no emulador, inclusive negando de propósito | M | ✅ (falta ver no emulador) |
 | F3-11 | Tela de mapa/localização (aba "Mapa"). Acompanhamento em tempo real é incerto (F0-02, F8-04): ideia da usuária de usar **checkpoints** da posição. Decidido em 06/11/2026: Fase 8 mostra só a localização atual (placeholder); mapa visual em F8-05 e tempo real em F8-04. Figma da aba ainda não lido | M | 🔄 |
 | F3-12 | Rede cheia (5/5): estado sem espaços vazios e aviso de limite (derivar do design existente) | M | ✅ |
 | F3-13 | Login/cadastro da usuária. **Decisão (09 e 10/11/2026): sem conta, sem servidor e sem cadastro.** Foi feito um cadastro local do nome (Fase 12C) e depois **removido** a pedido da usuária: a Home diz "Olá!" fixo. Conta de verdade só se vier o acompanhamento em tempo real (F8-04); PIN local fica como ideia futura | S | ❌ descartado |
