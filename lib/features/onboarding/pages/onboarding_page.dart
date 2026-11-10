@@ -3,7 +3,7 @@
 // PageView: as telas ficam lado a lado e a usuária desliza (ou toca em
 // "Continuar"). O PageController diz em qual está e leva à próxima.
 //
-// Ao terminar (ou ao tocar em "Pular"), grava que já viu e vai para a tela do nome. Se a
+// Ao terminar (ou ao tocar em "Pular"), grava que já viu e vai para a Home. Se a
 // gravação falhar, vai para a Home do mesmo jeito: o onboarding nunca pode
 // impedir o uso do app.
 
@@ -91,8 +91,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
     if (onFinished != null) {
       onFinished();
     } else {
-      // Depois da apresentação, pergunta como a usuária quer ser chamada.
-      context.go(AppRoutes.profileSetup);
+      context.go(AppRoutes.home);
     }
   }
 

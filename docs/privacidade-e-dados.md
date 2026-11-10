@@ -13,7 +13,6 @@ Tudo fica **só no celular**, cifrado; a **localização nunca é gravada**; o A
 | **Contatos** da rede de confiança (nome e telefone, até 5) | Armazenamento seguro do aparelho | O telefone é guardado só com os dígitos |
 | **Mensagens** de alerta que a usuária editou | Armazenamento seguro | Só o que foi editado; o texto padrão está no código |
 | **Faixas do horário de cobertura** (qual contato e em que horas) | Armazenamento seguro | Guardam só o identificador do contato e as horas, **nunca o telefone** |
-| **Seu nome ou apelido** (opcional, até 30 letras) | Armazenamento seguro | Só serve para a Home dizer "Olá, *nome*". É um dado pessoal pequeno: para trocar ou tirar, a usuária usa "Apagar meus dados" (a pergunta volta) |
 | **"Já viu o onboarding"** (as 3 telas de apresentação) | Armazenamento seguro | Só um "sim", sem dado pessoal. "Apagar meus dados" o remove, e a apresentação volta |
 
 O armazenamento seguro cifra os dados antes de gravar (segundo a documentação do pacote usado, `flutter_secure_storage`: RSA-OAEP e AES-GCM na configuração padrão no Android).
@@ -21,7 +20,7 @@ O armazenamento seguro cifra os dados antes de gravar (segundo a documentação 
 ## O que o ADA **não** guarda
 - **A localização.** Ela é buscada quando a usuária toca no botão da aba Mapa ou quando um alerta é disparado, fica **só na memória** enquanto é usada, e é esquecida. Não há histórico de lugares.
 - **O histórico de alertas** nem o texto que foi enviado. Por isso o app **não tem** tela de histórico: quem visse o celular descobriria que a usuária pediu ajuda.
-- Conta, senha, e-mail, foto ou qualquer identificação da usuária. O único dado dela é o **nome ou apelido, opcional**, que fica só no celular.
+- Conta, senha, e-mail, foto ou qualquer identificação da usuária.
 - Nada de **análise de uso, anúncios ou rastreadores**.
 
 ## Permissões que o app pede, e por quê
@@ -43,7 +42,7 @@ O ADA **não envia nada a um servidor próprio**. O que sai do celular é só o 
 - **WhatsApp**, só se a usuária tocar no botão: o app abre a conversa com o texto pronto, e o envio é feito por ela, dentro do WhatsApp, que tem as regras próprias dele.
 
 ## Como apagar os dados
-**Configurações → Apagar meus dados.** Apaga os contatos, as faixas de horário e as mensagens editadas (elas voltam ao texto padrão), apaga o nome, faz o onboarding voltar a aparecer, desfaz qualquer alerta em andamento e esquece a localização que estivesse na memória. Há uma confirmação antes, e não dá para desfazer. Desinstalar o app também remove tudo.
+**Configurações → Apagar meus dados.** Apaga os contatos, as faixas de horário e as mensagens editadas (elas voltam ao texto padrão), faz o onboarding voltar a aparecer, desfaz qualquer alerta em andamento e esquece a localização que estivesse na memória. Há uma confirmação antes, e não dá para desfazer. Desinstalar o app também remove tudo.
 
 ## Backup do Android
 Decisão: **não foi alterado** o padrão do Android. Os dados do ADA são gravados cifrados, e o que iria para um backup na nuvem seria esse texto cifrado, sem a chave, que fica no aparelho. Em outro celular (ou depois de reinstalar) os dados não ficariam legíveis e o app abriria vazio, sem quebrar. Se a banca ou a usuária preferirem impedir até isso, basta declarar `android:allowBackup="false"` no manifesto.
@@ -70,7 +69,7 @@ Decisão: **não foi alterado** o padrão do Android. Os dados do ADA são grava
 - [x] O código nativo (Kotlin) registra só o **tipo** do erro, nunca dados
 - [x] Os modelos (contato, faixa, entrega, ponto de localização) não mostram dados pessoais ao serem impressos
 - [x] A localização não é gravada em lugar nenhum
-- [x] Apenas as cinco chaves do armazenamento seguro existem (contatos, mensagens, faixas, nome e "já viu o onboarding"), e todas são apagadas por "Apagar meus dados"
+- [x] Apenas as quatro chaves do armazenamento seguro existem (contatos, mensagens, faixas e "já viu o onboarding"), e todas são apagadas por "Apagar meus dados"
 - [x] Apagar durante um alerta em andamento interrompe os envios que faltam
 - [x] Uma leitura que falha ao abrir o app **não** apaga as faixas de horário
 - [x] O texto do cadastro de contato não promete mais um aviso que não existe

@@ -1,6 +1,6 @@
 # Fase 12C — Cadastro local (como podemos te chamar?)
 
-> **Status:** ✅ concluída no código (pendente: ver no emulador)
+> **Status:** ❌ **cancelada e removida do app em 10/11/2026**, por decisão da usuária. A Home voltou a dizer "Olá!" fixo, e o ADA não pergunta nem guarda nome nenhum. Este plano fica só como registro.
 > **Itens do backlog:** F3-13 (login/cadastro). Decisão: **sem conta e sem servidor**, só um cadastro local do nome.
 
 ## 1. Objetivo

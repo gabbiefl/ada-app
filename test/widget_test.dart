@@ -14,7 +14,6 @@ import 'package:provider/provider.dart';
 
 import 'package:ada_app/app.dart';
 import 'package:ada_app/core/routes/app_router.dart';
-import 'package:ada_app/features/profile/state/profile_controller.dart';
 import 'package:ada_app/core/state/mode_controller.dart';
 import 'package:ada_app/core/state/security_mode.dart';
 import 'package:ada_app/core/theme/app_theme.dart';
@@ -116,7 +115,6 @@ Future<_Home> _pumpHome(
         ChangeNotifierProvider.value(value: contactsController),
         ChangeNotifierProvider.value(value: messagesController),
         ChangeNotifierProvider.value(value: coverageController),
-        ChangeNotifierProvider(create: (_) => ProfileController()),
       ],
       child: MaterialApp.router(theme: AppTheme.light, routerConfig: router),
     ),
@@ -166,7 +164,6 @@ void main() {
     await tester.pumpWidget(const AdaApp());
 
     // `find.text` procura um Text com exatamente esse conteúdo.
-    // Sem nome informado, a Home cumprimenta só com Olá!.
     expect(find.text('Olá!'), findsOneWidget);
     expect(find.text('Estamos com você!'), findsOneWidget);
     // Os dois cards dos modos aparecem.

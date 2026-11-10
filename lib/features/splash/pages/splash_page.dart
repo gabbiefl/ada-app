@@ -3,8 +3,7 @@
 //
 // A barra é uma animação: um AnimationController vai de 0 a 1 no tempo dado, e o
 // AnimatedBuilder redesenha a barra a cada "quadro". Ao terminar, ele avisa
-// (status completed) e a tela navega: ao onboarding na primeira vez, ao nome se
-// ainda não foi perguntado, ou à Home. O controlador é descartado no dispose, então
+// (status completed) e a tela navega: ao onboarding na primeira vez, à Home depois. O controlador é descartado no dispose, então
 // sair da tela antes do fim não deixa nada pendente.
 
 import 'package:flutter/material.dart';
@@ -14,7 +13,6 @@ import 'package:provider/provider.dart';
 import 'package:ada_app/core/routes/app_router.dart';
 import 'package:ada_app/core/theme/app_colors.dart';
 import 'package:ada_app/features/onboarding/data/onboarding_repository.dart';
-import 'package:ada_app/features/profile/state/profile_controller.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({
@@ -53,32 +51,16 @@ class _SplashPageState extends State<SplashPage>
       ..forward();
   }
 
-  // Para onde ir depois da splash:
-  //   - nunca viu o onboarding: onboarding (e dele segue ao nome);
-  //   - viu, mas o nome nunca foi perguntado: tela do nome;
-  //   - senão: Home.
-  // Se não der para ler (falha no armazenamento), vai para a Home: a
-  // apresentação nunca pode travar o app.
+  // Primeira vez: onboarding. Depois: Home. Se não der para ler (falha no
+  // armazenamento), vai para a Home: a apresentação nunca pode travar o app.
   Future<void> _goNext() async {
-    final onboarding = context.read<OnboardingRepository>();
-    final profile = context.read<ProfileController>();
+    final repository = context.read<OnboardingRepository>();
     var seen = true;
-    var asked = true;
     try {
-      seen = await onboarding.hasSeen();
-    } catch (_) {}
-    try {
-      await profile.ready;
-      asked = profile.asked;
+      seen = await repository.hasSeen();
     } catch (_) {}
     if (!mounted) return;
-    context.go(
-      !seen
-          ? AppRoutes.onboarding
-          : !asked
-          ? AppRoutes.profileSetup
-          : AppRoutes.home,
-    );
+    context.go(seen ? AppRoutes.home : AppRoutes.onboarding);
   }
 
   @override

@@ -20,7 +20,6 @@ import 'package:ada_app/features/messages/models/message_kind.dart';
 import 'package:ada_app/features/messages/pages/message_edit_page.dart';
 import 'package:ada_app/features/messages/pages/messages_page.dart';
 import 'package:ada_app/features/onboarding/pages/onboarding_page.dart';
-import 'package:ada_app/features/profile/pages/profile_page.dart';
 import 'package:ada_app/features/settings/pages/settings_page.dart';
 import 'package:ada_app/features/splash/pages/splash_page.dart';
 
@@ -30,8 +29,6 @@ class AppRoutes {
 
   static const splash = '/splash';
   static const onboarding = '/onboarding';
-  // Primeira vez: "Como podemos te chamar?" (depois do onboarding).
-  static const profileSetup = '/profile';
   static const home = '/home';
   static const contacts = '/contacts';
   static const newContact = '/contacts/new';
@@ -66,10 +63,6 @@ final appRouter = GoRouter(
     GoRoute(
       path: AppRoutes.onboarding,
       builder: (context, state) => const OnboardingPage(),
-    ),
-    GoRoute(
-      path: AppRoutes.profileSetup,
-      builder: (context, state) => const ProfilePage(),
     ),
     // StatefulShellRoute: a "moldura" com a barra inferior. Cada aba (branch)
     // guarda a sua própria pilha de telas e o seu estado ao trocar de aba.

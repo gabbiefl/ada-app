@@ -18,7 +18,6 @@ import 'package:ada_app/features/coverage/state/coverage_controller.dart';
 import 'package:ada_app/features/map/state/location_controller.dart';
 import 'package:ada_app/features/messages/state/messages_controller.dart';
 import 'package:ada_app/features/onboarding/data/onboarding_repository.dart';
-import 'package:ada_app/features/profile/state/profile_controller.dart';
 
 Future<void> eraseAllData({
   required ModeController mode,
@@ -28,7 +27,6 @@ Future<void> eraseAllData({
   required CoverageController coverage,
   required LocationController location,
   OnboardingRepository? onboarding,
-  ProfileController? profile,
 }) async {
   // 1. Para qualquer envio em andamento e volta ao modo Normal.
   alert.reset();
@@ -43,7 +41,5 @@ Future<void> eraseAllData({
     // O app volta a ser "recém-instalado": o onboarding aparece de novo.
     // Se isso falhar, o resto continua apagado: é só a apresentação voltando.
     ?onboarding?.reset().catchError((_) {}),
-    // O nome também: a pergunta volta a aparecer.
-    ?profile?.clear().catchError((_) {}),
   ]);
 }
