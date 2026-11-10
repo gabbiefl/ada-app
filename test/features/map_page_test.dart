@@ -3,6 +3,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
 
@@ -63,6 +64,8 @@ void main() {
       );
       expect(find.text('Ver minha localização'), findsOneWidget);
       expect(find.text('Sua localização atual'), findsNothing);
+      // O mapa (e o que ele baixa da internet) só existe depois do toque.
+      expect(find.byType(FlutterMap), findsNothing);
     },
   );
 
@@ -75,8 +78,12 @@ void main() {
 
     expect(service.requests, 1);
     expect(find.text('Sua localização atual'), findsOneWidget);
-    expect(find.textContaining('Latitude -30.03460'), findsOneWidget);
-    expect(find.textContaining('Longitude -51.21770'), findsOneWidget);
+    // Um mapa interativo no lugar das coordenadas em texto.
+    expect(find.byType(FlutterMap), findsOneWidget);
+    expect(find.byTooltip('Centralizar na minha localização'), findsOneWidget);
+    expect(find.textContaining('Latitude'), findsNothing);
+    expect(find.textContaining('Longitude'), findsNothing);
+    expect(find.textContaining('É esta a posição'), findsOneWidget);
     expect(
       find.text('https://maps.google.com/?q=-30.034600,-51.217700'),
       findsOneWidget,

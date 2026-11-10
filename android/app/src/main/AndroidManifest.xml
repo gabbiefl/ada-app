@@ -1,4 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Internet SÓ para baixar os pedaços do mapa (OpenStreetMap) na aba Mapa. O
+         ADA não envia a localização, os contatos nem nenhum outro dado para a
+         internet: o alerta sai por SMS e ligação, que não usam esta permissão. -->
+    <uses-permission android:name="android.permission.INTERNET" />
     <!-- Localização aproximada e precisa, só com o app aberto. Não pedimos
          localização em segundo plano. A permissão é pedida na hora de uso. -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />

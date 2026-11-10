@@ -134,7 +134,17 @@ Future<void> _openPermissionsResult(
   await tester.pump(_short);
 }
 
+// Abre a aba Mapa e toca em "Ver minha localização": mostra o mapa interativo.
+Future<void> _openMapWithLocation(WidgetTester tester) async {
+  await _pumpApp(tester, AppRoutes.map);
+  await tester.ensureVisible(find.text('Ver minha localização'));
+  await tester.tap(find.text('Ver minha localização'));
+  await tester.pump(_short);
+  await tester.pump(_short);
+}
+
 final _screens = <_Screen>[
+  _Screen('Mapa (com localização)', _openMapWithLocation),
   _Screen('Permissões (pedido)', (t) => _pumpApp(t, AppRoutes.permissions)),
   _Screen(
     'Permissões (concedidas)',

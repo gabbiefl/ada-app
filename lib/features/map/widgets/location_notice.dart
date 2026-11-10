@@ -28,7 +28,8 @@ class LocationNotice extends StatelessWidget {
             child: Text(
               'O ADA usa a sua localização só quando você toca no botão '
               'abaixo, para mostrar onde você está e, nos alertas, avisar a '
-              'sua rede. Ela não é guardada no aparelho.',
+              'sua rede. Ela não é guardada no aparelho. O mapa é baixado da internet '
+              '(OpenStreetMap), mas a sua posição não é enviada.',
               style: style,
             ),
           ),

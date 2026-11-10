@@ -1,11 +1,10 @@
-// Aba "Mapa": mostra a localização atual da usuária.
-//
-// Versão simples (decisão da usuária, Fase 8): coordenadas e o link de mapa.
-// O mapa visual (F8-05) e o acompanhamento em tempo real (F8-04) ficam para
-// depois. A tela só desenha o estado do LocationController e escolhe o texto
+// Aba "Mapa": mostra a localização atual da usuária num mapa interativo
+// (OpenStreetMap), com o link que vai nos alertas logo abaixo. O acompanhamento
+// em tempo real (F8-04) fica para depois. A tela só desenha o estado do LocationController e escolhe o texto
 // de cada caso; quem busca a posição é o serviço.
 
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:provider/provider.dart';
 
@@ -13,11 +12,16 @@ import 'package:ada_app/core/widgets/page_header.dart';
 import 'package:ada_app/features/map/data/location_service.dart';
 import 'package:ada_app/features/map/state/location_controller.dart';
 import 'package:ada_app/features/map/widgets/location_error_box.dart';
+import 'package:ada_app/features/map/widgets/location_map.dart';
 import 'package:ada_app/features/map/widgets/location_notice.dart';
 import 'package:ada_app/features/map/widgets/location_success_card.dart';
 
 class MapPage extends StatelessWidget {
-  const MapPage({super.key});
+  // tileProvider: de onde vêm os pedaços do mapa. Só os testes trocam (por uma
+  // versão sem internet); no app vale o padrão.
+  const MapPage({super.key, this.tileProvider});
+
+  final TileProvider? tileProvider;
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +50,7 @@ class MapPage extends StatelessWidget {
                 label: Text(_buttonLabel(location.status)),
               ),
               const SizedBox(height: 24),
-              _Result(location: location),
+              _Result(location: location, tileProvider: tileProvider),
             ],
           ),
         ),
@@ -70,9 +74,10 @@ class MapPage extends StatelessWidget {
 
 // A parte de baixo da tela: muda conforme o estado da busca.
 class _Result extends StatelessWidget {
-  const _Result({required this.location});
+  const _Result({required this.location, this.tileProvider});
 
   final LocationController location;
+  final TileProvider? tileProvider;
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +91,14 @@ class _Result extends StatelessWidget {
           ),
         );
       case LocationStatus.success:
-        return LocationSuccessCard(point: location.point!);
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            LocationMap(point: location.point!, tileProvider: tileProvider),
+            const SizedBox(height: 16),
+            LocationSuccessCard(point: location.point!),
+          ],
+        );
       case LocationStatus.failure:
         final failure = location.failure!;
         return Column(

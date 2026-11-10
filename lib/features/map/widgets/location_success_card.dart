@@ -1,5 +1,6 @@
-// Cartão com a localização encontrada: coordenadas e o link de mapa que irá na
-// mensagem de alerta.
+// Cartão abaixo do mapa: explica que é essa a posição do alerta e mostra o link
+// que vai na mensagem. As coordenadas não aparecem (o mapa já mostra o lugar); elas
+// continuam dentro do link, que serve de plano B quando o mapa não carrega.
 
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -36,14 +37,19 @@ class LocationSuccessCard extends StatelessWidget {
                 color: Theme.of(context).colorScheme.tertiary,
               ),
               const SizedBox(width: 8),
-              Text('Sua localização atual', style: textTheme.titleMedium),
+              // Expanded: com texto grande, o título quebra de linha em vez de
+              // estourar a largura.
+              Expanded(
+                child: Text(
+                  'Sua localização atual',
+                  style: textTheme.titleMedium,
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 12),
-          // 5 casas decimais (cerca de 1 metro) bastam para ler na tela.
           Text(
-            'Latitude ${point.latitude.toStringAsFixed(5)}\n'
-            'Longitude ${point.longitude.toStringAsFixed(5)}',
+            'É esta a posição que vai junto do seu alerta.',
             style: textTheme.bodyMedium,
           ),
           const SizedBox(height: 12),
