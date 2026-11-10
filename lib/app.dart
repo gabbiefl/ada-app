@@ -23,6 +23,7 @@ import 'package:ada_app/features/map/state/location_controller.dart';
 import 'package:ada_app/features/messages/data/messages_repository.dart';
 import 'package:ada_app/features/messages/state/messages_controller.dart';
 import 'package:ada_app/features/onboarding/data/onboarding_repository.dart';
+import 'package:ada_app/features/permissions/data/permissions_service.dart';
 
 // StatelessWidget: um widget que NÃO guarda dados que mudam.
 // A configuração do app é fixa, então não precisamos de StatefulWidget.
@@ -41,6 +42,7 @@ class AdaApp extends StatelessWidget {
     this.messagesRepository,
     this.coverageRepository,
     this.onboardingRepository,
+    this.permissionsService,
     this.clock,
   });
 
@@ -50,6 +52,7 @@ class AdaApp extends StatelessWidget {
   final MessagesRepository? messagesRepository;
   final CoverageRepository? coverageRepository;
   final OnboardingRepository? onboardingRepository;
+  final PermissionsService? permissionsService;
 
   // O "relógio" do app: devolve a hora de agora. Nos testes, uma hora fixa.
   final DateTime Function()? clock;
@@ -71,6 +74,11 @@ class AdaApp extends StatelessWidget {
         // e por "Apagar meus dados" (que desfaz isso).
         Provider<OnboardingRepository>(
           create: (_) => onboardingRepository ?? SecureOnboardingRepository(),
+        ),
+        // As permissões do Android (localização, SMS e telefone): a tela de
+        // permissões pede e confere por aqui. Nos testes, uma versão falsa.
+        Provider<PermissionsService>(
+          create: (_) => permissionsService ?? PlatformPermissionsService(),
         ),
         // As ações de SMS e ligação. Ficam num provider próprio para o alerta e
         // os atalhos de segurança pública (190 e 180) usarem a MESMA instância.

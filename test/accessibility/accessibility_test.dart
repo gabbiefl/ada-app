@@ -32,6 +32,7 @@ import 'package:ada_app/features/map/models/geo_point.dart';
 import 'package:ada_app/features/messages/data/messages_repository.dart';
 import 'package:ada_app/features/messages/models/message_kind.dart';
 import 'package:ada_app/features/onboarding/data/onboarding_repository.dart';
+import 'package:ada_app/features/permissions/data/permissions_service.dart';
 
 import '../support/app_font.dart';
 
@@ -65,7 +66,11 @@ const _rules = [
 ];
 
 // Abre o app inteiro com serviços falsos, num celular de tamanho realista.
-Future<void> _pumpApp(WidgetTester tester, String route) async {
+Future<void> _pumpApp(
+  WidgetTester tester,
+  String route, {
+  PermissionsService? permissions,
+}) async {
   // 393 x 873 pixels lógicos: um celular comum. É o tamanho real que importa para
   // os alvos de toque e para o texto grande.
   tester.view.physicalSize = const Size(1080, 2400);
@@ -85,6 +90,7 @@ Future<void> _pumpApp(WidgetTester tester, String route) async {
       messagesRepository: InMemoryMessagesRepository(),
       coverageRepository: InMemoryCoverageRepository(_rules),
       onboardingRepository: InMemoryOnboardingRepository(true),
+      permissionsService: permissions ?? FakePermissionsService(),
       clock: () => DateTime(2026, 11, 8, 10, 0),
     ),
   );
@@ -116,7 +122,28 @@ Future<void> _openOnboarding(WidgetTester tester, int pages) async {
   }
 }
 
+// Abre a tela de permissões e toca em "Permitir acesso": com o serviço que
+// concede tudo vira "Tudo pronto!"; com o que nega, "Faltam algumas permissões".
+Future<void> _openPermissionsResult(
+  WidgetTester tester,
+  PermissionsService service,
+) async {
+  await _pumpApp(tester, AppRoutes.permissions, permissions: service);
+  await tester.tap(find.text('Permitir acesso'));
+  await tester.pump(_short);
+  await tester.pump(_short);
+}
+
 final _screens = <_Screen>[
+  _Screen('Permissões (pedido)', (t) => _pumpApp(t, AppRoutes.permissions)),
+  _Screen(
+    'Permissões (concedidas)',
+    (t) => _openPermissionsResult(t, FakePermissionsService.grantsOnRequest()),
+  ),
+  _Screen(
+    'Permissões (negadas)',
+    (t) => _openPermissionsResult(t, FakePermissionsService()),
+  ),
   _Screen('Onboarding 1', (t) => _openOnboarding(t, 0)),
   _Screen('Onboarding 2', (t) => _openOnboarding(t, 1)),
   _Screen('Onboarding 3', (t) => _openOnboarding(t, 2)),

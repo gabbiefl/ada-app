@@ -17,6 +17,7 @@ import 'package:ada_app/features/map/models/geo_point.dart';
 import 'package:ada_app/features/messages/data/messages_repository.dart';
 import 'package:ada_app/features/onboarding/data/onboarding_repository.dart';
 import 'package:ada_app/features/onboarding/pages/onboarding_page.dart';
+import 'package:ada_app/features/permissions/data/permissions_service.dart';
 
 import '../support/app_font.dart';
 
@@ -65,6 +66,7 @@ Future<void> _pumpApp(
       messagesRepository: InMemoryMessagesRepository(),
       coverageRepository: InMemoryCoverageRepository(),
       onboardingRepository: repository,
+      permissionsService: FakePermissionsService(),
     ),
   );
   await tester.pump(_short);
@@ -194,8 +196,17 @@ void main() {
       await tester.tap(find.text('Pular'));
       await tester.pump(_short);
       await tester.pump(_short);
-      expect(find.text('Olá!'), findsOneWidget);
       expect(await repository.hasSeen(), isTrue);
+
+      // Depois do onboarding, o ADA explica e pede as permissões.
+      expect(
+        find.text('Precisamos de 3 permissões para proteger você'),
+        findsOneWidget,
+      );
+      await tester.tap(find.text('Agora não'));
+      await tester.pump(_short);
+      await tester.pump(_short);
+      expect(find.text('Olá!'), findsOneWidget);
 
       // Reabrir o app: a splash vai direto à Home.
       await _pumpApp(tester, repository);
