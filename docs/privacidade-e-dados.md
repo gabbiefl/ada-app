@@ -13,7 +13,7 @@ Tudo fica **só no celular**, cifrado; a **localização nunca é gravada**; o A
 | **Contatos** da rede de confiança (nome e telefone, até 5) | Armazenamento seguro do aparelho | O telefone é guardado só com os dígitos |
 | **Mensagens** de alerta que a usuária editou | Armazenamento seguro | Só o que foi editado; o texto padrão está no código |
 | **Faixas do horário de cobertura** (qual contato e em que horas) | Armazenamento seguro | Guardam só o identificador do contato e as horas, **nunca o telefone** |
-| **Seu nome ou apelido** (opcional, até 30 letras) | Armazenamento seguro | Só serve para a Home dizer "Olá, *nome*". É um dado pessoal pequeno: dá para editar em Configurações, ou apagar em "Apagar meus dados" |
+| **Seu nome ou apelido** (opcional, até 30 letras) | Armazenamento seguro | Só serve para a Home dizer "Olá, *nome*". É um dado pessoal pequeno: para trocar ou tirar, a usuária usa "Apagar meus dados" (a pergunta volta) |
 | **"Já viu o onboarding"** (as 3 telas de apresentação) | Armazenamento seguro | Só um "sim", sem dado pessoal. "Apagar meus dados" o remove, e a apresentação volta |
 
 O armazenamento seguro cifra os dados antes de gravar (segundo a documentação do pacote usado, `flutter_secure_storage`: RSA-OAEP e AES-GCM na configuração padrão no Android).

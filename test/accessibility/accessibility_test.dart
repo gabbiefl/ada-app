@@ -120,7 +120,6 @@ Future<void> _openOnboarding(WidgetTester tester, int pages) async {
 
 final _screens = <_Screen>[
   _Screen('Nome (primeira vez)', (t) => _pumpApp(t, AppRoutes.profileSetup)),
-  _Screen('Nome (editar)', (t) => _pumpApp(t, AppRoutes.editProfile)),
   _Screen('Onboarding 1', (t) => _openOnboarding(t, 0)),
   _Screen('Onboarding 2', (t) => _openOnboarding(t, 1)),
   _Screen('Onboarding 3', (t) => _openOnboarding(t, 2)),

@@ -39,33 +39,18 @@ class _BrokenProfileRepository implements ProfileRepository {
 
 Future<void> settle() => Future<void>.delayed(Duration.zero);
 
-// Monta só a tela do nome, com um roteador de brinquedo (a tela usa go e pop).
+// Monta só a tela do nome, com um roteador de brinquedo (a tela usa go).
 Future<ProfileController> _pumpPage(
   WidgetTester tester, {
-  required bool editing,
   ProfileRepository? repository,
 }) async {
   final controller = ProfileController(repository: repository)..load();
   await controller.ready;
 
   final router = GoRouter(
-    initialLocation: '/start',
+    initialLocation: '/page',
     routes: [
-      GoRoute(
-        path: '/start',
-        builder: (context, state) => Scaffold(
-          body: Center(
-            child: TextButton(
-              onPressed: () => context.push('/page'),
-              child: const Text('abrir'),
-            ),
-          ),
-        ),
-      ),
-      GoRoute(
-        path: '/page',
-        builder: (context, state) => ProfilePage(editing: editing),
-      ),
+      GoRoute(path: '/page', builder: (context, state) => const ProfilePage()),
       GoRoute(
         path: AppRoutes.home,
         builder: (context, state) => const Scaffold(body: Text('HOME')),
@@ -79,12 +64,6 @@ Future<ProfileController> _pumpPage(
       child: MaterialApp.router(theme: AppTheme.light, routerConfig: router),
     ),
   );
-  // Editar abre a tela por cima (push, dá para voltar); a primeira vez usa go.
-  if (editing) {
-    await tester.tap(find.text('abrir'));
-  } else {
-    router.go('/page');
-  }
   await tester.pumpAndSettle();
   return controller;
 }
@@ -250,11 +229,11 @@ void main() {
     });
   });
 
-  group('tela do nome (primeira vez)', () {
+  group('tela do nome', () {
     testWidgets('pergunta, e Continuar sem nome pede um nome ou Pular', (
       tester,
     ) async {
-      final controller = await _pumpPage(tester, editing: false);
+      final controller = await _pumpPage(tester);
 
       expect(find.text('Como podemos te chamar?'), findsOneWidget);
       expect(find.textContaining('só neste celular'), findsOneWidget);
@@ -270,11 +249,7 @@ void main() {
       tester,
     ) async {
       final repository = InMemoryProfileRepository();
-      final controller = await _pumpPage(
-        tester,
-        editing: false,
-        repository: repository,
-      );
+      final controller = await _pumpPage(tester, repository: repository);
 
       await tester.enterText(find.byType(TextFormField), 'Ana');
       await tester.tap(find.text('Continuar'));
@@ -286,7 +261,7 @@ void main() {
     });
 
     testWidgets('Pular vai para a Home sem nome', (tester) async {
-      final controller = await _pumpPage(tester, editing: false);
+      final controller = await _pumpPage(tester);
 
       await tester.tap(find.text('Pular'));
       await tester.pumpAndSettle();
@@ -297,7 +272,7 @@ void main() {
     });
 
     testWidgets('recusa mais de 30 letras', (tester) async {
-      final controller = await _pumpPage(tester, editing: false);
+      final controller = await _pumpPage(tester);
 
       await tester.enterText(find.byType(TextFormField), 'a' * 31);
       await tester.tap(find.text('Continuar'));
@@ -305,56 +280,6 @@ void main() {
 
       expect(find.text('Use até 30 letras.'), findsOneWidget);
       expect(controller.asked, isFalse);
-    });
-  });
-
-  group('tela do nome (editar)', () {
-    testWidgets('vem preenchida e Salvar troca o nome', (tester) async {
-      final controller = await _pumpPage(
-        tester,
-        editing: true,
-        repository: InMemoryProfileRepository('Ana'),
-      );
-
-      expect(find.text('Seu nome'), findsOneWidget);
-      expect(find.text('Ana'), findsOneWidget);
-
-      await tester.enterText(find.byType(TextFormField), 'Bia');
-      await tester.tap(find.text('Salvar'));
-      await tester.pumpAndSettle();
-
-      expect(controller.name, 'Bia');
-      expect(find.text('abrir'), findsOneWidget); // voltou
-    });
-
-    testWidgets('deixar em branco remove o nome', (tester) async {
-      final controller = await _pumpPage(
-        tester,
-        editing: true,
-        repository: InMemoryProfileRepository('Ana'),
-      );
-
-      await tester.enterText(find.byType(TextFormField), '');
-      await tester.tap(find.text('Salvar'));
-      await tester.pumpAndSettle();
-
-      expect(controller.hasName, isFalse);
-      expect(controller.asked, isTrue);
-    });
-
-    testWidgets('Cancelar não muda o nome', (tester) async {
-      final controller = await _pumpPage(
-        tester,
-        editing: true,
-        repository: InMemoryProfileRepository('Ana'),
-      );
-
-      await tester.enterText(find.byType(TextFormField), 'Bia');
-      await tester.tap(find.text('Cancelar'));
-      await tester.pumpAndSettle();
-
-      expect(controller.name, 'Ana');
-      expect(find.text('abrir'), findsOneWidget);
     });
   });
 
@@ -367,37 +292,6 @@ void main() {
       );
 
       expect(find.text('Olá, Ana'), findsOneWidget);
-    });
-
-    testWidgets('Configurações mostra o nome e permite trocar', (tester) async {
-      final repository = InMemoryProfileRepository('Ana');
-      await _pumpApp(tester, route: AppRoutes.settings, profile: repository);
-
-      expect(find.text('Meu nome'), findsOneWidget);
-      expect(find.text('Ana'), findsOneWidget);
-
-      await tester.tap(find.text('Meu nome'));
-      await tester.pump(_short);
-      await tester.pump(_short);
-      await tester.enterText(find.byType(TextFormField), 'Bia');
-      await tester.tap(find.text('Salvar'));
-      await tester.pump(_short);
-      await tester.pump(_short);
-
-      expect(find.text('Bia'), findsOneWidget);
-      expect(await repository.loadName(), 'Bia');
-    });
-
-    testWidgets('sem nome, Configurações explica que é opcional', (
-      tester,
-    ) async {
-      await _pumpApp(
-        tester,
-        route: AppRoutes.settings,
-        profile: InMemoryProfileRepository(''),
-      );
-
-      expect(find.textContaining('Opcional'), findsOneWidget);
     });
 
     testWidgets('"Apagar meus dados" apaga o nome e a pergunta volta', (

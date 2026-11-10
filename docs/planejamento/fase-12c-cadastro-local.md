@@ -9,7 +9,7 @@ A usuária diz **como quer ser chamada** (opcional). O nome fica **só no celula
 ## 2. Resultado esperado
 - Depois do onboarding (na primeira vez), uma tela **"Como podemos te chamar?"**, com um campo de nome e dois botões: **Continuar** e **Pular**.
 - A Home mostra **"Olá, *nome*"**. Sem nome (pulou), mostra só **"Olá!"**.
-- Em **Configurações**, um item para **editar o nome** (ou adicionar, se pulou).
+- ~~Em Configurações, um item para editar o nome.~~ **Removido (10/11/2026):** a usuária decidiu que não é necessário.
 - **"Apagar meus dados"** apaga o nome, e o app volta a perguntar.
 - O nome fica no armazenamento seguro, como os outros dados, e entra no documento de privacidade.
 
@@ -28,7 +28,7 @@ Splash ─► (nunca viu o onboarding?) ─► Onboarding ─► Nome ─► Hom
 - Estado derivado: a Home reage ao nome sem guardar cópia
 
 ## 5. Escopo
-**Dentro:** a tela do nome, o repositório e o controlador, a saudação na Home, editar em Configurações, apagar com "Apagar meus dados", testes, acessibilidade, documentos.
+**Dentro:** a tela do nome, o repositório e o controlador, a saudação na Home, apagar com "Apagar meus dados", testes, acessibilidade, documentos.
 
 **Fora:** foto, sobrenome, e-mail, telefone da usuária, PIN, qualquer conta ou servidor.
 
@@ -48,7 +48,7 @@ Splash ─► (nunca viu o onboarding?) ─► Onboarding ─► Nome ─► Hom
 | 1 ✅ | Repositório e controlador do perfil (nome), com testes | P |
 | 2 ✅ | Tela "Como podemos te chamar?" e a rota | M |
 | 3 ✅ | Ligar o fluxo (splash → onboarding → nome → Home) e a saudação na Home | M |
-| 4 ✅ | Editar o nome em Configurações e apagar em "Apagar meus dados" | P |
+| 4 ✅ | Apagar o nome em "Apagar meus dados" (a edição em Configurações foi removida) | P |
 | 5 ✅ | Testes dos fluxos e da acessibilidade, privacidade, backlog e compilar para Android | M |
 
 **Impacto nos testes:** vários testes procuram o texto "Olá, Gabriela". Eles passarão a injetar um perfil de teste (como já fazemos com os repositórios) e a procurar o nome combinado.
@@ -64,7 +64,7 @@ Splash ─► (nunca viu o onboarding?) ─► Onboarding ─► Nome ─► Hom
 ## 9. Critérios de pronto
 - [x] Tela do nome após o onboarding, com Continuar e Pular
 - [x] Home com "Olá, nome" (ou "Olá!" sem nome)
-- [x] Editar o nome em Configurações
+- [x] ~~Editar o nome em Configurações~~ (removido por decisão da usuária em 10/11/2026: não é necessário. Para trocar o nome, "Apagar meus dados")
 - [x] "Apagar meus dados" apaga o nome e a pergunta volta
 - [x] Falha de leitura ou gravação não trava o app
 - [x] Auditoria de acessibilidade das telas novas, `flutter analyze` limpo, testes passando e compilado para Android
@@ -87,4 +87,5 @@ Splash ─► (nunca viu o onboarding?) ─► Onboarding ─► Nome ─► Hom
 **O que mudou em relação ao plano:**
 - Seguiu como assumido: primeiro nome opcional, "Olá!" sem nome, tela derivada do cadastro de contato (sem desenho no Figma).
 - Para uma falha de leitura não prender a usuária na tela do nome, a leitura que falha conta como "já perguntei".
+- **10/11:** o item "Meu nome" de Configurações, a rota e o modo de edição da tela foram **removidos** a pedido da usuária. Para trocar o nome: "Apagar meus dados", e a pergunta volta.
 - Vários testes procuravam "Olá, Gabriela" (texto fixo no código). Passaram a injetar um perfil de teste.

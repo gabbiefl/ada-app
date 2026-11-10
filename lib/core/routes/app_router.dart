@@ -44,8 +44,6 @@ class AppRoutes {
   static String editMessage(MessageKind kind) =>
       '/settings/messages/edit/${kind.name}';
   static const coverage = '/settings/coverage';
-  // Editar o nome, aberto por Configurações.
-  static const editProfile = '/settings/profile';
   static const newCoverage = '/settings/coverage/new';
   // Função (e não constante): o endereço leva o id da faixa.
   static String editCoverage(String id) => '/settings/coverage/edit/$id';
@@ -154,10 +152,6 @@ final appRouter = GoRouter(
                       },
                     ),
                   ],
-                ),
-                GoRoute(
-                  path: 'profile',
-                  builder: (context, state) => const ProfilePage(editing: true),
                 ),
                 GoRoute(
                   path: 'coverage',
