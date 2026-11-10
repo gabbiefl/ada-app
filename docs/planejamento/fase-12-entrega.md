@@ -8,7 +8,7 @@ Chegar à mostra de **12/11/2026** com um **APK instalável**, um **roteiro de d
 
 ## 2. Resultado esperado
 - Um arquivo `app-release.apk` gerado por `flutter build apk --release`, instalado e testado **no emulador e, se possível, num celular real**.
-- As **permissões do APK de release conferidas** (sem internet; só localização, SMS e ligação), e o resultado anotado em `docs/privacidade-e-dados.md`.
+- As **permissões do APK de release conferidas** (internet **só para o mapa**, localização, SMS e ligação), e o resultado anotado em `docs/privacidade-e-dados.md`.
 - Um **roteiro da demonstração** em `docs/roteiro-da-demonstracao.md`: ordem das telas, o que falar em cada uma, quanto tempo leva, o que preparar antes e o que fazer se algo falhar.
 - O **README final**: status atualizado, como rodar no Android (emulador/celular), como gerar o APK, funcionalidades, capturas de tela, limites conhecidos.
 - Backlog e documentos de fases fechados.
@@ -48,7 +48,7 @@ Chegar à mostra de **12/11/2026** com um **APK instalável**, um **roteiro de d
 | # | Passo | Tamanho | O que a usuária aprende |
 |---|---|---|---|
 | 1 | **Gerar o APK de release** (`flutter build apk --release`), conferir tamanho, nome (`ADA`) e versão | P | Debug x release, onde fica o APK |
-| 2 | **Conferir as permissões do APK** (manifesto mesclado, sem `INTERNET`) e anotar em `privacidade-e-dados.md` | P | Manifesto mesclado, permissões que pacotes adicionam |
+| 2 | **Conferir as permissões do APK** (manifesto mesclado, com `INTERNET` só para o mapa) e anotar em `privacidade-e-dados.md` | P | Manifesto mesclado, permissões que pacotes adicionam |
 | 3 | **Testar o APK de release**: no emulador (você liga) o roteiro inteiro; no celular real, SMS e ligação (F9-05). Registrar o que aparecer | M | Release se comporta diferente do debug; teste em aparelho real |
 | 4 (por último, sob pedido) | **Roteiro da demonstração** (`docs/roteiro-da-demonstracao.md`): sequência, falas, tempo, preparação, plano B | M | Preparar uma apresentação defensável |
 | 5 | **README final** com instruções de Android, APK, funcionalidades, limites e capturas de tela (você envia os prints; **sem dados pessoais nem números reais**) | M | Documentação de projeto |

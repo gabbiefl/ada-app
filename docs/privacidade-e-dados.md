@@ -32,10 +32,11 @@ Na **primeira abertura**, uma tela explica as três e pede de uma vez (a usuári
 | **Enviar SMS** | Avisar a rede de contatos quando o Modo Perigo ou o Modo Atenção é ativado |
 | **Ligar** | Ligar para o contato de plantão no Modo Perigo |
 
-O ADA **não declara permissão de internet** no manifesto de produção (ela só existe nos manifestos de desenvolvimento). A conferência final é feita no APK de release (Fase 12).
+O ADA declara a permissão de **internet** **só para baixar o mapa** da aba Mapa (OpenStreetMap). Por ela **não sai** localização, contato, mensagem nem nenhum dado da usuária: o alerta continua saindo por SMS e ligação. A conferência final é feita no APK de release (Fase 12).
 
 ## Para onde os dados vão
 O ADA **não envia nada a um servidor próprio**. O que sai do celular é só o que a usuária aciona:
+- **Pedidos do mapa** (aba Mapa), **só depois de a usuária tocar em "Ver minha localização"**: o aplicativo baixa os pedaços do mapa da região dos servidores do OpenStreetMap, que veem a **área aproximada** pedida (e o endereço de internet do aparelho), mas **não recebem a posição exata**. Sem internet, o mapa fica vazio, e o resto do app funciona igual.
 - **SMS** para os contatos: o texto da mensagem e o **link do mapa com a localização** daquele momento. Segue pela operadora, como qualquer SMS.
 - **Ligação** para o contato de plantão.
 - **Ligação para o 190 ou o 180** (seção "Segurança pública" da Home), só quando a usuária toca e confirma. Liga apenas para o serviço tocado: **não avisa a rede e não envia localização**. Os números são fixos no app, e nada é guardado.
